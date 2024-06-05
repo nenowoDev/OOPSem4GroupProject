@@ -1,12 +1,8 @@
 package Actor;
-
-import Utilities.*;
-
 import java.util.ArrayList;
-import java.util.Scanner;
 
 
-public class Lecturer {
+public class Lecturer extends Person{
     
     ArrayList<Subject> subjectsToTeach;
 

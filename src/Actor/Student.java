@@ -1,7 +1,7 @@
 package Actor;
 import java.util.*;
 
-public class Student {
+public class Student extends Person {
     List<Subject> registeredSubjects;
 
     public Subject findSubject(String code){return new Subject();}

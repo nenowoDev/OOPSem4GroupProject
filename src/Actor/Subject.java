@@ -7,4 +7,5 @@ public class Subject {
     int creditHour;
     ArrayList<Student> registeredStudents;
     Lecturer lecturer;
+    boolean confirm;
 }
