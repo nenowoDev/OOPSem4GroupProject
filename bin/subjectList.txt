@@ -1,7 +1,7 @@
 SECI1013 3 Discrete Structure
 SECJ1013 3 Programming Technique I
 SECR1013 3 Digital Logic
-SCSP1513 3 Technology & Information System
+SECP1513 3 Technology & Information System
 SECI1113 3 Computational Mathematics
 SECI1143 3 Probability & Statistical Data Analysis
 SECJ1023 3 Programming Technique II
@@ -15,4 +15,3 @@ SECJ2203 3 Software Engineering
 SECV2223 3 Web Programming
 SECR2043 3 Operating Systems
 SECJ2154 4 Object Oriented Programming
-SECJ3203 3 Theory of Computer Science
