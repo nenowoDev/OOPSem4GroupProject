@@ -19,6 +19,9 @@ public class Subject {
     private Lecturer lecturer;
     boolean confirm;
     
+
+
+    
     // Constructor, getters, setters, etc.
 
 
