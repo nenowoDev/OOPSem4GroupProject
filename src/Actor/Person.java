@@ -1,6 +1,14 @@
 package Actor;
 
-public class Person {
-    String ID;
-    String name;
+public abstract class Person {
+    protected String id;
+    protected String name;
+
+
+    // Constructor, getters, setters, etc.
+    
+    
+    
+
+
 }
