@@ -1,13 +1,15 @@
 package Actor;
 import java.util.ArrayList;
 
+// import javax.security.auth.Course;
+
 
 public class Lecturer extends Person{
     
-    ArrayList<Subject> subjectsToTeach;
+    ArrayList<Course> coursessToTeach;
 
-    public void chooseSubjectToTeach(Subject subject){}
-    public void dropSubject(Subject subject){}
+    public void chooseSubjectToTeach(Course course){}
+    public void dropSubject(Course course){}
 
     
 }

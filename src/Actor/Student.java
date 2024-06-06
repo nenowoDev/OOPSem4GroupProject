@@ -2,10 +2,10 @@ package Actor;
 import java.util.*;
 
 public class Student extends Person {
-    List<Subject> registeredSubjects;
+    List<Course> registeredCourses;
 
-    public Subject findSubject(String code){return new Subject();}
-    public void registerSubject(Subject subject){}
-    public void dropSubject(Subject subject){}
-    public List<Subject> displayListOfSubjects(){return new ArrayList<>();}
+    public Course findSubject(String code){return new Course();}
+    public void registerSubject(Course course){}
+    public void dropSubject(Course course){}
+    public List<Course> displayListOfSubjects(){return new ArrayList<>();}
 }

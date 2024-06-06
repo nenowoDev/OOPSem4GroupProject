@@ -1,7 +1,7 @@
 package Actor;
 import java.util.ArrayList;
 
-public class Subject {
+public class Course {
     String code;
     String name;
     int creditHour;
