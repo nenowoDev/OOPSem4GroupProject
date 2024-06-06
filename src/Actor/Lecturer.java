@@ -13,12 +13,16 @@ import java.util.*;
 public class Lecturer extends Person {
     private Vector<Subject> subjectsToTeach;
     
+    
+
     //1. View Subject Details
     public void viewSubjectDetails() {}
 
 
+
     //2. Choose Subject to Teach
     public void chooseSubjectToTeach() {}
+
 
 
     //3. Drop Subject
@@ -29,5 +33,5 @@ public class Lecturer extends Person {
     //4. Subject Student List
     public void subjectStudentList() {}
 
-    
+
 }

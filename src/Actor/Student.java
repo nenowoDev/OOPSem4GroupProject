@@ -9,6 +9,7 @@ import java.util.*;
 //     public List<Course> displayListOfSubjects(){return new ArrayList<>();}
 // }
 
+
 public class Student extends Person {
     private Vector<Subject> registeredSubjects;
     
@@ -23,7 +24,7 @@ public class Student extends Person {
     //3. Drop Subject
     public void dropSubject() {}
 
-    
+
     //4. List of Subjects
     public void listSubjects() {}
 

@@ -17,6 +17,7 @@ public class Admin extends Person {
     //1. List Subjects
     public void listSubjects() {}
 
+    
     //2. Manage Subject Sections
     public void manageSubjectSections() {}
 
