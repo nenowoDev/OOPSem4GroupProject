@@ -15,7 +15,7 @@ public class Subject {
     private String code;
     private String name;
     private int creditHour;
-    private List<Student> registeredStudents;
+    private Vector<Student>registeredStudents;
     private Lecturer lecturer;
     boolean confirm;
     
