@@ -13,6 +13,12 @@ import java.util.*;
 public class Lecturer extends Person {
     private Vector<Subject> subjectsToTeach;
     
+    public Lecturer(String id, String name) {
+        this.id = id;
+        this.name = name;
+        this.subjectsToTeach = new Vector<>();
+    }
+    
     
 
     //1. View Subject Details
