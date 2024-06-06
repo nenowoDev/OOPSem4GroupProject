@@ -13,7 +13,9 @@ import java.util.*;
 public class Lecturer extends Person {
     private Vector<Subject> subjectsToTeach;
     
-    
+    Lecturer(String name, String id) {
+        super(id, name);
+    }
 
     //1. View Subject Details
     public void viewSubjectDetails() {}

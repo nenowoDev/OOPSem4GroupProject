@@ -13,6 +13,10 @@ import java.util.*;
 public class Student extends Person {
     private Vector<Subject> registeredSubjects;
     
+    Student(String name, String id) {
+        super(id, name);
+    }
+
     //1. Search subject
     public void searchSubject() {}
     

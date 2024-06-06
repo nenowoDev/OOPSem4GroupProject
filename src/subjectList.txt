@@ -3,9 +3,7 @@ SECJ1013 3 Programming Technique I
 SECR1013 3 Digital Logic
 SECP1513 3 Technology & Information System
 SECI1113 3 Computational Mathematics
-SECI1143 3 Probability & Statistical Data Analysis
 SECJ1023 3 Programming Technique II
-SECR1033 3 Computer Organisation and Architecture
 SECD2523 3 Database
 SECD2613 3 System Analysis and Design
 SECJ2013 3 Data Structure and Algorithm
