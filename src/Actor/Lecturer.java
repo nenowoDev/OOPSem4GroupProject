@@ -11,7 +11,7 @@ import java.util.*;
 
 
 public class Lecturer extends Person {
-    private Vector<Subject> subjectsToTeach;
+    private ArrayList<Subject> subjectsToTeach;
 
     
     public Lecturer(String id, String name) {

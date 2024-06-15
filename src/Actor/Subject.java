@@ -17,7 +17,7 @@ public class Subject {
     private String name;
     private int creditHour;
 
-    // private Vector<Student>registeredStudents;
+    // private ArrayList<Student>registeredStudents;
     // private Lecturer lecturer;
     // boolean confirm;
 
@@ -41,29 +41,29 @@ public class Subject {
         return creditHour;
     }
 
-    public void readFile(Vector<Subject> subjectList) throws IOException {
-        Scanner inpFile = new Scanner(new File("subjectList.txt"));
-
+    public void readFile(ArrayList<Subject> subjectList) throws IOException {
+        Scanner inpFile = new Scanner(new File("subjectList.csv"));
+        inpFile.useDelimiter(",|\\n");
         while (inpFile.hasNext()) {
-            code = inpFile.next();
-            creditHour = inpFile.nextInt();
-            name = inpFile.nextLine();
+            String code = inpFile.next();
+            int creditHour = inpFile.nextInt();
+            String name = inpFile.nextLine();
+            name = name.substring(1);
 
             Subject subject = new Subject(code, name, creditHour);
             subjectList.add(subject);
         }
-
         inpFile.close();
     }
 
-    public void display(Vector<Subject> subjectList) {
+    public void display(ArrayList<Subject> subjectList) {
         System.out.println("***********************************************************************");
         System.out.println("                          LIST OF COURSES");
         System.out.println("***********************************************************************\n");
-        System.out.printf("%-12s%-34s%5s\n", "\tCODE", "COURSE NAME", "CREDIT HOUR");
-        System.out.printf("%-12s%-34s%5s\n", "\t--------","-------------------------------", "-----------");
+        System.out.printf("%-12s%-32s%5s\n", "\tCODE", "COURSE NAME", "CREDIT HOUR");
+        System.out.printf("%-12s%-32s%5s\n", "\t--------","-----------------------------", "-----------");
         for (Subject s : subjectList) {
-            System.out.printf("\t%-10s%-35s%5d\n", s.getCode(), s.getName(), s.getCreditHour());
+            System.out.printf("\t%-11s%-33s%5d\n", s.getCode(), s.getName(), s.getCreditHour());
         }
         System.out.println();
     }

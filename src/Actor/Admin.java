@@ -12,7 +12,7 @@ import java.util.*;
 
 
 public class Admin extends Person {
-    private Vector<Subject> subjectsOffered;
+    private ArrayList<Subject> subjectsOffered;
     
     
     public Admin(String id, String name) {

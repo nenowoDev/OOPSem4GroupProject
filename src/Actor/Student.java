@@ -11,7 +11,7 @@ import java.util.*;
 
 
 public class Student extends Person {
-    private Vector<Subject> registeredSubjects;
+    private ArrayList<Subject> registeredSubjects;
     
     Student(String name, String id) {
         super(id, name);
