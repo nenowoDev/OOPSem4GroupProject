@@ -1,6 +1,10 @@
-studentlist        -> personid,name
 subjectList        -> subjectcode,subjectname,credithour
+
+studentlist        -> studentid,name
 studentTakeSUbject -> studentid,subjectcode
+
+lecturerList       -> lecturerid,name
+lecturerSubject    -> lecturerid,subjectcode
 
 
 expand as needed
