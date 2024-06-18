@@ -1,0 +1,6 @@
+studentlist        -> personid,name
+subjectList        -> subjectcode,subjectname,credithour
+studentTakeSUbject -> studentid,subjectcode
+
+
+expand as needed
