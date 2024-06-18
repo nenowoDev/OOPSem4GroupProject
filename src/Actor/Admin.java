@@ -80,10 +80,18 @@ public class Admin extends Person {
         
     }
 
-
-    //8. Close Subjects
-    public void closeSubjects(Subject s) {
+     
+    //TODO 8. Close Subjects
+    public void closeSubjects() {
+        listSubjects();
+        Scanner sc=new Scanner(System.in);
+        System.out.print("Subject to close :");
+        int temp=sc.nextInt();
+        sc.next();
         
+        
+        sc.close();
+
     }
 
 

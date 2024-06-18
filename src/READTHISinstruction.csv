@@ -1,5 +1,4 @@
-subjectList        -> subjectcode,subjectname,credithour
-subjectAvailable   -> subjectcode,open/close
+subjectList        -> subjectcode,credithour,opened/close(1/0),subjectname
 
 studentlist        -> matriksno,name
 studentTakeSUbject -> studentid,subjectcode
