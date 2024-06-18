@@ -1,6 +1,6 @@
 subjectList        -> subjectcode,subjectname,credithour
 
-studentlist        -> studentid,name
+studentlist        -> matriksno,name
 studentTakeSUbject -> studentid,subjectcode
 
 lecturerList       -> lecturerid,name
