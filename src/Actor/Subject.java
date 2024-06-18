@@ -47,6 +47,10 @@ public class Subject {
         return flag;
     }
 
+    public void setFlag(int ) {
+        flag=0;
+    }
+
     public void readFile(ArrayList<Subject> subjectList) throws IOException {
         Scanner inpFile = new Scanner(new File("subjectList.csv"));
         inpFile.useDelimiter(",|\\n");
