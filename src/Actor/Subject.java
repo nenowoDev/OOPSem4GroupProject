@@ -47,8 +47,8 @@ public class Subject {
         return flag;
     }
 
-    public void setFlag(int ) {
-        flag=0;
+    public void setFlag(int flag) {
+        this.flag=flag;
     }
 
     public void readFile(ArrayList<Subject> subjectList) throws IOException {
