@@ -13,6 +13,8 @@ import java.util.*;
 
 public class Admin extends Person {
     private ArrayList<Subject> subjectsOffered;
+    private ArrayList<Student> studentsList;
+    private ArrayList<Lecturer> lecturerList;
     
     
     public Admin(String id, String name) {
@@ -41,11 +43,19 @@ public class Admin extends Person {
 
 
     //6. List Registered Students
-    public void listRegisteredStudents() {}
+    public void listRegisteredStudents() {
+        for(Student s:studentsList){
+            System.out.println(s);
+        }
+    }
 
 
     //7. List Registered Lecturers
-    public void listRegisteredLecturers() {}
+    public void listRegisteredLecturers() {
+        for(Lecturer l:lecturerList){
+            System.out.println(l);
+        }
+    }
 
 
     //8. Close Subjects
