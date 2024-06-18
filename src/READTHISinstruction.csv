@@ -1,4 +1,5 @@
 subjectList        -> subjectcode,subjectname,credithour
+subjectAvailable   -> subjectcode,open/close
 
 studentlist        -> matriksno,name
 studentTakeSUbject -> studentid,subjectcode
