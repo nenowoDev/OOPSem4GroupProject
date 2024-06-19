@@ -3,6 +3,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import javax.xml.validation.Schema;
+
 // import javax.security.auth.Course;
 // public class AcademicOffice {
 //     public ArrayList<Subject> listSubjectsToOfferEachSemester(){return new ArrayList<>();}
@@ -17,13 +19,36 @@ public class Admin extends Person {
     private ArrayList<Subject> subjectList;
     private ArrayList<Student> studentsList;
     private ArrayList<Lecturer> lecturerList;
+
+    private HashMap<String,Subject> subjectHashMap;
+    private HashMap<String,Student> studentHashMap;
+    private HashMap<String,Lecturer> lecturerHashMap;
+
+    private HashMap<Student,Subject> studentRegisterSubjectHashMap;
+    
     
     
     public Admin(String id, String name) {
         super(id, name);
+        subjectList=new ArrayList<Subject>();
         studentsList=new ArrayList<Student>();
+        lecturerList=new ArrayList<Lecturer>();
+        
+        subjectHashMap=new HashMap<String,Subject>();
+        studentHashMap=new HashMap<String,Student>();
+        lecturerHashMap=new HashMap<String,Lecturer>();
+
+        studentRegisterSubjectHashMap=new HashMap<Student,Subject>();
+        
         try {
             readStudentList();
+            readLecturerList();
+            readSubjectList();
+            
+            subjectArrListToHashMap();
+            studentArrListToHashMap();
+            lecturerArrListToHashMap();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,8 +71,22 @@ public class Admin extends Person {
     public void dropSubjectCourse() {}
 
 
-    //5. Confirm Course Registrations
+    // TODO 5. Confirm Course Registrations
     public void confirmCourseRegistrations() {
+        System.out.println("***********************************************************************");
+        System.out.println("                    CONFIRM COURSE REGISTRATION");
+        System.out.println("***********************************************************************\n");
+        System.out.printf("%-20s%-32s\n", "\tMATRIKS NO", "COURSE CODE");
+        System.out.printf("%-20s%-32s\n", "\t--------","-----------------------------");
+        for (Map.Entry<Student, Subject> entry : studentRegisterSubjectHashMap.entrySet()) {
+            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+        }
+        
+        System.out.print("\n\n\t\tENTER Matriks NO : ");
+        Scanner sc=new Scanner(System.in);
+        
+        sc.close();
+        
         
     }
 
@@ -78,6 +117,7 @@ public class Admin extends Person {
         for(Lecturer l:lecturerList){
             System.out.printf("%-12s%-32s\n",l.getId(),l.getName());
         }
+        
         System.out.println();
         
     }
@@ -92,26 +132,23 @@ public class Admin extends Person {
         
         
         sc.close();
-
     }
 
 
 
-    public void readStudentList() throws IOException{
+    private void readStudentList() throws IOException{
         Scanner inpFile = new Scanner(new File("src/studentList.csv"));
         inpFile.useDelimiter(",|\\n");
         while (inpFile.hasNext()) {
             String matrikxno = inpFile.next();
             String name = inpFile.nextLine();
             name = name.substring(1);
-
             Student student = new Student(name, matrikxno);
             studentsList.add(student);
         }
         inpFile.close();
     }
-
-    public void readLecturerList() throws IOException{
+    private void readLecturerList() throws IOException{
         Scanner inpFile = new Scanner(new File("src/lecturerList.csv"));
         inpFile.useDelimiter(",|\\n");
         while (inpFile.hasNext()) {
@@ -123,8 +160,7 @@ public class Admin extends Person {
         }
         inpFile.close();
     }
-
-    public void readSubjectList() throws IOException{
+    private void readSubjectList() throws IOException{
         Scanner inpFile = new Scanner(new File("src/subjectList.csv"));
         inpFile.useDelimiter(",|\\n");
         while (inpFile.hasNext()) {
@@ -133,12 +169,42 @@ public class Admin extends Person {
             boolean flag = inpFile.nextBoolean();
             String name = inpFile.nextLine();
             name = name.substring(1);
-            
             Subject subject = new Subject(code,name,flag,creditHr );
             subjectList.add(subject);
         }
         inpFile.close();
     }
+
+    private void subjectArrListToHashMap(){
+        for(Subject s:subjectList){
+            subjectHashMap.put(s.getCode(), s);
+        }
+    }
+    private void studentArrListToHashMap(){
+        for(Student s:studentsList){
+            studentHashMap.put(s.getId(),s);
+        }
+    }
+    private void lecturerArrListToHashMap(){
+        for(Lecturer l:lecturerList){
+            lecturerHashMap.put(l.getId(), l);
+        }
+    }
+
+    public void readStudentRegSubject() throws IOException{
+        Scanner inpFile = new Scanner(new File("src/readStudentRegisterSubject.csv"));
+        inpFile.useDelimiter(",|\\n");
+        while (inpFile.hasNext()) {
+            String matriksNo = inpFile.next();
+            String subjectCode = inpFile.nextLine();
+            
+            studentRegisterSubjectHashMap.put(studentHashMap.get(matriksNo), subjectHashMap.get(subjectCode));
+            
+            
+        }
+        inpFile.close();
+    }
+
 
 
 }

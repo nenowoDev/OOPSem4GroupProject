@@ -1,7 +1,8 @@
 subjectList        -> subjectcode,credithour,opened/close(1/0),subjectname
 
 studentlist        -> matriksno,name
-studentTakeSUbject -> matriksno,subjectcode
+studentTakeSubject -> matriksno,subjectcode
+studentRegisterSubject -> matriksno,subjectcode
 
 lecturerList       -> lecturerid,name
 lecturerSubject    -> lecturerid,subjectcode
