@@ -35,8 +35,8 @@ public class Project {
         System.out.println("  1. Search subject");
         System.out.println("  2. Register Subject");
         System.out.println("  3. Drop Subject");
-        System.out.println("  4. List of Subjects\n");
-        System.out.println(" 5. Back to Main Menu\n");
+        System.out.println("  4. List of Subjects");
+        System.out.println("  5. Back to Main Menu\n");
         System.out.print("   ENTER YOUR OPTION -> ");
     }
 
@@ -51,8 +51,8 @@ public class Project {
         System.out.println("  1. View Subject Details");
         System.out.println("  2. Choose Subject to Teach");
         System.out.println("  3. Drop Subject");
-        System.out.println("  4. Subject Student List\n");
-        System.out.println(" 5. Back to Main Menu\n");
+        System.out.println("  4. Subject Student List");
+        System.out.println("  5. Back to Main Menu\n");
         System.out.print("   ENTER YOUR OPTION -> ");
     }
 
@@ -71,7 +71,7 @@ public class Project {
         System.out.println("  5. Confirm Course Registrations");
         System.out.println("  6. List Registered Students");
         System.out.println("  7. List Registered Lecturers");
-        System.out.println("  8. Close Subjects\n");
+        System.out.println("  8. Close Subjects");
         System.out.println(" 9. Back to Main Menu\n");
         System.out.print("   ENTER YOUR OPTION -> ");
     }
