@@ -1,5 +1,4 @@
 package Actor;
-
 import java.util.*;
 import java.io.*;
 
@@ -16,15 +15,15 @@ public class Subject {
     private String code;
     private String name;
     private int creditHour;
-    private int flag;
-
+    private boolean flag;
+    //private ArrayList<Subject> subjectList;
     // private ArrayList<Student>registeredStudents;
     // private Lecturer lecturer;
     // boolean confirm;
 
     // Constructor, getters, setters, etc.
 
-    public Subject(String code, String name, int creditHour, int flag) {
+    public Subject(String code, String name, boolean flag, int creditHour) {
         this.code = code;
         this.name = name;
         this.creditHour = creditHour;
@@ -43,31 +42,31 @@ public class Subject {
         return creditHour;
     }
 
-    public int getFlag() {
+    public boolean getFlag() {
         return flag;
     }
 
-    public void setFlag(int flag) {
+    public void setFlag(boolean flag) {
         this.flag=flag;
     }
 
-    public void readFile(ArrayList<Subject> subjectList) throws IOException {
+    public void readFile(ArrayList<Subject>subjectList) throws IOException {
         Scanner inpFile = new Scanner(new File("subjectList.csv"));
         inpFile.useDelimiter(",|\\n");
         while (inpFile.hasNext()) {
             String code = inpFile.next();
             int creditHour = inpFile.nextInt();
-            int flag = inpFile.nextInt();
+            boolean flag = inpFile.nextBoolean();
             String name = inpFile.nextLine();
             name = name.substring(1);
 
-            Subject subject = new Subject(code, name, creditHour, flag);
+            Subject subject = new Subject(code, name, flag, creditHour);
             subjectList.add(subject);
         }
         inpFile.close();
     }
 
-    public void display(ArrayList<Subject> subjectList) {
+    public void display(ArrayList<Subject>subjectList) {
         System.out.println("***********************************************************************");
         System.out.println("                          LIST OF COURSES");
         System.out.println("***********************************************************************\n");
