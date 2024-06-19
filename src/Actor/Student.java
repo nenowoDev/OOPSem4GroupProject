@@ -13,7 +13,7 @@ import java.util.*;
 public class Student extends Person {
     private ArrayList<Subject> registeredSubjects;
     
-    Student(String name, String id) {
+    Student(String id, String name) {
         super(id, name);
     }
 
