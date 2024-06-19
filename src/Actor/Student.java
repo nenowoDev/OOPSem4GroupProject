@@ -32,7 +32,11 @@ public class Student extends Person {
 
     public void LoadSubject() {
         System.out.println("Loading subjects...");
+<<<<<<< Updated upstream
         String filePath = "src/subjectList.csv";
+=======
+        String filePath = "src\\subjectList.csv";
+>>>>>>> Stashed changes
 
         try {
             Scanner readfile = new Scanner(new File(filePath));

@@ -76,8 +76,8 @@ public class Project {
         System.out.print("   ENTER YOUR OPTION -> ");
     }
 
-    public static ArrayList<Student> readStudent(Scanner inpFile) {
-        ArrayList<Student> p = new ArrayList<>();
+    public static ArrayList<Person> readStudent(Scanner inpFile) {
+        ArrayList<Person> p = new ArrayList<>();
         inpFile.useDelimiter(",|\\n");
         while (inpFile.hasNext()) {
             String id = inpFile.next();
@@ -90,7 +90,7 @@ public class Project {
         return p;
     }
 
-    public static Student studentLoginCheck(ArrayList<Student> per) {
+    public static Student studentLoginCheck(ArrayList<Person> per) {
         Scanner sc = new Scanner(System.in);
         Student s = null;
         boolean found = false;
@@ -101,7 +101,7 @@ public class Project {
             System.out.println("******************************\n\n");
             System.out.print("      Enter ID: ");
             String id = sc.nextLine();
-            for (Student p : per) {
+            for (Person p : per) {
                 if (p.getId().equals(id)) {
                     System.out.println("\n\n    Welcome, " + p.getName());
                     s = new Student(p.getId(), p.getName());
@@ -117,8 +117,8 @@ public class Project {
         return new Student("", "");
     }
 
-    public static ArrayList<Lecturer> readLecturer(Scanner inpFile) {
-        ArrayList<Lecturer> p = new ArrayList<>();
+    public static ArrayList<Person> readLecturer(Scanner inpFile) {
+        ArrayList<Person> p = new ArrayList<>();
         inpFile.useDelimiter(",|\\n");
         while (inpFile.hasNext()) {
             String id = inpFile.next();
@@ -131,7 +131,7 @@ public class Project {
         return p;
     }
 
-    public static Lecturer lecturerLoginCheck(ArrayList<Lecturer> per) {
+    public static Lecturer lecturerLoginCheck(ArrayList<Person> per) {
         Scanner sc = new Scanner(System.in);
         Lecturer l = null;
         boolean found = false;
@@ -142,7 +142,7 @@ public class Project {
             System.out.println("******************************\n\n");
             System.out.print("     Enter ID: ");
             String id = sc.nextLine();
-            for (Lecturer p : per) {
+            for (Person p : per) {
                 if (p.getId().equals(id)) {
                     // System.out.println("\n\n\n Welcome, " + p.getName());
                     l = new Lecturer(p.getId(), p.getName());
@@ -158,8 +158,8 @@ public class Project {
         return new Lecturer("", "");
     }
 
-    public static ArrayList<Admin> readAdmin(Scanner inpFile) {
-        ArrayList<Admin> p = new ArrayList<>();
+    public static ArrayList<Person> readAdmin(Scanner inpFile) {
+        ArrayList<Person> p = new ArrayList<>();
         inpFile.useDelimiter(",|\\n");
         while (inpFile.hasNext()) {
             String id = inpFile.next();
@@ -172,7 +172,7 @@ public class Project {
         return p;
     }
 
-    public static Admin adminLoginCheck(ArrayList<Admin> per) {
+    public static Admin adminLoginCheck(ArrayList<Person> per) {
         Scanner sc = new Scanner(System.in);
         Admin a = null;
         boolean found = false;
@@ -182,7 +182,7 @@ public class Project {
             System.out.println("************************************\n\n");
             System.out.print("        Enter ID: ");
             String id = sc.nextLine();
-            for (Admin p : per) {
+            for (Person p : per) {
                 if (p.getId().equals(id)) {
                     // System.out.println("\n\n\n Welcome, " + p.getName());
                     a = new Admin(p.getId(), p.getName());
@@ -201,6 +201,7 @@ public class Project {
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
 
+<<<<<<< Updated upstream
         Scanner inpFile = new Scanner(new File("src/studentList.csv"));
         ArrayList<Student> student = readStudent(inpFile);
         inpFile = new Scanner(new File("src/lecturerList.csv"));
@@ -211,6 +212,16 @@ public class Project {
         Student stud;
         Lecturer lect;
         Admin adm;
+=======
+        Scanner inpFile = new Scanner(new File("src\\subjectList.csv"));
+        ArrayList<Person> student = readStudent(inpFile);
+        inpFile = new Scanner(new File("lecturerList.csv"));
+        ArrayList<Person> lecturer = readLecturer(inpFile);
+        inpFile = new Scanner(new File("adminList.csv"));
+        ArrayList<Person> admin = readAdmin(inpFile);
+
+        Person person;
+>>>>>>> Stashed changes
         int choice;
         do {
             menu();
@@ -218,7 +229,7 @@ public class Project {
             sc.nextLine();
             switch (choice) {
                 case 1:
-                    stud = studentLoginCheck(student);
+                    person = studentLoginCheck(student);
                     sc.nextLine();
                     int n1;
                     do {
@@ -228,23 +239,35 @@ public class Project {
                         switch (n1) {
                             case 1:
                                 // studentMenu();
+<<<<<<< Updated upstream
 
                                 stud.searchSubject();
+=======
+>>>>>>> Stashed changes
                                 sc.nextLine();
                                 break;
                             case 2:
                                 // studentMenu();
+<<<<<<< Updated upstream
                                 stud.registerSubject();
+=======
+>>>>>>> Stashed changes
                                 sc.nextLine();
                                 break;
                             case 3:
                                 // studentMenu();
+<<<<<<< Updated upstream
                                 stud.dropSubject();
+=======
+>>>>>>> Stashed changes
                                 sc.nextLine();
                                 break;
                             case 4:
                                 // studentMenu();
+<<<<<<< Updated upstream
                                 stud.listSubjects();
+=======
+>>>>>>> Stashed changes
                                 sc.nextLine();
                                 break;
                             case 5:
@@ -256,7 +279,7 @@ public class Project {
                     } while (!(n1 == 5));
                     break;
                 case 2:
-                    lect = lecturerLoginCheck(lecturer);
+                    person = lecturerLoginCheck(lecturer);
                     sc.nextLine();
                     int n2;
                     do {
@@ -265,7 +288,7 @@ public class Project {
                         sc.nextLine();
                         switch (n2) {
                             case 1:
-                                lect.viewSubjectDetails();
+                                // lecturerMenu();
                                 sc.nextLine();
                                 break;
                             case 2:
@@ -289,7 +312,7 @@ public class Project {
                     } while (!(n2 == 5));
                     break;
                 case 3:
-                    adm = adminLoginCheck(admin);
+                    person = adminLoginCheck(admin);
                     sc.nextLine();
                     int n3;
                     do {
