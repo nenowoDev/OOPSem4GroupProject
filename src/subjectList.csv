@@ -1,8 +1,8 @@
-SECJ1013,3,1,Programming Technique I
-SECI1113,3,1,Computational Mathematics
-SECJ1023,3,1,Programming Technique II
-SECD2613,3,1,System Analysis and Design
-SECJ2013,3,1,Data Structure and Algorithm
-SECR2213,3,1,Network Communications
-SECV2113,3,1,Human Computer Interaction
-SECJ2154,4,1,Object Oriented Programming
+SECJ1013,3,true,Programming Technique I
+SECI1113,3,true,Computational Mathematics
+SECJ1023,3,true,Programming Technique II
+SECD2613,3,true,System Analysis and Design
+SECJ2013,3,true,Data Structure and Algorithm
+SECR2213,3,true,Network Communications
+SECV2113,3,true,Human Computer Interaction
+SECJ2154,4,true,Object Oriented Programming
