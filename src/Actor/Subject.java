@@ -50,7 +50,8 @@ public class Subject {
         this.flag=flag;
     }
 
-    public void readFile(ArrayList<Subject>subjectList) throws IOException {
+    public void readFile() throws IOException {
+        ArrayList<Subject> subjectList = new ArrayList<>();
         Scanner inpFile = new Scanner(new File("subjectList.csv"));
         inpFile.useDelimiter(",|\\n");
         while (inpFile.hasNext()) {
@@ -66,7 +67,10 @@ public class Subject {
         inpFile.close();
     }
 
-    public void display(ArrayList<Subject>subjectList) {
+    public void display() {
+        //
+        ArrayList<Subject> subjectList = new ArrayList<>();
+        //
         System.out.println("***********************************************************************");
         System.out.println("                          LIST OF COURSES");
         System.out.println("***********************************************************************\n");
