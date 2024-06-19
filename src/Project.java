@@ -201,13 +201,13 @@ public class Project {
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
 
-        Scanner inpFile = new Scanner(new File("studentList.csv"));
+        Scanner inpFile = new Scanner(new File("src/studentList.csv"));
         ArrayList<Student> student = readStudent(inpFile);
-        inpFile = new Scanner(new File("lecturerList.csv"));
+        inpFile = new Scanner(new File("src/lecturerList.csv"));
         ArrayList<Lecturer> lecturer = readLecturer(inpFile);
-        inpFile = new Scanner(new File("adminList.csv"));
+        inpFile = new Scanner(new File("src/adminList.csv"));
         ArrayList<Admin> admin = readAdmin(inpFile);
-        
+
         Student stud;
         Lecturer lect;
         Admin adm;
@@ -227,19 +227,24 @@ public class Project {
                         sc.nextLine();
                         switch (n1) {
                             case 1:
-                                //studentMenu();
+                                // studentMenu();
+
+                                stud.searchSubject();
                                 sc.nextLine();
                                 break;
                             case 2:
-                                //studentMenu();
+                                // studentMenu();
+                                stud.registerSubject();
                                 sc.nextLine();
                                 break;
                             case 3:
-                                //studentMenu();
+                                // studentMenu();
+                                stud.dropSubject();
                                 sc.nextLine();
                                 break;
                             case 4:
-                                //studentMenu();
+                                // studentMenu();
+                                stud.listSubjects();
                                 sc.nextLine();
                                 break;
                             case 5:
@@ -264,15 +269,15 @@ public class Project {
                                 sc.nextLine();
                                 break;
                             case 2:
-                                //lecturerMenu();
+                                // lecturerMenu();
                                 sc.nextLine();
                                 break;
                             case 3:
-                                //lecturerMenu();
+                                // lecturerMenu();
                                 sc.nextLine();
                                 break;
                             case 4:
-                                //lecturerMenu();
+                                // lecturerMenu();
                                 sc.nextLine();
                                 break;
                             case 5:
