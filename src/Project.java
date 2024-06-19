@@ -201,11 +201,11 @@ public class Project {
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
 
-        Scanner inpFile = new Scanner(new File("studentList.csv"));
+        Scanner inpFile = new Scanner(new File("src/studentList.csv"));
         ArrayList<Student> student = readStudent(inpFile);
-        inpFile = new Scanner(new File("lecturerList.csv"));
+        inpFile = new Scanner(new File("src/lecturerList.csv"));
         ArrayList<Lecturer> lecturer = readLecturer(inpFile);
-        inpFile = new Scanner(new File("adminList.csv"));
+        inpFile = new Scanner(new File("src/adminList.csv"));
         ArrayList<Admin> admin = readAdmin(inpFile);
         
         Student stud;
