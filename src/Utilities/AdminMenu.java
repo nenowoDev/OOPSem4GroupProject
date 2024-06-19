@@ -1,10 +1,13 @@
 package Utilities;
 import java.util.Scanner;
 
+import Actor.Admin;
+
 //import java.util.Scanner;
 
 public class AdminMenu{
     public static void adminMenu() {
+        Admin a=new Admin("avc", "voldemort");
         Scanner scanner = new Scanner(System.in);
         int n;
         ClearScreen.clearScreen();
@@ -42,7 +45,7 @@ public class AdminMenu{
                 // adminMenu();
                 break;
             case 6:
-                // adminMenu();
+                a.listRegisteredStudents();
                 break;
             case 7:
                 // adminMenu();

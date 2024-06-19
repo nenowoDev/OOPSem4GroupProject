@@ -1,4 +1,6 @@
 package Actor;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 // import javax.security.auth.Course;
@@ -13,10 +15,18 @@ import java.util.*;
 
 public class Admin extends Person {
     private ArrayList<Subject> subjectsOffered;
+    private ArrayList<Student> studentsList;
+    private ArrayList<Lecturer> lecturerList;
     
     
     public Admin(String id, String name) {
         super(id, name);
+        studentsList=new ArrayList<Student>();
+        try {
+            readStudentList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -41,13 +51,62 @@ public class Admin extends Person {
 
 
     //6. List Registered Students
-    public void listRegisteredStudents() {}
+    public void listRegisteredStudents() {
+        
+        System.out.println("***********************************************************************");
+        System.out.println("                          LIST OF STUDENTS");
+        System.out.println("***********************************************************************\n");
+        System.out.printf("%-20s%-32s\n", "\tMATRIKS NO", "NAME");
+        System.out.printf("%-20s%-32s\n", "\t--------","-----------------------------");
+        for(Student s:studentsList){
+            System.out.printf("\t%-20s%-32s\n",s.getId(),s.getName());
+        }
+        System.out.println();
+    
+    }
 
 
     //7. List Registered Lecturers
-    public void listRegisteredLecturers() {}
+    public void listRegisteredLecturers() {
+        System.out.println("***********************************************************************");
+        System.out.println("                          LIST OF LECTURERS");
+        System.out.println("***********************************************************************\n");
+        System.out.printf("%-12s%-32s\n", "\tSTAFF NO", "NAME");
+        System.out.printf("%-12s%-32s\n", "\t--------","-----------------------------");
+        for(Lecturer l:lecturerList){
+            System.out.printf("%-12s%-32s\n",l.getId(),l.getName());
+        }
+        System.out.println();
+        
+    }
+
+     
+    //TODO 8. Close Subjects
+    public void closeSubjects() {
+        listSubjects();
+        Scanner sc=new Scanner(System.in);
+        System.out.print("Subject to close :");
+        int temp=sc.nextInt();
+        sc.next();
+        
+        
+        sc.close();
+
+    }
 
 
-    //8. Close Subjects
-    public void closeSubjects() {}
+
+    public void readStudentList() throws IOException{
+        Scanner inpFile = new Scanner(new File("src/studentList.csv"));
+        inpFile.useDelimiter(",|\\n");
+        while (inpFile.hasNext()) {
+            String matrikxno = inpFile.next();
+            String name = inpFile.nextLine();
+            name = name.substring(1);
+
+            Student student = new Student(name, matrikxno);
+            studentsList.add(student);
+        }
+        inpFile.close();
+    }
 }
