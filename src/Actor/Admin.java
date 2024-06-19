@@ -14,7 +14,7 @@ import java.util.*;
 
 
 public class Admin extends Person {
-    private ArrayList<Subject> subjectsOffered;
+    private ArrayList<Subject> subjectList;
     private ArrayList<Student> studentsList;
     private ArrayList<Lecturer> lecturerList;
     
@@ -47,7 +47,9 @@ public class Admin extends Person {
 
 
     //5. Confirm Course Registrations
-    public void confirmCourseRegistrations() {}
+    public void confirmCourseRegistrations() {
+        
+    }
 
 
     //6. List Registered Students
@@ -80,7 +82,6 @@ public class Admin extends Person {
         
     }
 
-     
     //TODO 8. Close Subjects
     public void closeSubjects() {
         listSubjects();
@@ -109,4 +110,35 @@ public class Admin extends Person {
         }
         inpFile.close();
     }
+
+    public void readLecturerList() throws IOException{
+        Scanner inpFile = new Scanner(new File("src/lecturerList.csv"));
+        inpFile.useDelimiter(",|\\n");
+        while (inpFile.hasNext()) {
+            String matrikxno = inpFile.next();
+            String name = inpFile.nextLine();
+            name = name.substring(1);
+            Lecturer lecturer = new Lecturer(name, matrikxno);
+            lecturerList.add(lecturer);
+        }
+        inpFile.close();
+    }
+
+    public void readSubjectList() throws IOException{
+        Scanner inpFile = new Scanner(new File("src/subjectList.csv"));
+        inpFile.useDelimiter(",|\\n");
+        while (inpFile.hasNext()) {
+            String code = inpFile.next();
+            int creditHr = inpFile.nextInt();
+            boolean flag = inpFile.nextBoolean();
+            String name = inpFile.nextLine();
+            name = name.substring(1);
+            
+            Subject subject = new Subject(code,name,flag,creditHr );
+            subjectList.add(subject);
+        }
+        inpFile.close();
+    }
+
+
 }
