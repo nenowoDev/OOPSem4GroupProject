@@ -206,7 +206,7 @@ public class Lecturer extends Person {
                     int creditHours = Integer.parseInt(parts[2].trim());
                     String name = parts[3].trim();
                     if (lecturerID.equals(this.id)) {
-                        subjectsToTeach.add(new Subject(code, name, creditHours)); // Add subject to the list if the lecturer ID matches
+                        subjectsToTeach.add(new Subject(code, name,false, creditHours)); // Add subject to the list if the lecturer ID matches
                     }
                 }
             }
@@ -291,7 +291,7 @@ public class Lecturer extends Person {
                     String code = parts[0].trim();
                     int creditHours = Integer.parseInt(parts[1].trim());
                     String name = parts[2].trim();
-                    allSubjects.add(new Subject(code, name, creditHours)); // Add each subject to the list of all subjects
+                    allSubjects.add(new Subject(code, name,false, creditHours)); // Add each subject to the list of all subjects
                 }
             }
         }

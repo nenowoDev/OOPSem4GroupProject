@@ -1,12 +1,14 @@
 package Utilities;
 
+import Actor.Lecturer;
+
 import java.util.Scanner;
 
 public class LecturerMenu {
     public static void lecturerMenu() {
         Scanner scanner = new Scanner(System.in);
         int n;
-
+        Lecturer lecturer=new Lecturer("S22EC1008","Hideo Nakamura");
         ClearScreen.clearScreen();
         System.out.println("******************************");
         System.out.println("            LECTURER");
@@ -23,16 +25,16 @@ public class LecturerMenu {
         n = scanner.nextInt();
         switch (n) {
             case 1:
-                // lecturerMenu();
+                lecturer.viewSubjectDetails();
                 break;
             case 2:
-                // lecturerMenu();
+                lecturer.chooseSubjectToTeach();
                 break;
             case 3:
-                // lecturerMenu();
+                lecturer.dropSubject();
                 break;
             case 4:
-                // lecturerMenu();
+                lecturer.subjectStudentList();
                 break;
             case 5:
                 MainMenu.menu();
