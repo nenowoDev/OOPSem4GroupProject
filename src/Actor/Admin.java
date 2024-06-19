@@ -12,8 +12,14 @@ import java.util.*;
 
 
 public class Admin extends Person {
-    private Vector<Subject> subjectsOffered;
+    private ArrayList<Subject> subjectsOffered;
     
+    
+    public Admin(String id, String name) {
+        super(id, name);
+    }
+
+
     //1. List Subjects
     public void listSubjects() {}
 
