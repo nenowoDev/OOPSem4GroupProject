@@ -264,15 +264,15 @@ public class Project {
                                 sc.nextLine();
                                 break;
                             case 2:
-                                //lecturerMenu();
+                                lect.chooseSubjectToTeach();
                                 sc.nextLine();
                                 break;
                             case 3:
-                                //lecturerMenu();
+                                lect.dropSubject();
                                 sc.nextLine();
                                 break;
                             case 4:
-                                //lecturerMenu();
+                                lect.subjectStudentList();
                                 sc.nextLine();
                                 break;
                             case 5:

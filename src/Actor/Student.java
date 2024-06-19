@@ -19,29 +19,44 @@ public class Student extends Person {
     private boolean flag;
 
     public Student(String id, String name) {
-        super(id, name);
-        LoadSubject();
 
+        super(id, name);
+
+    }
+
+    public Student() {
+        registeredSubjects = new ArrayList<>();
+
+        LoadSubject();
     }
 
     public void LoadSubject() {
         System.out.println("Loading subjects...");
-        String filePath = "src\\subjectList.txt";
+<<<<<<< Updated upstream
+        String filePath = "src/subjectList.csv";
+=======
+        String filePath = "src\\subjectList.csv";
+>>>>>>> Stashed changes
 
         try {
             Scanner readfile = new Scanner(new File(filePath));
             while (readfile.hasNextLine()) {
-                code = readfile.next();
-                creditHour = readfile.nextInt();
-                flag = readfile.nextBoolean();
-                name = readfile.nextLine().trim();
-                registeredSubjects.add(new Subject(code, name, flag, creditHour));
-                System.out.println("Loaded subject: " + code + " " + name + " " + creditHour + " " + flag);
-
+                String line = readfile.nextLine();
+                String[] parts = line.split(",");
+                if (parts.length == 4) {
+                    code = parts[0].trim();
+                    creditHour = Integer.parseInt(parts[1].trim());
+                    flag = Boolean.parseBoolean(parts[2].trim());
+                    name = parts[3].trim();
+                    registeredSubjects.add(new Subject(code, name, flag, creditHour));
+                    System.out.println("Loaded subject: " + code + " " + name + " " + creditHour + " " + flag);
+                } else {
+                    System.err.println("Invalid line format: " + line);
+                }
             }
             readfile.close();
         } catch (FileNotFoundException e) {
-            System.err.println("subjectList.txt not found!");
+            System.err.println("subjectList.csv not found!");
         }
 
     }
@@ -107,10 +122,12 @@ public class Student extends Person {
 
     // 2. Register Subject
     public void registerSubject() {
+        System.out.println("Register Subject");
     }
 
     // 3. Drop Subject
     public void dropSubject() {
+        System.out.println("dROP SUBJET");
     }
 
     // 4. List of Subjects
