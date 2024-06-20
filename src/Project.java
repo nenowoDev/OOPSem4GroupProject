@@ -207,7 +207,7 @@ public class Project {
         ArrayList<Lecturer> lecturer = readLecturer(inpFile);
         inpFile = new Scanner(new File("src/adminList.csv"));
         ArrayList<Admin> admin = readAdmin(inpFile);
-        
+
         Student stud;
         Lecturer lect;
         Admin adm;
@@ -227,19 +227,23 @@ public class Project {
                         sc.nextLine();
                         switch (n1) {
                             case 1:
-                                //studentMenu();
+                                // studentMenu();
+                                stud.searchSubject(sc);
                                 sc.nextLine();
                                 break;
                             case 2:
-                                //studentMenu();
+                                // studentMenu();
+                                stud.registerSubject("A22EC001");
                                 sc.nextLine();
                                 break;
                             case 3:
-                                //studentMenu();
+                                // studentMenu();
+                                stud.dropSubject();
                                 sc.nextLine();
                                 break;
                             case 4:
-                                //studentMenu();
+                                // studentMenu();
+                                stud.listSubjects();
                                 sc.nextLine();
                                 break;
                             case 5:

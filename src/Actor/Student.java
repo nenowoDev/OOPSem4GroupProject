@@ -2,6 +2,8 @@ package Actor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 // public class Student extends Person {
@@ -127,13 +129,38 @@ public class Student extends Person {
     }
 
     // 2. Register Subject
-    public void registerSubject() {
+    public void registerSubject(String studentID) {
         System.out.println("Register Subject");
+        System.out.println("Enter subject code to register: ");
+        Scanner sc = new Scanner(System.in);
+        String code = sc.nextLine().trim();
+        boolean subjectFound = false;
+
+        for (Subject subject : registeredSubjects) {
+            if (subject.getCode().equalsIgnoreCase(code)) {
+                subjectFound = true;
+                try (FileWriter writer = new FileWriter("src/Registering.csv", true)) {
+                    writer.append(studentID).append(",")
+                            .append("FALSE").append(",")
+                            .append(code).append(",").append(subject.getName()).append("\n");
+                    System.out.println("Subject registered successfully: " + code);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("Error writing to file.");
+                }
+                break;
+            }
+        }
+
+        if (!subjectFound) {
+            System.out.println("Subject not found.");
+        }
+
     }
 
     // 3. Drop Subject
     public void dropSubject() {
-        System.out.println("dROP SUBJET");
+        System.out.println("drop Subject");
     }
 
     // 4. List of Subjects
@@ -144,6 +171,11 @@ public class Student extends Person {
             System.out.println(registeredSubjects.get(i).getCode() + "  " + registeredSubjects.get(i).getCreditHour()
                     + "  " + registeredSubjects.get(i).getName());
         }
+    }
+
+    // just planning to add this one, if i have time
+    public void ListStudentSubjects() {
+        System.out.println("Display your subject :");
     }
 
 }
