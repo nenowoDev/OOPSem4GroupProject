@@ -219,7 +219,7 @@ public class Project {
         do {
             menu();
             choice = sc.nextInt();
-            sc.nextLine();
+            // sc.nextLine();
             switch (choice) {
                 case 1:
                     stud = studentLoginCheck(student);
@@ -297,7 +297,7 @@ public class Project {
                     break;
                 case 3:
                     adm = adminLoginCheck(admin);
-                    sc.nextLine();
+                    // sc.nextLine();
                     int n3;
                     do {
                         adminMenu();
@@ -321,7 +321,7 @@ public class Project {
                                 sc.nextLine();
                                 break;
                             case 5:
-                                // adminMenu();
+                                adm.confirmCourseRegistrations();
                                 sc.nextLine();
                                 break;
                             case 6:

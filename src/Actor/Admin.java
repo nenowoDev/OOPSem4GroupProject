@@ -16,20 +16,17 @@ import javax.xml.validation.Schema;
 
 
 public class Admin extends Person {
-    private ArrayList<Subject> subjectList;
-    private ArrayList<Student> studentsList;
-    private ArrayList<Lecturer> lecturerList;
+    private static ArrayList<Subject> subjectList;
+    private static ArrayList<Student> studentsList;
+    private static ArrayList<Lecturer> lecturerList;
 
-    private HashMap<String,Subject> subjectHashMap;
-    private HashMap<String,Student> studentHashMap;
-    private HashMap<String,Lecturer> lecturerHashMap;
+    private static HashMap<String,Subject> subjectHashMap;
+    private static HashMap<String,Student> studentHashMap;
+    private static HashMap<String,Lecturer> lecturerHashMap;
 
-    private HashMap<Student,Subject> studentRegisterSubjectHashMap;
+    private static HashMap<Student,Subject> studentRegisterSubjectHashMap;
     
-    
-    
-    public Admin(String id, String name) {
-        super(id, name);
+    static{
         subjectList=new ArrayList<Subject>();
         studentsList=new ArrayList<Student>();
         lecturerList=new ArrayList<Lecturer>();
@@ -39,7 +36,6 @@ public class Admin extends Person {
         lecturerHashMap=new HashMap<String,Lecturer>();
 
         studentRegisterSubjectHashMap=new HashMap<Student,Subject>();
-        
         try {
             readStudentList();
             readLecturerList();
@@ -49,9 +45,18 @@ public class Admin extends Person {
             studentArrListToHashMap();
             lecturerArrListToHashMap();
 
+            readStudentRegSubject();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public Admin(String id, String name) {
+        super(id, name);
+        
+        
+        
     }
 
 
@@ -84,9 +89,11 @@ public class Admin extends Person {
         
         System.out.print("\n\n\t\tENTER Matriks NO : ");
         Scanner sc=new Scanner(System.in);
+        int wait=sc.nextInt();
         
-        sc.close();
+
         
+        //DO NOT CLOSE SCANNER BROSKI
         
     }
 
@@ -136,19 +143,19 @@ public class Admin extends Person {
 
 
 
-    private void readStudentList() throws IOException{
+    private static void readStudentList() throws IOException{
         Scanner inpFile = new Scanner(new File("src/studentList.csv"));
         inpFile.useDelimiter(",|\\n");
         while (inpFile.hasNext()) {
             String matrikxno = inpFile.next();
             String name = inpFile.nextLine();
             name = name.substring(1);
-            Student student = new Student(name, matrikxno);
+            Student student = new Student(matrikxno, name);
             studentsList.add(student);
         }
         inpFile.close();
     }
-    private void readLecturerList() throws IOException{
+    private static void readLecturerList() throws IOException{
         Scanner inpFile = new Scanner(new File("src/lecturerList.csv"));
         inpFile.useDelimiter(",|\\n");
         while (inpFile.hasNext()) {
@@ -160,7 +167,7 @@ public class Admin extends Person {
         }
         inpFile.close();
     }
-    private void readSubjectList() throws IOException{
+    private static void readSubjectList() throws IOException{
         Scanner inpFile = new Scanner(new File("src/subjectList.csv"));
         inpFile.useDelimiter(",|\\n");
         while (inpFile.hasNext()) {
@@ -175,30 +182,32 @@ public class Admin extends Person {
         inpFile.close();
     }
 
-    private void subjectArrListToHashMap(){
+    private static void subjectArrListToHashMap(){
         for(Subject s:subjectList){
             subjectHashMap.put(s.getCode(), s);
         }
     }
-    private void studentArrListToHashMap(){
+    private static void studentArrListToHashMap(){
         for(Student s:studentsList){
             studentHashMap.put(s.getId(),s);
         }
     }
-    private void lecturerArrListToHashMap(){
+    private static void lecturerArrListToHashMap(){
         for(Lecturer l:lecturerList){
             lecturerHashMap.put(l.getId(), l);
         }
     }
 
-    public void readStudentRegSubject() throws IOException{
-        Scanner inpFile = new Scanner(new File("src/readStudentRegisterSubject.csv"));
+    private static void readStudentRegSubject() throws IOException{
+        Scanner inpFile = new Scanner(new File("src/studentRegisterSubject.csv"));
         inpFile.useDelimiter(",|\\n");
         while (inpFile.hasNext()) {
             String matriksNo = inpFile.next();
             String subjectCode = inpFile.nextLine();
-            
-            studentRegisterSubjectHashMap.put(studentHashMap.get(matriksNo), subjectHashMap.get(subjectCode));
+            Student tempStud=studentHashMap.get(matriksNo);
+            Subject tempSubject=subjectHashMap.get(subjectCode);
+
+            studentRegisterSubjectHashMap.put(tempStud,tempSubject );
             
             
         }
