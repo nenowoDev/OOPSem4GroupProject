@@ -121,10 +121,9 @@ public class Student extends Person {
         for (Subject subject : registeredSubjects) {
             if (subject.getCode().equalsIgnoreCase(code)) {
                 subjectFound = true;
-                try (FileWriter writer = new FileWriter("src/Registering.csv", true)) {
-                    writer.append(studentID).append(",")
-                            .append("FALSE").append(",")
-                            .append(code).append(",").append(subject.getName()).append("\n");
+                try (FileWriter writer = new FileWriter("src/studentRegisterSubject.csv", true)) {
+                    writer.append(studentID).append(", ")
+                            .append(code).append("\n");
                     System.out.println("Subject registered successfully: " + code);
                 } catch (IOException e) {
                     e.printStackTrace();
