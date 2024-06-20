@@ -95,7 +95,7 @@ public class Lecturer extends Person {
         System.out.println("------------------------");
 
         // Display all available subjects
-        System.out.println("Available Subjects:\n");
+        System.out.println("Available Subjects:");
         try (Scanner inpFile = new Scanner(new File(SUBJECT_LIST_PATH))) {
             int index = 1;
             while (inpFile.hasNextLine()) {
@@ -115,7 +115,7 @@ public class Lecturer extends Person {
 
         // Prompt lecturer to enter subject code to choose
         Scanner sc = new Scanner(System.in);
-        System.out.print("\nEnter the number of the subject you want to teach: ");
+        System.out.print("Enter the number of the subject you want to teach: ");
         int choice;
         while (!sc.hasNextInt()) {
             System.out.print("Invalid input. Please enter a valid number: ");
@@ -393,11 +393,7 @@ public class Lecturer extends Person {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("File not found: " + STUDENT_LIST_PATH);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error reading from file.");
-        }
-        return studentMap;
+        } return studentMap;
     }
 
     /**
@@ -420,9 +416,6 @@ public class Lecturer extends Person {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("File not found: src/lecturerList.csv");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error reading from file.");
         }
 
         // Create lecturers from the map
