@@ -78,7 +78,7 @@ public class Admin extends Person {
 
 
     // TODO 5. Confirm Course Registrations
-    // TODO - rewrite/delete sucessful registeration
+    // - rewrite/delete sucessful registeration
     // TODO - append successful reg into file
 
 
@@ -137,7 +137,7 @@ public class Admin extends Person {
                 System.out.println("\tPlease Try again . . . ");
         }
 
-        //ADD 
+        //TODO ADD TO studentsubject 
 
         //REMOVE IT 
         studentRegisterSubjectHashMap.get(studentHashMap.get(tempMatriksNo)).remove(subjectHashMap.get(tempSubjectCode));
