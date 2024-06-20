@@ -21,49 +21,57 @@ public class Student extends Person {
     public Student(String id, String name) {
 
         super(id, name);
+        registeredSubjects = new ArrayList<>();
+        try {
+            Scanner inpFile = new Scanner(new File("src/subjectList.csv"));
+            registeredSubjects = readSubjects(inpFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("File not found!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error");
+        }
 
     }
 
     public Student() {
         registeredSubjects = new ArrayList<>();
-
-        LoadSubject();
-    }
-
-    public void LoadSubject() {
-        System.out.println("Loading subjects...");
-<<<<<<< Updated upstream
-        String filePath = "src/subjectList.csv";
-=======
-        String filePath = "src\\subjectList.csv";
->>>>>>> Stashed changes
-
         try {
-            Scanner readfile = new Scanner(new File(filePath));
-            while (readfile.hasNextLine()) {
-                String line = readfile.nextLine();
-                String[] parts = line.split(",");
-                if (parts.length == 4) {
-                    code = parts[0].trim();
-                    creditHour = Integer.parseInt(parts[1].trim());
-                    flag = Boolean.parseBoolean(parts[2].trim());
-                    name = parts[3].trim();
-                    registeredSubjects.add(new Subject(code, name, flag, creditHour));
-                    System.out.println("Loaded subject: " + code + " " + name + " " + creditHour + " " + flag);
-                } else {
-                    System.err.println("Invalid line format: " + line);
-                }
-            }
-            readfile.close();
+            Scanner inpFile = new Scanner(new File("src/subjectList.csv"));
+            registeredSubjects = readSubjects(inpFile);
         } catch (FileNotFoundException e) {
-            System.err.println("subjectList.csv not found!");
+            e.printStackTrace();
+            System.out.println("File not found!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error");
         }
 
     }
 
+    public ArrayList<Subject> readSubjects(Scanner inpFile) {
+        ArrayList<Subject> subjects = new ArrayList<>();
+        while (inpFile.hasNextLine()) {
+            String line = inpFile.nextLine();
+            String[] parts = line.split(",");
+            if (parts.length == 4) {
+                String code = parts[0];
+                int creditHour = Integer.parseInt(parts[1]);
+                boolean flag = Boolean.parseBoolean(parts[2]);
+                String name = parts[3];
+                subjects.add(new Subject(code, name, flag, creditHour));
+            } else {
+                System.out.println("Invalid data format: " + line);
+            }
+        }
+        inpFile.close();
+        return subjects;
+    }
+
     // 1. Search subject
-    public void searchSubject() {
-        Scanner sc = new Scanner(System.in);
+    public void searchSubject(Scanner sc) {
+
         int searchNo;
         do {
 
@@ -79,7 +87,7 @@ public class Student extends Person {
 
             searchNo = sc.nextInt();
             sc.nextLine();
-        } while (searchNo > 3);
+        } while (searchNo > 3 || searchNo < 1);
         System.out.println("you click " + searchNo);
         switch (searchNo) {
             case 1:
@@ -115,8 +123,6 @@ public class Student extends Person {
             default:
                 System.out.println("Invalid option.");
         }
-
-        sc.close();
 
     }
 
