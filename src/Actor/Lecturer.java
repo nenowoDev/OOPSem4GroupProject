@@ -77,7 +77,7 @@ public class Lecturer extends Person {
             e.printStackTrace();
             System.out.println("File not found: " + SUBJECT_LIST_PATH);
         }
-        System.out.println("Press 0 to return to menu.");
+        System.out.print("Press 0 to return to menu: ");
         Scanner scanner = new Scanner(System.in);
         while (!scanner.hasNextInt() || scanner.nextInt() != 0) {
             System.out.println("Invalid input. Please press 0 to return to menu.");
@@ -115,10 +115,11 @@ public class Lecturer extends Person {
 
         // Prompt lecturer to enter subject code to choose
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the number of the subject you want to teach: ");
+        System.out.print("Enter the number of the subject you want to teach: ");
         int choice;
         while (!sc.hasNextInt()) {
             System.out.println("Invalid input. Please enter a valid number.");
+            System.out.print("Enter the number of the subject you want to teach: ");
             sc.next(); // Consume the invalid input
         }
         choice = sc.nextInt();
@@ -134,6 +135,28 @@ public class Lecturer extends Person {
                     subjectFound = true;
                     String code = parts[0].trim();
                     String name = parts[3].trim();
+
+                    // Check if the subject is already added
+                    boolean isSubjectAlreadyAdded = false;
+                    try (Scanner checkFile = new Scanner(new File(LECTURER_TAKE_SUBJECT_PATH))) {
+                        while (checkFile.hasNextLine()) {
+                            String checkLine = checkFile.nextLine();
+                            String[] checkParts = checkLine.split(",");
+                            if (checkParts.length >= 2 && checkParts[1].trim().equals(code)) {
+                                isSubjectAlreadyAdded = true;
+                                break;
+                            }
+                        }
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        System.out.println("File not found: " + LECTURER_TAKE_SUBJECT_PATH);
+                    }
+
+                    if (isSubjectAlreadyAdded) {
+                        System.out.println("This subject is already added. No duplicates allowed.");
+                        return;
+                    }
+
                     // Write to lecturerTakeSubjectToTeach.csv if the subject is found
                     try (FileWriter writer = new FileWriter(LECTURER_TAKE_SUBJECT_PATH, true)) {
                         writer.append(super.getId()).append(",")
@@ -156,7 +179,7 @@ public class Lecturer extends Person {
             e.printStackTrace();
             System.out.println("File not found: " + SUBJECT_LIST_PATH);
         }
-        System.out.println("Press 0 to return to menu.");
+        System.out.print("Press 0 to return to menu: ");
         while (!sc.hasNextInt() || sc.nextInt() != 0) {
             System.out.println("Invalid input. Please press 0 to return to menu.");
             sc.nextLine(); // Consume the invalid input
@@ -177,10 +200,11 @@ public class Lecturer extends Person {
 
         // Prompt lecturer to enter subject number to drop
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the number of the subject you want to drop: ");
+        System.out.print("Enter the number of the subject you want to drop: ");
         int choice;
         while (!sc.hasNextInt()) {
             System.out.println("Invalid input. Please enter a valid number.");
+            System.out.print("Enter the number of the subject you want to drop: ");
             sc.next(); // Consume the invalid input
         }
         choice = sc.nextInt();
@@ -227,7 +251,7 @@ public class Lecturer extends Person {
         } else {
             System.out.println("Error replacing the file.");
         }
-        System.out.println("Press 0 to return to menu.");
+        System.out.print("Press 0 to return to menu: ");
         while (!sc.hasNextInt() || sc.nextInt() != 0) {
             System.out.println("Invalid input. Please press 0 to return to menu.");
             sc.nextLine(); // Consume the invalid input
@@ -245,6 +269,7 @@ public class Lecturer extends Person {
         int number;
         while (!sc.hasNextInt()) {
             System.out.println("Invalid input. Please enter a valid number.");
+            System.out.print("Enter number of subject for which you want to show registered students: ");
             sc.next(); // Consume the invalid input
         }
         number = sc.nextInt();
@@ -256,7 +281,7 @@ public class Lecturer extends Person {
             displayStudentCount(subjectsToTeach.get(number - 1).getCode()); // Display students registered for the selected subject
         }
 
-        System.out.println("Press 0 to return to menu.");
+        System.out.print("Press 0 to return to menu: ");
         while (!sc.hasNextInt() || sc.nextInt() != 0) {
             System.out.println("Invalid input. Please press 0 to return to menu.");
             sc.nextLine(); // Consume the invalid input
@@ -372,4 +397,3 @@ public class Lecturer extends Person {
         }
     }
 }
-
