@@ -77,11 +77,7 @@ public class Admin extends Person {
     public void dropSubjectCourse() {}
 
 
-    // TODO 5. Confirm Course Registrations
-    // - rewrite/delete sucessful registeration
-    // TODO - append successful reg into file
-
-
+    // 5. Confirm Course Registrations
     public void confirmCourseRegistrations() {
         System.out.println("***********************************************************************");
         System.out.println("                    CONFIRM COURSE REGISTRATION");
@@ -137,11 +133,17 @@ public class Admin extends Person {
                 System.out.println("\tPlease Try again . . . ");
         }
 
-        //TODO ADD TO studentsubject 
+        // Add the course to the student's registered course
+        try (FileWriter writer = new FileWriter("src/studentTakeSubject.csv",true)) {
+            writer.write(tempMatriksNo+", "+tempSubjectCode+"\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        //REMOVE IT 
+        //Remove the course from studentRegister hashmap
         studentRegisterSubjectHashMap.get(studentHashMap.get(tempMatriksNo)).remove(subjectHashMap.get(tempSubjectCode));
         
+        //Rewrite/remove the course from studentRegisterSubject.csv
         try (FileWriter writer = new FileWriter("src/studentRegisterSubject.csv")) {
             for (Map.Entry<Student, ArrayList<Subject>> entry : studentRegisterSubjectHashMap.entrySet()) {
                 
