@@ -38,7 +38,8 @@ public class Project {
         System.out.println("  2. Register Subject");
         System.out.println("  3. Drop Subject");
         System.out.println("  4. List of Subjects");
-        System.out.println("  5. Back to Main Menu\n");
+        System.out.println("  5. Display your Registered Subject");
+        System.out.println("  6. Back to Main Menu\n");
         System.out.print("   ENTER YOUR OPTION -> ");
     }
 
@@ -250,12 +251,16 @@ public class Project {
                                 sc.nextLine();
                                 break;
                             case 5:
+                                stud.listStudentSubjects(studentID_Entered);
+                                sc.nextLine();
+                                break;
+                            case 6:
                                 break;
                             default:
                                 System.out.println("\n\n\tWRONG OPTION!\n\n");
                                 sc.nextLine();
                         }
-                    } while (!(n1 == 5));
+                    } while (!(n1 == 6));
                     break;
                 case 2:
                     lect = lecturerLoginCheck(lecturer);

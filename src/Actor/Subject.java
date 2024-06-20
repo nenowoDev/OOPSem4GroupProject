@@ -1,4 +1,5 @@
 package Actor;
+
 import java.util.*;
 import java.io.*;
 
@@ -16,12 +17,14 @@ public class Subject {
     private String name;
     private int creditHour;
     private boolean flag;
-    //private ArrayList<Subject> subjectList;
+    // private ArrayList<Subject> subjectList;
     // private ArrayList<Student>registeredStudents;
     // private Lecturer lecturer;
     // boolean confirm;
 
     // Constructor, getters, setters, etc.
+    public Subject() {
+    }
 
     public Subject(String code, String name, boolean flag, int creditHour) {
         this.code = code;
@@ -47,24 +50,26 @@ public class Subject {
     }
 
     public void setFlag(boolean flag) {
-        this.flag=flag;
+        this.flag = flag;
     }
 
-    public void readFile() throws IOException {
-        ArrayList<Subject> subjectList = new ArrayList<>();
-        Scanner inpFile = new Scanner(new File("subjectList.csv"));
-        inpFile.useDelimiter(",|\\n");
-        while (inpFile.hasNext()) {
-            String code = inpFile.next();
-            int creditHour = inpFile.nextInt();
-            boolean flag = inpFile.nextBoolean();
-            String name = inpFile.nextLine();
-            name = name.substring(1);
-
-            Subject subject = new Subject(code, name, flag, creditHour);
-            subjectList.add(subject);
+    public ArrayList<Subject> readSubjects(Scanner inpFile) {
+        ArrayList<Subject> subjects = new ArrayList<>();
+        while (inpFile.hasNextLine()) {
+            String line = inpFile.nextLine();
+            String[] parts = line.split(",");
+            if (parts.length == 4) {
+                String code = parts[0];
+                int creditHour = Integer.parseInt(parts[1]);
+                boolean flag = Boolean.parseBoolean(parts[2]);
+                String name = parts[3];
+                subjects.add(new Subject(code, name, flag, creditHour));
+            } else {
+                System.out.println("Invalid data format: " + line);
+            }
         }
         inpFile.close();
+        return subjects;
     }
 
     public void display() {
@@ -75,7 +80,7 @@ public class Subject {
         System.out.println("                          LIST OF COURSES");
         System.out.println("***********************************************************************\n");
         System.out.printf("%-12s%-32s%5s\n", "\tCODE", "COURSE NAME", "CREDIT HOUR");
-        System.out.printf("%-12s%-32s%5s\n", "\t--------","-----------------------------", "-----------");
+        System.out.printf("%-12s%-32s%5s\n", "\t--------", "-----------------------------", "-----------");
         for (Subject s : subjectList) {
             System.out.printf("\t%-11s%-33s%5d\n", s.getCode(), s.getName(), s.getCreditHour());
         }

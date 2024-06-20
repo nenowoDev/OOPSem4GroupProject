@@ -18,6 +18,7 @@ import java.util.*;
 
 public class Student extends Person {
     private ArrayList<Subject> registeredSubjects;
+    private Subject subject = new Subject();
     private String name, code;
     private int creditHour;
     private boolean flag;
@@ -25,52 +26,25 @@ public class Student extends Person {
     public Student(String id, String name) {
 
         super(id, name);
-        registeredSubjects = new ArrayList<>();
         try {
             Scanner inpFile = new Scanner(new File("src/subjectList.csv"));
-            registeredSubjects = readSubjects(inpFile);
+            registeredSubjects = subject.readSubjects(inpFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("File not found!");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error");
         }
 
-    }
+        // try {
+        // Scanner inpFile = new Scanner(new File("src/subjectList.csv"));
+        // registeredSubjects = readSubjects(inpFile);
+        // } catch (FileNotFoundException e) {
+        // e.printStackTrace();
+        // System.out.println("File not found!");
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // System.out.println("Error");
+        // }
 
-    public Student() {
-        registeredSubjects = new ArrayList<>();
-        try {
-            Scanner inpFile = new Scanner(new File("src/subjectList.csv"));
-            registeredSubjects = readSubjects(inpFile);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("File not found!");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error");
-        }
-
-    }
-
-    public ArrayList<Subject> readSubjects(Scanner inpFile) {
-        ArrayList<Subject> subjects = new ArrayList<>();
-        while (inpFile.hasNextLine()) {
-            String line = inpFile.nextLine();
-            String[] parts = line.split(",");
-            if (parts.length == 4) {
-                String code = parts[0];
-                int creditHour = Integer.parseInt(parts[1]);
-                boolean flag = Boolean.parseBoolean(parts[2]);
-                String name = parts[3];
-                subjects.add(new Subject(code, name, flag, creditHour));
-            } else {
-                System.out.println("Invalid data format: " + line);
-            }
-        }
-        inpFile.close();
-        return subjects;
     }
 
     // 1. Search subject
@@ -101,6 +75,8 @@ public class Student extends Person {
                     if (subject.getName().equalsIgnoreCase(nameSearch)) {
                         System.out
                                 .println(subject.getCode() + "  " + subject.getCreditHour() + "  " + subject.getName());
+                    } else {
+                        System.out.println("Subject not found");
                     }
                 }
                 break;
@@ -111,6 +87,8 @@ public class Student extends Person {
                     if (subject.getCode().equalsIgnoreCase(codeSearch)) {
                         System.out
                                 .println(subject.getCode() + "  " + subject.getCreditHour() + "  " + subject.getName());
+                    } else {
+                        System.out.println("Subject not found");
                     }
                 }
                 break;
@@ -121,6 +99,8 @@ public class Student extends Person {
                     if (subject.getCreditHour() == creditHourSearch) {
                         System.out
                                 .println(subject.getCode() + "  " + subject.getCreditHour() + "  " + subject.getName());
+                    } else {
+                        System.out.println("Subject not found");
                     }
                 }
                 break;
@@ -223,8 +203,47 @@ public class Student extends Person {
     }
 
     // just planning to add this one, if i have time
-    public void ListStudentSubjects() {
-        System.out.println("Display your subject :");
+    // 5. List of Student's Subjects
+    public void listStudentSubjects(String studentID) {
+        System.out.println("Display your subjects:");
+        try {
+            Scanner inpFile = new Scanner(new File("src/studentSubject.csv"));
+            boolean studentFound = false;
+
+            while (inpFile.hasNextLine()) {
+                String line = inpFile.nextLine();
+                String[] parts = line.split(",");
+                if (parts[0].equals(studentID)) {
+                    studentFound = true;
+                    for (int i = 2; i < parts.length; i++) {
+                        boolean subjectFound = false;
+                        for (Subject subject : registeredSubjects) {
+                            if (subject.getCode().equalsIgnoreCase(parts[i])) {
+                                System.out.println(
+                                        subject.getCode() + "  " + subject.getCreditHour() + "  " + subject.getName());
+                                subjectFound = true;
+                                break;
+                            }
+                        }
+                        if (!subjectFound) {
+                            System.out.println("Subject not found: " + parts[i]);
+                        }
+                    }
+                }
+            }
+
+            if (!studentFound) {
+                System.out.println("Student ID not found: " + studentID);
+            }
+
+            inpFile.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: src/studentSubject.csv");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
 }
