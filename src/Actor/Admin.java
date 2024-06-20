@@ -1,5 +1,6 @@
 package Actor;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -76,7 +77,7 @@ public class Admin extends Person {
     public void dropSubjectCourse() {}
 
 
-    // TODO 5. Confirm Course Registrations
+    // 5. Confirm Course Registrations
     public void confirmCourseRegistrations() {
         System.out.println("***********************************************************************");
         System.out.println("                    CONFIRM COURSE REGISTRATION");
@@ -97,6 +98,10 @@ public class Admin extends Person {
             if(studentRegisterSubjectHashMap.get(studentHashMap.get(tempMatriksNo))!=null){
                 correct=true;
             }
+            if(!correct){
+                System.out.println("\n\n\tNo such student register any subject ! ! !");
+                System.out.println("\tPlease Try again . . . ");
+            }
         }
         
             
@@ -111,6 +116,43 @@ public class Admin extends Person {
             if(entry.getKey().getId().equals(tempMatriksNo))
                 for(Subject s:entry.getValue()) 
                     System.out.printf("\t%-20s\t%-32s\n",entry.getKey().getId() , s.getCode());
+        }
+
+        String tempSubjectCode="";
+        correct=false;
+        while(!correct){
+            System.out.print("\n\n\t\tENTER Subject Code : ");
+            Scanner sc=new Scanner(System.in);
+            tempSubjectCode=sc.nextLine();
+            for(Subject s:studentRegisterSubjectHashMap.get(studentHashMap.get(tempMatriksNo))){
+                if(s.getCode().equals(tempSubjectCode))
+                    correct=true;
+            }
+            if(!correct)
+                System.out.println("\n\n\tThe Student did not register that subject ! ! !");
+                System.out.println("\tPlease Try again . . . ");
+        }
+
+        // Add the course to the student's registered course
+        try (FileWriter writer = new FileWriter("src/studentTakeSubject.csv",true)) {
+            writer.write(tempMatriksNo+", "+tempSubjectCode+"\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Remove the course from studentRegister hashmap
+        studentRegisterSubjectHashMap.get(studentHashMap.get(tempMatriksNo)).remove(subjectHashMap.get(tempSubjectCode));
+        
+        //Rewrite/remove the course from studentRegisterSubject.csv
+        try (FileWriter writer = new FileWriter("src/studentRegisterSubject.csv")) {
+            for (Map.Entry<Student, ArrayList<Subject>> entry : studentRegisterSubjectHashMap.entrySet()) {
+                
+                for(Subject s:entry.getValue()){
+                    writer.write(entry.getKey().getId()+", "+s.getCode()+"\n");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         
@@ -226,15 +268,24 @@ public class Admin extends Person {
             String matriksNo = inpFile.next();
             String subjectCode = inpFile.nextLine();
             subjectCode=subjectCode.substring(2);
+
             Student tempStud=studentHashMap.get(matriksNo);
             Subject tempSubject=subjectHashMap.get(subjectCode);
+
             if(studentRegisterSubjectHashMap.get(tempStud)==null){
                 ArrayList<Subject> subjectToRegister=new ArrayList<>();
                 subjectToRegister.add(tempSubject);
                 studentRegisterSubjectHashMap.put(tempStud,subjectToRegister);
             }
-            else
-                studentRegisterSubjectHashMap.get(tempStud).add(tempSubject); 
+            else{
+                boolean exist=false;
+                for(Subject s:studentRegisterSubjectHashMap.get(tempStud)){
+                    if(s.equals(tempSubject))
+                        exist=true;
+                }
+                if(!exist)
+                    studentRegisterSubjectHashMap.get(tempStud).add(tempSubject); 
+            }
             
         }
         inpFile.close();
