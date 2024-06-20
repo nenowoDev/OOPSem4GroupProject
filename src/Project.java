@@ -3,6 +3,8 @@ import java.io.*;
 import java.util.*;
 
 public class Project {
+    private static String studentID_Entered;
+
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -101,6 +103,7 @@ public class Project {
             System.out.println("******************************\n\n");
             System.out.print("      Enter ID: ");
             String id = sc.nextLine();
+            studentID_Entered = id;
             for (Student p : per) {
                 if (p.getId().equals(id)) {
                     System.out.println("\n\n    Welcome, " + p.getName());
@@ -233,12 +236,12 @@ public class Project {
                                 break;
                             case 2:
                                 // studentMenu();
-                                stud.registerSubject("A22EC001");
+                                stud.registerSubject(studentID_Entered);
                                 sc.nextLine();
                                 break;
                             case 3:
                                 // studentMenu();
-                                stud.dropSubject();
+                                stud.dropSubject(studentID_Entered);
                                 sc.nextLine();
                                 break;
                             case 4:

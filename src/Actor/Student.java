@@ -2,6 +2,8 @@ package Actor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -159,8 +161,55 @@ public class Student extends Person {
     }
 
     // 3. Drop Subject
-    public void dropSubject() {
-        System.out.println("drop Subject");
+    public void dropSubject(String studentID) {
+        System.out.println("Drop Subject");
+        System.out.println("Enter subject code to drop: ");
+        Scanner sc = new Scanner(System.in);
+        String code = sc.nextLine().trim();
+
+        boolean subjectFound = false;
+
+        // Read studentSubject.csv to check Whether the subject is registered
+        try (BufferedReader br = new BufferedReader(new FileReader("src/studentSubject.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts[0].equals(studentID)) {
+                    for (int i = 2; i < parts.length; i++) {
+                        if (parts[i].equalsIgnoreCase(code)) {
+                            subjectFound = true;
+                            // Get subject name from registeredSubjects list
+                            String subjectName = registeredSubjects.stream()
+                                    .filter(subject -> subject.getCode().equalsIgnoreCase(code))
+                                    .map(Subject::getName)
+                                    .findFirst()
+                                    .orElse("Unknown Subject");
+
+                            // Write to DroppingSubject.csv
+                            try (FileWriter writer = new FileWriter("src/DroppingSubject.csv", true)) {
+                                writer.append(studentID).append(",")
+                                        .append("FALSE").append(",")
+                                        .append(code).append(",").append(subjectName).append("\n");
+                                System.out.println("Subject drop requested: " + code);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                System.out.println("Error writing to file.");
+                            }
+                            break;
+                        }
+                    }
+                }
+                if (subjectFound)
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error reading from file.");
+        }
+
+        if (!subjectFound) {
+            System.out.println("Subject not found in your registered subjects.");
+        }
     }
 
     // 4. List of Subjects
