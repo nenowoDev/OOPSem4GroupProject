@@ -14,6 +14,7 @@ public class Lecturer extends Person {
     private static final String LECTURER_TAKE_SUBJECT_PATH = "src/lecturerTakeSubjectToTeach.csv";
     private static final String STUDENT_LIST_PATH = "src/studentList.csv";
     private static final String STUDENT_SUBJECT_PATH = "src/studentSubject.csv";
+    private static final String LECTURER_LIST_PATH = "src/lecturerList.csv";
 
     /**
      * Initializes a new Lecturer with the given ID and name.
@@ -78,10 +79,11 @@ public class Lecturer extends Person {
             System.out.println("File not found: " + SUBJECT_LIST_PATH);
         }
         System.out.println("Press 0 to return to menu.");
-        Scanner scanner = new Scanner(System.in);
-        while (!scanner.hasNextInt() || scanner.nextInt() != 0) {
-            System.out.println("Invalid input. Please press 0 to return to menu.");
-            scanner.nextLine(); // Consume the invalid input
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (!scanner.hasNextInt() || scanner.nextInt() != 0) {
+                System.out.println("Invalid input. Please press 0 to return to menu.");
+                scanner.nextLine(); // Consume the invalid input
+            }
         }
     }
 
@@ -96,12 +98,14 @@ public class Lecturer extends Person {
 
         // Display all available subjects
         System.out.println("Available Subjects:");
+        List<String[]> subjects = new ArrayList<>();
         try (Scanner inpFile = new Scanner(new File(SUBJECT_LIST_PATH))) {
             int index = 1;
             while (inpFile.hasNextLine()) {
                 String line = inpFile.nextLine();
                 String[] parts = line.split(",");
                 if (parts.length == 4) {
+                    subjects.add(parts);
                     String code = parts[0];
                     String name = parts[3];
                     System.out.println(index + ". Code: " + code + ", Name: " + name);
@@ -124,38 +128,40 @@ public class Lecturer extends Person {
         choice = sc.nextInt();
         sc.nextLine(); // Consume newline
 
-        try (Scanner inpFile = new Scanner(new File(SUBJECT_LIST_PATH))) {
-            int index = 1;
-            boolean subjectFound = false;
-            while (inpFile.hasNextLine()) {
-                String line = inpFile.nextLine();
-                String[] parts = line.split(",");
-                if (parts.length == 4 && index == choice) {
-                    subjectFound = true;
-                    String code = parts[0];
-                    String name = parts[3];
-                    // Write to lecturerTakeSubjectToTeach.csv if the subject is found
-                    try (FileWriter writer = new FileWriter(LECTURER_TAKE_SUBJECT_PATH, true)) {
-                        writer.append(super.getId()).append(",")
-                              .append(code).append(",").append(name).append("\n");
-                        System.out.println("Subject chosen successfully: " + code + " - " + name);
-                        // Add the subject to the local list
-                        subjectsToTeach.add(new Subject(code, name, false, Integer.parseInt(parts[1])));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        System.out.println("Error writing to file.");
-                    }
-                    break;
-                }
-                index++;
-            }
-            if (!subjectFound) {
-                System.out.println("Invalid choice. Subject not found.");
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("File not found: " + SUBJECT_LIST_PATH);
+        if (choice <= 0 || choice > subjects.size()) {
+            System.out.println("Invalid choice.");
+            return;
         }
+
+        String[] selectedSubject = subjects.get(choice - 1);
+        String code = selectedSubject[0];
+        String name = selectedSubject[3];
+
+        // Check if the subject is already being taught by this lecturer
+        for (Subject subject : subjectsToTeach) {
+            if (subject.getCode().equalsIgnoreCase(code)) {
+                System.out.println("You are already teaching this subject: " + code + " - " + name);
+                System.out.println("Press 0 to return to menu.");
+                while (!sc.hasNextInt() || sc.nextInt() != 0) {
+                    System.out.println("Invalid input. Please press 0 to return to menu.");
+                    sc.nextLine(); // Consume the invalid input
+                }
+                return;
+            }
+        }
+
+        // Write to lecturerTakeSubjectToTeach.csv if the subject is not already being taught
+        try (FileWriter writer = new FileWriter(LECTURER_TAKE_SUBJECT_PATH, true)) {
+            writer.append(super.getId()).append(",")
+                  .append(code).append(",").append(name).append("\n");
+            System.out.println("Subject chosen successfully: " + code + " - " + name);
+            // Add the subject to the local list
+            subjectsToTeach.add(new Subject(code, name, false, Integer.parseInt(selectedSubject[1])));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error writing to file.");
+        }
+
         System.out.println("Press 0 to return to menu.");
         while (!sc.hasNextInt() || sc.nextInt() != 0) {
             System.out.println("Invalid input. Please press 0 to return to menu.");
@@ -203,7 +209,7 @@ public class Lecturer extends Person {
                 String[] parts = line.split(",");
                 if (parts[0].equals(super.getId()) && parts[1].equalsIgnoreCase(code)) {
                     subjectFound = true;
-                    System.out.println("Subject drop requested: " + code);
+                    System.out.println("Dropping subject: " + code);
                 } else {
                     writer.write(line + "\n");
                 }
@@ -224,10 +230,11 @@ public class Lecturer extends Person {
         } else {
             System.out.println("Error replacing the file.");
         }
+
         System.out.println("Press 0 to return to menu.");
         while (!sc.hasNextInt() || sc.nextInt() != 0) {
             System.out.println("Invalid input. Please press 0 to return to menu.");
-            sc.nextLine(); // Consume the invalid input
+            sc.            nextLine(); // Consume the invalid input
         }
     }
 
@@ -336,11 +343,37 @@ public class Lecturer extends Person {
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
-        Lecturer lecturer = new Lecturer("L123", "Dr. John Doe");
-        lecturer.chooseSubjectToTeach();
-        lecturer.dropSubject();
-        lecturer.subjectStudentList();
-        lecturer.viewSubjectDetails();
+        // Load lecturers from lecturerList.csv
+        Map<String, String> lecturerMap = new HashMap<>();
+        try (Scanner inpFile = new Scanner(new File(LECTURER_LIST_PATH))) {
+            while (inpFile.hasNextLine()) {
+                String line = inpFile.nextLine();
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    String lecturerId = parts[0].trim();
+                    String lecturerName = parts[1].trim();
+                    lecturerMap.put(lecturerId, lecturerName);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("File not found: " + LECTURER_LIST_PATH);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error reading from file.");
+        }
+
+        // Create lecturers from the map
+        for (Map.Entry<String, String> entry : lecturerMap.entrySet()) {
+            Lecturer lecturer = new Lecturer(entry.getKey(), entry.getValue());
+
+            // Lecturer operations
+            System.out.println("Lecturer: " + lecturer.getName());
+            lecturer.chooseSubjectToTeach();
+            lecturer.dropSubject();
+            lecturer.subjectStudentList();
+            lecturer.viewSubjectDetails();
+        }
     }
 }
 
