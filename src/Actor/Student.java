@@ -19,9 +19,6 @@ import java.util.*;
 public class Student extends Person {
     private ArrayList<Subject> registeredSubjects;
     private Subject subject = new Subject();
-    private String name, code;
-    private int creditHour;
-    private boolean flag;
 
     public Student(String id, String name) {
 
@@ -116,7 +113,34 @@ public class Student extends Person {
         System.out.println("Enter subject code to register: ");
         Scanner sc = new Scanner(System.in);
         String code = sc.nextLine().trim();
+
         boolean subjectFound = false;
+        boolean alreadyRegistered = false;
+
+        try (BufferedReader br = new BufferedReader(new FileReader("src/studentSubject.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] details = line.split(",");
+                if (details[0].equals(studentID)) {
+                    for (int i = 2; i < details.length; i++) {
+                        if (details[i].equalsIgnoreCase(code)) {
+                            alreadyRegistered = true;
+                            break;
+                        }
+                    }
+                }
+                if (alreadyRegistered) {
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (alreadyRegistered) {
+            System.out.println("Subject already registered.");
+            return;
+        }
 
         for (Subject subject : registeredSubjects) {
             if (subject.getCode().equalsIgnoreCase(code)) {
@@ -137,7 +161,6 @@ public class Student extends Person {
         if (!subjectFound) {
             System.out.println("Subject not found.");
         }
-
     }
 
     // 3. Drop Subject
@@ -194,7 +217,7 @@ public class Student extends Person {
 
     // 4. List of Subjects
     public void listSubjects() {
-        System.out.println("Registered Subjects:");
+        System.out.println("Course Available:");
         System.out.println("--------------------");
         for (int i = 0; i < registeredSubjects.size(); i++) {
             System.out.println(registeredSubjects.get(i).getCode() + "  " + registeredSubjects.get(i).getCreditHour()
@@ -205,7 +228,8 @@ public class Student extends Person {
     // just planning to add this one, if i have time
     // 5. List of Student's Subjects
     public void listStudentSubjects(String studentID) {
-        System.out.println("Display your subjects:");
+        System.out.println("Your current course enrollments ");
+        System.out.println("---------------------------------");
         try {
             Scanner inpFile = new Scanner(new File("src/studentSubject.csv"));
             boolean studentFound = false;
