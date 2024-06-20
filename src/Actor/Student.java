@@ -113,7 +113,6 @@ public class Student extends Person {
         System.out.println("Enter subject code to register: ");
         Scanner sc = new Scanner(System.in);
         String code = sc.nextLine().trim();
-
         boolean subjectFound = false;
         boolean alreadyRegistered = false;
 
