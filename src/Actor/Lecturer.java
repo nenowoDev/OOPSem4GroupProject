@@ -41,9 +41,9 @@ public class Lecturer extends Person {
             while (inpFile.hasNextLine()) {
                 String line = inpFile.nextLine();
                 String[] parts = line.split(",");
-                if (parts.length == 3 && parts[0].equals(super.getId())) {
-                    String code = parts[1];
-                    String name = parts[2];
+                if (parts.length == 3 && parts[0].trim().equals(super.getId())) {
+                    String code = parts[1].trim();
+                    String name = parts[2].trim();
                     subjectsToTeach.add(new Subject(code, name, false, 0));
                 }
             }
@@ -53,7 +53,7 @@ public class Lecturer extends Person {
         }
     }
 
-        /**
+    /**
      * Displays the details of all available subjects from the CSV file.
      */
     public void viewSubjectDetails() {
@@ -64,10 +64,10 @@ public class Lecturer extends Person {
                 String line = inpFile.nextLine();
                 String[] parts = line.split(",");
                 if (parts.length == 4) {
-                    String code = parts[0];
-                    int creditHour = Integer.parseInt(parts[1]);
-                    boolean flag = Boolean.parseBoolean(parts[2]);
-                    String name = parts[3];
+                    String code = parts[0].trim();
+                    int creditHour = Integer.parseInt(parts[1].trim());
+                    boolean flag = Boolean.parseBoolean(parts[2].trim());
+                    String name = parts[3].trim();
                     System.out.println("Code: " + code + ", Credit Hour: " + creditHour + ", Name: " + name + ", Flag: " + flag);
                 } else {
                     System.out.println("Invalid data format: " + line);
@@ -84,6 +84,7 @@ public class Lecturer extends Person {
             scanner.nextLine(); // Consume the invalid input
         }
     }
+
     /**
      * Allows the lecturer to choose a subject to teach.
      * The available subjects are displayed, and the lecturer can select one by entering its number.
@@ -101,8 +102,8 @@ public class Lecturer extends Person {
                 String line = inpFile.nextLine();
                 String[] parts = line.split(",");
                 if (parts.length == 4) {
-                    String code = parts[0];
-                    String name = parts[3];
+                    String code = parts[0].trim();
+                    String name = parts[3].trim();
                     System.out.println(index + ". Code: " + code + ", Name: " + name);
                     index++;
                 }
@@ -131,15 +132,15 @@ public class Lecturer extends Person {
                 String[] parts = line.split(",");
                 if (parts.length == 4 && index == choice) {
                     subjectFound = true;
-                    String code = parts[0];
-                    String name = parts[3];
+                    String code = parts[0].trim();
+                    String name = parts[3].trim();
                     // Write to lecturerTakeSubjectToTeach.csv if the subject is found
                     try (FileWriter writer = new FileWriter(LECTURER_TAKE_SUBJECT_PATH, true)) {
                         writer.append(super.getId()).append(",")
                               .append(code).append(",").append(name).append("\n");
                         System.out.println("Subject chosen successfully: " + code + " - " + name);
                         // Add the subject to the local list
-                        subjectsToTeach.add(new Subject(code, name, false, Integer.parseInt(parts[1])));
+                        subjectsToTeach.add(new Subject(code, name, false, Integer.parseInt(parts[1].trim())));
                     } catch (IOException e) {
                         e.printStackTrace();
                         System.out.println("Error writing to file.");
@@ -193,18 +194,17 @@ public class Lecturer extends Person {
         String code = subjectsToTeach.get(choice - 1).getCode();
         boolean subjectFound = false;
 
-        File tempFile = new File("src/tempLecturerSubject.csv");
         try (BufferedReader br = new BufferedReader(new FileReader(LECTURER_TAKE_SUBJECT_PATH));
-             FileWriter writer = new FileWriter(tempFile)) {
+             PrintWriter writer = new PrintWriter(new FileWriter("src/tempLecturerTakeSubjectToTeach.csv"))) {
 
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts[0].equals(super.getId()) && parts[1].equalsIgnoreCase(code)) {
+                if (parts[0].trim().equals(super.getId()) && parts[1].trim().equalsIgnoreCase(code)) {
                     subjectFound = true;
                     System.out.println("Subject drop requested: " + code);
                 } else {
-                    writer.write(line + "\n");
+                    writer.println(line);
                 }
             }
 
@@ -217,7 +217,11 @@ public class Lecturer extends Person {
         }
 
         // Replace old file with the new file
-        if (tempFile.renameTo(new File(LECTURER_TAKE_SUBJECT_PATH))) {
+        File originalFile = new File(LECTURER_TAKE_SUBJECT_PATH);
+        File tempFile = new File("src/tempLecturerTakeSubjectToTeach.csv");
+
+        if (originalFile.delete()) {
+            tempFile.renameTo(originalFile);
             // Remove the subject from the local list
             subjectsToTeach.removeIf(subject -> subject.getCode().equalsIgnoreCase(code));
         } else {
@@ -234,114 +238,138 @@ public class Lecturer extends Person {
      * Displays the list of students registered for a specific subject taught by the lecturer.
      * The subjects currently taught by the lecturer are displayed, and the lecturer can select one to view the registered students by entering its number.
      */
+    public void subjectStudentList() {
+        listLecturerSubjects(); // Display all subjects currently taught by the lecturer
+        System.out.print("Enter number of subject for which you want to show registered students: ");
+        Scanner sc = new Scanner(System.in);
+        int number;
+        while (!sc.hasNextInt()) {
+            System.out.println("Invalid input. Please enter a valid number.");
+            sc.next(); // Consume the invalid input
+        }
+        number = sc.nextInt();
+        sc.nextLine(); // Consume newline
 
-   public void subjectStudentList() {
-       listLecturerSubjects(); // Display all subjects currently taught by the lecturer
-       System.out.print("Enter number of subject for which you want to show registered students: ");
-       Scanner sc = new Scanner(System.in);
-       int number;
-       while (!sc.hasNextInt()) {
-           System.out.println("Invalid input. Please enter a valid number.");
-           sc.next(); // Consume the invalid input
-       }
-       number = sc.nextInt();
-       sc.nextLine(); // Consume newline
+        if (number <= 0 || number > subjectsToTeach.size()) {
+            System.out.println("Invalid Entry");
+        } else {
+            displayStudentCount(subjectsToTeach.get(number - 1).getCode()); // Display students registered for the selected subject
+        }
 
-       if (number <= 0 || number > subjectsToTeach.size()) {
-           System.out.println("Invalid Entry");
-       } else {
-           displayStudentCount(subjectsToTeach.get(number - 1).getCode()); // Display students registered for the selected subject
-       }
+        System.out.println("Press 0 to return to menu.");
+        while (!sc.hasNextInt() || sc.nextInt() != 0) {
+            System.out.println("Invalid input. Please press 0 to return to menu.");
+            sc.nextLine(); // Consume the invalid input
+        }
+    }
 
-       System.out.println("Press 0 to return to menu.");
-       while (!sc.hasNextInt() || sc.nextInt() != 0) {
-           System.out.println("Invalid input. Please press 0 to return to menu.");
-           sc.nextLine(); // Consume the invalid input
-       }
-   }
+    /**
+     * Displays the subjects currently taught by the lecturer.
+     */
+    private void listLecturerSubjects() {
+        System.out.println("Subjects you are teaching:");
+        for (int i = 0; i < subjectsToTeach.size(); i++) {
+            Subject subject = subjectsToTeach.get(i);
+            System.out.println((i + 1) + ". " + subject.getCode() + " - " + subject.getName());
+        }
+    }
 
-   /**
-    * Displays the subjects currently taught by the lecturer.
-    */
-   private void listLecturerSubjects() {
-       System.out.println("Subjects you are teaching:");
-       for (int i = 0; i < subjectsToTeach.size(); i++) {
-           Subject subject = subjectsToTeach.get(i);
-           System.out.println((i + 1) + ". " + subject.getCode() + " - " + subject.getName());
-       }
-   }
+    /**
+     * Displays the list of students registered for a given subject.
+     * Reads student registrations from the CSV file and maps student IDs to names using getStudentMap().
+     * @param subjectCode The code of the subject
+     */
+    private void displayStudentCount(String subjectCode) {
+        System.out.println("Students registered for subject " + subjectCode + ":");
+        Map<String, String> studentMap = getStudentMap();
+        List<String> registeredStudents = new ArrayList<>();
 
-   /**
-    * Displays the list of students registered for a given subject.
-    * Reads student registrations from the CSV file and maps student IDs to names using getStudentMap().
-    * @param subjectCode The code of the subject
-    */
-   private void displayStudentCount(String subjectCode) {
-       System.out.println("Students registered for subject " + subjectCode + ":");
-       Map<String, String> studentMap = getStudentMap();
-       List<String> registeredStudents = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(STUDENT_SUBJECT_PATH))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts[1].trim().equalsIgnoreCase(subjectCode)) {
+                    registeredStudents.add(parts[0].trim());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error reading from file.");
+        }
 
-       try (BufferedReader br = new BufferedReader(new FileReader(STUDENT_SUBJECT_PATH))) {
-           String line;
-           while ((line = br.readLine()) != null) {
-               String[] parts = line.split(",");
-               if (parts[1].equalsIgnoreCase(subjectCode)) {
-                   registeredStudents.add(parts[0]);
-               }
-           }
-       } catch (IOException e) {
-           e.printStackTrace();
-           System.out.println("Error reading from file.");
-       }
+        System.out.println("Total number of students: " + registeredStudents.size());
+        for (String studentId : registeredStudents) {
+            String studentName = studentMap.get(studentId);
+            if (studentName != null) {
+                System.out.println("Student ID: " + studentId + ", Name: " + studentName);
+            } else {
+                System.out.println("Student ID: " + studentId + ", Name: Not found in student list");
+            }
+        }
+    }
 
-       System.out.println("Total number of students: " + registeredStudents.size());
-       for (String studentId : registeredStudents) {
-           String studentName = studentMap.get(studentId);
-           if (studentName != null) {
-               System.out.println("Student ID: " + studentId + ", Name: " + studentName);
-           } else {
-               System.out.println("Student ID: " + studentId + ", Name: Not found in student list");
-           }
-       }
-   }
+    /**
+     * Reads the student list from the CSV file and creates a map of student IDs to student names.
+     * @return A map where the keys are student IDs and the values are student names.
+     */
+    private Map<String, String> getStudentMap() {
+        Map<String, String> studentMap = new HashMap<>();
+        try (Scanner inpFile = new Scanner(new File(STUDENT_LIST_PATH))) {
+            while (inpFile.hasNextLine()) {
+                String line = inpFile.nextLine();
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    String studentId = parts[0].trim();
+                    String studentName = parts[1].trim();
+                    studentMap.put(studentId, studentName);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("File not found: " + STUDENT_LIST_PATH);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error reading from file.");
+        }
+        return studentMap;
+    }
 
-   /**
-    * Reads the student list from the CSV file and creates a map of student IDs to student names.
-    * @return A map where the keys are student IDs and the values are student names.
-    */
-   private Map<String, String> getStudentMap() {
-       Map<String, String> studentMap = new HashMap<>();
-       try (Scanner inpFile = new Scanner(new File(STUDENT_LIST_PATH))) {
-           while (inpFile.hasNextLine()) {
-               String line = inpFile.nextLine();
-               String[] parts = line.split(",");
-               if (parts.length == 2) {
-                   String studentId = parts[0].trim();
-                   String studentName = parts[1].trim();
-                   studentMap.put(studentId, studentName);
-               }
-           }
-       } catch (FileNotFoundException e) {
-           e.printStackTrace();
-           System.out.println("File not found: " + STUDENT_LIST_PATH);
-       } catch (IOException e) {
-           e.printStackTrace();
-           System.out.println("Error reading from file.");
-       }
-       return studentMap;
-   }
+    /**
+     * Main method for testing the functionalities of the Lecturer class.
+     * @param args Command-line arguments
+     */
+    public static void main(String[] args) {
+        // Load lecturers from lecturerList.csv
+        Map<String, String> lecturerMap = new HashMap<>();
+        try (Scanner inpFile = new Scanner(new File("src/lecturerList.csv"))) {
+            while (inpFile.hasNextLine()) {
+                String line = inpFile.nextLine();
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    String lecturerId = parts[0].trim();
+                    String lecturerName = parts[1].trim();
+                    lecturerMap.put(lecturerId, lecturerName);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("File not found: src/lecturerList.csv");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error reading from file.");
+        }
 
-   /**
-    * Main method for testing the functionalities of the Lecturer class.
-    * @param args Command-line arguments
-    */
-   public static void main(String[] args) {
-       Lecturer lecturer = new Lecturer("L123", "Dr. John Doe");
-       lecturer.chooseSubjectToTeach();
-       lecturer.dropSubject();
-       lecturer.subjectStudentList();
-       lecturer.viewSubjectDetails();
-   }
+        // Create lecturers from the map
+        for (Map.Entry<String, String> entry : lecturerMap.entrySet()) {
+            Lecturer lecturer = new Lecturer(entry.getKey(), entry.getValue());
+
+            // Lecturer operations
+            System.out.println("Lecturer: " + lecturer.getName());
+            lecturer.chooseSubjectToTeach();
+            lecturer.dropSubject();
+            lecturer.subjectStudentList();
+            lecturer.viewSubjectDetails();
+        }
+    }
 }
-
 
