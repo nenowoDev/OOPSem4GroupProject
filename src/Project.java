@@ -325,11 +325,11 @@ public class Project {
                                 sc.nextLine();
                                 break;
                             case 6:
-                                // adminMenu();
+                                adm.listRegisteredStudents();
                                 sc.nextLine();
                                 break;
                             case 7:
-                                // adminMenu();
+                                adm.listRegisteredLecturers();
                                 sc.nextLine();
                                 break;
                             case 8:

@@ -24,7 +24,7 @@ public class Admin extends Person {
     private static HashMap<String,Student> studentHashMap;
     private static HashMap<String,Lecturer> lecturerHashMap;
 
-    private static HashMap<Student,Subject> studentRegisterSubjectHashMap;
+    private static HashMap<Student,ArrayList<Subject>> studentRegisterSubjectHashMap;
     
     static{
         subjectList=new ArrayList<Subject>();
@@ -35,7 +35,7 @@ public class Admin extends Person {
         studentHashMap=new HashMap<String,Student>();
         lecturerHashMap=new HashMap<String,Lecturer>();
 
-        studentRegisterSubjectHashMap=new HashMap<Student,Subject>();
+        studentRegisterSubjectHashMap=new HashMap<Student,ArrayList<Subject>>();
         try {
             readStudentList();
             readLecturerList();
@@ -82,15 +82,36 @@ public class Admin extends Person {
         System.out.println("                    CONFIRM COURSE REGISTRATION");
         System.out.println("***********************************************************************\n");
         System.out.printf("%-20s%-32s\n", "\tMATRIKS NO", "COURSE CODE");
-        System.out.printf("%-20s%-32s\n", "\t--------","-----------------------------");
-        for (Map.Entry<Student, Subject> entry : studentRegisterSubjectHashMap.entrySet()) {
-            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+        System.out.printf("%-20s%-32s\n", "\t--------","---------------------");
+        for (Map.Entry<Student, ArrayList<Subject>> entry : studentRegisterSubjectHashMap.entrySet()) {
+            for(Subject s:entry.getValue())
+                System.out.printf("\t%-20s\t%-32s\n",entry.getKey().getId() , s.getCode());
+        }
+
+        String tempMatriksNo="";
+        boolean correct=false;
+        while(!correct){
+            System.out.print("\n\n\t\tENTER Matriks NO : ");
+            Scanner sc=new Scanner(System.in);
+            tempMatriksNo=sc.nextLine();
+            if(studentRegisterSubjectHashMap.get(studentHashMap.get(tempMatriksNo))!=null){
+                correct=true;
+            }
         }
         
-        System.out.print("\n\n\t\tENTER Matriks NO : ");
-        Scanner sc=new Scanner(System.in);
-        int wait=sc.nextInt();
+            
         
+        System.out.println("***********************************************************************");
+        System.out.println("                    CONFIRM COURSE REGISTRATION");
+        System.out.println("***********************************************************************\n");
+        System.out.printf("%-20s%-32s\n", "\tMATRIKS NO", "COURSE CODE");
+        System.out.printf("%-20s%-32s\n", "\t--------","---------------------");
+        
+        for (Map.Entry<Student, ArrayList<Subject>> entry : studentRegisterSubjectHashMap.entrySet()) {
+            if(entry.getKey().getId().equals(tempMatriksNo))
+                for(Subject s:entry.getValue()) 
+                    System.out.printf("\t%-20s\t%-32s\n",entry.getKey().getId() , s.getCode());
+        }
 
         
         //DO NOT CLOSE SCANNER BROSKI
@@ -122,7 +143,7 @@ public class Admin extends Person {
         System.out.printf("%-12s%-32s\n", "\tSTAFF NO", "NAME");
         System.out.printf("%-12s%-32s\n", "\t--------","-----------------------------");
         for(Lecturer l:lecturerList){
-            System.out.printf("%-12s%-32s\n",l.getId(),l.getName());
+            System.out.printf("\t%-12s\t%-32s\n",l.getId(),l.getName());
         }
         
         System.out.println();
@@ -159,10 +180,10 @@ public class Admin extends Person {
         Scanner inpFile = new Scanner(new File("src/lecturerList.csv"));
         inpFile.useDelimiter(",|\\n");
         while (inpFile.hasNext()) {
-            String matrikxno = inpFile.next();
+            String staffNo = inpFile.next();
             String name = inpFile.nextLine();
             name = name.substring(1);
-            Lecturer lecturer = new Lecturer(name, matrikxno);
+            Lecturer lecturer = new Lecturer(staffNo, name);
             lecturerList.add(lecturer);
         }
         inpFile.close();
@@ -176,7 +197,7 @@ public class Admin extends Person {
             boolean flag = inpFile.nextBoolean();
             String name = inpFile.nextLine();
             name = name.substring(1);
-            Subject subject = new Subject(code,name,flag,creditHr );
+            Subject subject = new Subject(code,name,flag,creditHr);
             subjectList.add(subject);
         }
         inpFile.close();
@@ -204,11 +225,16 @@ public class Admin extends Person {
         while (inpFile.hasNext()) {
             String matriksNo = inpFile.next();
             String subjectCode = inpFile.nextLine();
+            subjectCode=subjectCode.substring(2);
             Student tempStud=studentHashMap.get(matriksNo);
             Subject tempSubject=subjectHashMap.get(subjectCode);
-
-            studentRegisterSubjectHashMap.put(tempStud,tempSubject );
-            
+            if(studentRegisterSubjectHashMap.get(tempStud)==null){
+                ArrayList<Subject> subjectToRegister=new ArrayList<>();
+                subjectToRegister.add(tempSubject);
+                studentRegisterSubjectHashMap.put(tempStud,subjectToRegister);
+            }
+            else
+                studentRegisterSubjectHashMap.get(tempStud).add(tempSubject); 
             
         }
         inpFile.close();
