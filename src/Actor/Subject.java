@@ -2,6 +2,7 @@ package Actor;
 
 import java.util.*;
 import java.io.*;
+import java.lang.reflect.Array;
 
 public class Subject {
     private String code;
@@ -10,11 +11,8 @@ public class Subject {
     private boolean flag;
     private int capacity; 
     private ArrayList<Student> registeredStudents;
-    // private ArrayList<Subject> subjectList;
-    // private ArrayList<Student>registeredStudents;
-    // private Lecturer lecturer;
-    // boolean confirm;
-
+    private ArrayList<Section> sections;
+    
     // Constructor, getters, setters, etc.
     public Subject() {
     }
@@ -26,11 +24,16 @@ public class Subject {
         this.flag = flag;
         this.capacity = 0;
         this.registeredStudents = new ArrayList<>();
+        sections=new ArrayList<>();
     }
 
 
     public ArrayList<Student> getRegisteredStudents() {
         return registeredStudents;
+    }
+
+    public ArrayList<Section> getSections(){
+        return sections;
     }
 
 
