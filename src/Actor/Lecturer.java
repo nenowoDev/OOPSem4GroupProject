@@ -66,9 +66,8 @@ public class Lecturer extends Person {
                 if (parts.length == 4) {
                     String code = parts[0].trim();
                     int creditHour = Integer.parseInt(parts[1].trim());
-                    boolean flag = Boolean.parseBoolean(parts[2].trim());
                     String name = parts[3].trim();
-                    System.out.println("Code: " + code + ", Credit Hour: " + creditHour + ", Name: " + name + ", Flag: " + flag);
+                    System.out.println("Code: " + code + ", Credit Hour: " + creditHour + ", Name: " + name);
                 } else {
                     System.out.println("Invalid data format: " + line);
                 }
