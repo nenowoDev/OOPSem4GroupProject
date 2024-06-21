@@ -1,20 +1,8 @@
 package Actor;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
-// public class Student extends Person {
-//     List<Course> registeredCourses;
-//     public Course findSubject(String code){return new Course();}
-//     public void registerSubject(Course course){}
-//     public void dropSubject(Course course){}
-//     public List<Course> displayListOfSubjects(){return new ArrayList<>();}
-// }
 
 public class Student extends Person {
     private ArrayList<Subject> registeredSubjects;
