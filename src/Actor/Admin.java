@@ -62,8 +62,8 @@ public class Admin extends Person {
             Subject subject = subjectHashMap.get(subjectCode);
             if (subject != null) {
                 System.out.println("Managing sections for: " + subject.getName());
-                System.out.println("1. Set Flag");
-                System.out.println("2. Remove Section");
+                System.out.println("1. Open Section");
+                System.out.println("2. Close Section");
                 System.out.print("Enter your choice: ");
                 int choice = scanner.nextInt();
                 switch (choice) {
