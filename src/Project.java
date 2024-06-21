@@ -306,19 +306,19 @@ public class Project {
                         clearScreen();
                         switch (n3) {
                             case 1:
-                                // adminMenu();
+                            adm.listSubjects();
                                 sc.nextLine();
                                 break;
                             case 2:
-                                // adminMenu();
+                            adm.manageSubjectSections();
                                 sc.nextLine();
                                 break;
                             case 3:
-                                // adminMenu();
+                            adm.setStudentCapacity();
                                 sc.nextLine();
                                 break;
                             case 4:
-                                // adminMenu();
+                            adm.dropSubjectCourse();
                                 sc.nextLine();
                                 break;
                             case 5:

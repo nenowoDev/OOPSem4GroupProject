@@ -54,7 +54,7 @@ public class Admin extends Person {
         for (Subject subject : subjectList) {
             System.out.println("Code: " + subject.getCode() + ", Name: " + subject.getName());
         }
-    
+    } 
         // 2. Manage Subject Sections
         public void manageSubjectSections() {
             System.out.println("Enter the subject code to manage sections: ");
