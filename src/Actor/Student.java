@@ -3,7 +3,6 @@ package Actor;
 import java.io.*;
 import java.util.*;
 
-
 public class Student extends Person {
     private ArrayList<Subject> registeredSubjects;
     private Subject subject = new Subject();
@@ -18,17 +17,6 @@ public class Student extends Person {
             e.printStackTrace();
             System.out.println("File not found!");
         }
-
-        // try {
-        // Scanner inpFile = new Scanner(new File("src/subjectList.csv"));
-        // registeredSubjects = readSubjects(inpFile);
-        // } catch (FileNotFoundException e) {
-        // e.printStackTrace();
-        // System.out.println("File not found!");
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // System.out.println("Error");
-        // }
 
     }
 
@@ -140,9 +128,9 @@ public class Student extends Person {
         for (Subject subject : registeredSubjects) {
             if (subject.getCode().equalsIgnoreCase(code)) {
                 subjectFound = true;
-                if (subject.getFlag()) { // Check if subject is open
-                    // Add subject registration to studentRegisterSubject.csv file for admin
-                    // approval
+                if (subject.getFlag()) { // Check if subject is open FOR REGISTRATION
+                    // Add subject registration to studentRegisterSubject file
+
                     try (FileWriter writer = new FileWriter("src/studentRegisterSubject.csv", true)) {
                         writer.append(studentID).append(", ").append(code).append("\n");
                         System.out.println("Subject registration request sent successfully: " + code);
@@ -171,7 +159,8 @@ public class Student extends Person {
 
         boolean subjectFound = false;
 
-        // Read studentSubject.csv to check Whether the subject is registered
+        // Read studentSubject file and search to check Whether the subject isregistered
+
         try (BufferedReader br = new BufferedReader(new FileReader("src/studentTakeSubject.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
