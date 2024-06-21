@@ -55,51 +55,102 @@ public class Admin extends Person {
             System.out.println("Code: " + subject.getCode() + ", Name: " + subject.getName());
         }
     } 
-        // 2. Manage Subject Sections
-        public void manageSubjectSections() {
-            System.out.println("Enter the subject code to manage sections: ");
-            String subjectCode = scanner.next();
-            Subject subject = subjectHashMap.get(subjectCode);
-            if (subject != null) {
-                System.out.println("Managing sections for: " + subject.getName());
-                System.out.println("1. Open Section");
-                System.out.println("2. Close Section");
-                System.out.print("Enter your choice: ");
-                int choice = scanner.nextInt();
-                switch (choice) {
-                    case 1:
-                        System.out.println("Enter new flag value (true/false): ");
-                        boolean flag = scanner.nextBoolean();
-                        subject.setFlag(flag);
-                        System.out.println("Flag set to " + flag + " for " + subject.getName());
-                        break;
-                    case 2:
-                        subjectList.remove(subject);
-                        subjectHashMap.remove(subjectCode);
-                        System.out.println("Section removed.");
-                        break;
-                    default:
-                        System.out.println("Invalid choice.");
-                }
-            } else {
-                System.out.println("Subject not found.");
-            }
+// 2. Manage Subject Sections
+public void manageSubjectSections() {
+    System.out.println("Enter the subject code to manage sections: ");
+    String subjectCode = scanner.next();
+    Subject subject = subjectHashMap.get(subjectCode);
+    if (subject != null) {
+        System.out.println("Managing sections for: " + subject.getName());
+        System.out.println("1. Open Section");
+        System.out.println("2. Close Section");
+        System.out.print("Enter your choice: ");
+        int choice = scanner.nextInt();
+        boolean flag = (choice == 1);
+        if (choice == 1 || choice == 2) {
+            subject.setFlag(flag);
+            updateSubjectSectionCSV(subjectCode, flag);
+            System.out.println("Section for " + subject.getName() + " is now " + (flag ? "open" : "closed"));
+        } else {
+            System.out.println("Invalid choice.");
         }
+    } else {
+        System.out.println("Subject not found.");
+    }
+}
+
+// Method to update the subject section CSV file
+private void updateSubjectSectionCSV(String subjectCode, boolean flag) {
+    List<String> lines = new ArrayList<>();
+    try (BufferedReader br = new BufferedReader(new FileReader("src/subjectsection.csv"))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split(",");
+            if (parts[0].equals(subjectCode)) {
+                parts[2] = String.valueOf(flag);
+                line = String.join(",", parts);
+            }
+            lines.add(line);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/subjectsection.csv"))) {
+        for (String line : lines) {
+            bw.write(line);
+            bw.newLine();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
     
         // 3. Set Student Capacity
-        public void setStudentCapacity() {
-            System.out.println("Enter the subject code to set capacity: ");
-            String subjectCode = scanner.next();
-            Subject subject = subjectHashMap.get(subjectCode);
-            if (subject != null) {
-                System.out.println("Enter new capacity for: " + subject.getName());
-                int capacity = scanner.nextInt();
-                subject.setCapacity(capacity); // Set capacity using the new setter
+    public void setStudentCapacity() {
+        System.out.println("Enter the subject code to set capacity: ");
+        String subjectCode = scanner.next();
+        Subject subject = subjectHashMap.get(subjectCode);
+        if (subject != null) {
+            System.out.println("Enter new capacity for: " + subject.getName() + " (must be below 16):");
+            int capacity = scanner.nextInt();
+            if (capacity < 16) {
+                subject.setCapacity(capacity); // Set capacity using the setter
+                updateSubjectCapacityInCSV(subjectCode, capacity);
                 System.out.println("Capacity set to " + capacity + " for " + subject.getName());
             } else {
-                System.out.println("Subject not found.");
+                System.out.println("Capacity must be below 16. Please try again.");
             }
+        } else {
+            System.out.println("Subject not found.");
         }
+    }
+
+    // Method to update the subject capacity in the CSV file
+    private void updateSubjectCapacityInCSV(String subjectCode, int capacity) {
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("src/subjectsection.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts[0].equals(subjectCode)) {
+                    parts[1] = String.valueOf(capacity);
+                    line = String.join(",", parts);
+                }
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/subjectsection.csv"))) {
+            for (String line : lines) {
+                bw.write(line);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     
         // 4. Drop Subject/Course
         public void dropSubjectCourse() {
