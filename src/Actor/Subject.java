@@ -17,6 +17,8 @@ public class Subject {
     private String name;
     private int creditHour;
     private boolean flag;
+    private int capacity; 
+
     // private ArrayList<Subject> subjectList;
     // private ArrayList<Student>registeredStudents;
     // private Lecturer lecturer;
@@ -31,6 +33,7 @@ public class Subject {
         this.name = name;
         this.creditHour = creditHour;
         this.flag = flag;
+        this.capacity = 0;
     }
 
     public String getCode() {
@@ -51,6 +54,10 @@ public class Subject {
 
     public void setFlag(boolean flag) {
         this.flag = flag;
+    }
+    
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     public ArrayList<Subject> readSubjects(Scanner inpFile) {
