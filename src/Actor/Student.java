@@ -113,14 +113,13 @@ public class Student extends Person {
         System.out.println("Enter subject code to register: ");
         Scanner sc = new Scanner(System.in);
         String code = sc.nextLine().trim();
-
         boolean subjectFound = false;
         boolean alreadyRegistered = false;
 
-        try (BufferedReader br = new BufferedReader(new FileReader("src/studentTakeSubject.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/studentSubject.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] details = line.split(", ");
+                String[] details = line.split(",");
                 if (details[0].equals(studentID)) {
                     for (int i = 2; i < details.length; i++) {
                         if (details[i].equalsIgnoreCase(code)) {
@@ -141,7 +140,7 @@ public class Student extends Person {
             System.out.println("Subject already registered.");
             return;
         }
-        
+
         for (Subject subject : registeredSubjects) {
             if (subject.getCode().equalsIgnoreCase(code)) {
                 subjectFound = true;
@@ -172,12 +171,13 @@ public class Student extends Person {
         boolean subjectFound = false;
 
         // Read studentSubject.csv to check Whether the subject is registered
-        try (BufferedReader br = new BufferedReader(new FileReader("src/studentTakeSubject.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/studentSubject.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] parts = line.split(", ");
+                String[] parts = line.split(",");
                 if (parts[0].equals(studentID)) {
-                        if (parts[1].equalsIgnoreCase(code)) {
+                    for (int i = 2; i < parts.length; i++) {
+                        if (parts[i].equalsIgnoreCase(code)) {
                             subjectFound = true;
                             // Get subject name from registeredSubjects list
                             String subjectName = registeredSubjects.stream()
@@ -186,7 +186,7 @@ public class Student extends Person {
                                     .findFirst()
                                     .orElse("Unknown Subject");
 
-                             // Write to DroppingSubject.csv
+                            // Write to DroppingSubject.csv
                             try (FileWriter writer = new FileWriter("src/DroppingSubject.csv", true)) {
                                 writer.append(studentID).append(",")
                                         .append("FALSE").append(",")
@@ -196,10 +196,9 @@ public class Student extends Person {
                                 e.printStackTrace();
                                 System.out.println("Error writing to file.");
                             }
-
                             break;
                         }
-                    
+                    }
                 }
                 if (subjectFound)
                     break;
@@ -230,18 +229,18 @@ public class Student extends Person {
         System.out.println("Your current course enrollments ");
         System.out.println("---------------------------------");
         try {
-            Scanner inpFile = new Scanner(new File("src/studentTakeSubject.csv"));
+            Scanner inpFile = new Scanner(new File("src/studentSubject.csv"));
             boolean studentFound = false;
 
             while (inpFile.hasNextLine()) {
                 String line = inpFile.nextLine();
-                String[] parts = line.split(", ");
+                String[] parts = line.split(",");
                 if (parts[0].equals(studentID)) {
                     studentFound = true;
-                    
+                    for (int i = 2; i < parts.length; i++) {
                         boolean subjectFound = false;
                         for (Subject subject : registeredSubjects) {
-                            if (subject.getCode().equalsIgnoreCase(parts[1])) {
+                            if (subject.getCode().equalsIgnoreCase(parts[i])) {
                                 System.out.println(
                                         subject.getCode() + "  " + subject.getCreditHour() + "  " + subject.getName());
                                 subjectFound = true;
@@ -249,9 +248,9 @@ public class Student extends Person {
                             }
                         }
                         if (!subjectFound) {
-                            System.out.println("Subject not found: " + parts[1]);
+                            System.out.println("Subject not found: " + parts[i]);
                         }
-                    
+                    }
                 }
             }
 
@@ -261,7 +260,7 @@ public class Student extends Person {
 
             inpFile.close();
         } catch (FileNotFoundException e) {
-            System.out.println("File not found: src/studentTakeSubject.csv");
+            System.out.println("File not found: src/studentSubject.csv");
             e.printStackTrace();
         } catch (Exception e) {
             System.out.println("An error occurred.");

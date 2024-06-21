@@ -181,9 +181,11 @@ public void dropSubjectCourse() {
                 if(s.getCode().equals(tempSubjectCode))
                     correct=true;
             }
-            if(!correct)
+            if(!correct){
                 System.out.println("\n\n\tThe Student did not register that subject ! ! !");
                 System.out.println("\tPlease Try again . . . ");
+            }
+            else    System.out.println("\n\n\t"+tempSubjectCode+" is added to student's Course.");
         }
 
         // Add the course to the student's registered course
