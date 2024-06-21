@@ -1,8 +1,8 @@
-SECJ1013,3,true,Programming Technique I
+SECJ1013,3,false,Programming Technique I
 SECI1113,3,true,Computational Mathematics
 SECJ1023,3,true,Programming Technique II
 SECD2613,3,true,System Analysis and Design
 SECJ2013,3,true,Data Structure and Algorithm
 SECR2213,3,true,Network Communications
-SECV2113,3,true,Human Computer Interaction
+SECV2113,3,false,Human Computer Interaction
 SECJ2154,4,true,Object Oriented Programming

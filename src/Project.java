@@ -38,7 +38,7 @@ public class Project {
         System.out.println("  2. Register Subject");
         System.out.println("  3. Drop Subject");
         System.out.println("  4. List of Subjects");
-        System.out.println("  5. Display your Registered Subject");
+        System.out.println("  5. List All registered  Subjects");
         System.out.println("  6. Back to Main Menu\n");
         System.out.print("   ENTER YOUR OPTION -> ");
     }
@@ -212,14 +212,16 @@ public class Project {
         inpFile = new Scanner(new File("src/adminList.csv"));
         ArrayList<Admin> admin = readAdmin(inpFile);
 
+        
         Student stud;
         Lecturer lect;
         Admin adm;
+        Admin.getLists(student, lecturer);
         int choice;
         do {
             menu();
             choice = sc.nextInt();
-            // sc.nextLine();
+            sc.nextLine();
             switch (choice) {
                 case 1:
                     stud = studentLoginCheck(student);
@@ -229,24 +231,21 @@ public class Project {
                         studentMenu();
                         n1 = sc.nextInt();
                         sc.nextLine();
+                        clearScreen();
                         switch (n1) {
                             case 1:
-                                // studentMenu();
                                 stud.searchSubject(sc);
                                 sc.nextLine();
                                 break;
                             case 2:
-                                // studentMenu();
                                 stud.registerSubject(studentID_Entered);
                                 sc.nextLine();
                                 break;
                             case 3:
-                                // studentMenu();
                                 stud.dropSubject(studentID_Entered);
                                 sc.nextLine();
                                 break;
                             case 4:
-                                // studentMenu();
                                 stud.listSubjects();
                                 sc.nextLine();
                                 break;
@@ -270,6 +269,7 @@ public class Project {
                         lecturerMenu();
                         n2 = sc.nextInt();
                         sc.nextLine();
+                        clearScreen();
                         switch (n2) {
                             case 1:
                                 lect.viewSubjectDetails();
@@ -297,12 +297,13 @@ public class Project {
                     break;
                 case 3:
                     adm = adminLoginCheck(admin);
-                    // sc.nextLine();
+                    sc.nextLine();
                     int n3;
                     do {
                         adminMenu();
                         n3 = sc.nextInt();
                         sc.nextLine();
+                        clearScreen();
                         switch (n3) {
                             case 1:
                                 // adminMenu();
@@ -325,15 +326,15 @@ public class Project {
                                 sc.nextLine();
                                 break;
                             case 6:
-                                // adminMenu();
+                                adm.listRegisteredStudents();
                                 sc.nextLine();
                                 break;
                             case 7:
-                                // adminMenu();
+                                adm.listRegisteredLecturers();
                                 sc.nextLine();
                                 break;
                             case 8:
-                                // adminMenu();
+                                adm.closeSubjects();
                                 sc.nextLine();
                                 break;
                             case 9:

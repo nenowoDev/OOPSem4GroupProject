@@ -3,15 +3,6 @@ package Actor;
 import java.util.*;
 import java.io.*;
 
-// public class Subject {
-//     String code;
-//     String name;
-//     int creditHour;
-//     ArrayList<Student> registeredStudents;
-//     Lecturer lecturer;
-//     boolean confirm;
-// }
-
 public class Subject {
     private String code;
     private String name;

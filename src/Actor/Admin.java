@@ -1,7 +1,5 @@
 package Actor;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 import javax.xml.validation.Schema;
@@ -24,33 +22,22 @@ public class Admin extends Person {
     private static HashMap<String,Subject> subjectHashMap;
     private static HashMap<String,Student> studentHashMap;
     private static HashMap<String,Lecturer> lecturerHashMap;
-
+    
+    private static HashMap<Subject,ArrayList<Student>> studentTakeSubjectHashMap;
     private static HashMap<Student,ArrayList<Subject>> studentRegisterSubjectHashMap;
     private static Scanner scanner = new Scanner(System.in);
     static{
         subjectList=new ArrayList<Subject>();
-        studentsList=new ArrayList<Student>();
-        lecturerList=new ArrayList<Lecturer>();
+        // studentsList=new ArrayList<Student>();
+        // lecturerList=new ArrayList<Lecturer>();
         
         subjectHashMap=new HashMap<String,Subject>();
         studentHashMap=new HashMap<String,Student>();
         lecturerHashMap=new HashMap<String,Lecturer>();
 
         studentRegisterSubjectHashMap=new HashMap<Student,ArrayList<Subject>>();
-        try {
-            readStudentList();
-            readLecturerList();
-            readSubjectList();
-            
-            subjectArrListToHashMap();
-            studentArrListToHashMap();
-            lecturerArrListToHashMap();
-
-            readStudentRegSubject();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        studentTakeSubjectHashMap=new HashMap<Subject,ArrayList<Student>>();
+        
     }
     
     public Admin(String id, String name) {
@@ -61,12 +48,11 @@ public class Admin extends Person {
     }
 
 
-        // 1. List Subjects
-        public void listSubjects() {
-            System.out.println("Subjects available:");
-            for (Subject subject : subjectList) {
-                System.out.println("Code: " + subject.getCode() + ", Name: " + subject.getName());
-            }
+       // 1. List Subjects
+    public void listSubjects() {
+        System.out.println("Subjects available:");
+        for (Subject subject : subjectList) {
+            System.out.println("Code: " + subject.getCode() + ", Name: " + subject.getName());
         }
     
         // 2. Manage Subject Sections
@@ -147,6 +133,9 @@ public class Admin extends Person {
 
     // 5. Confirm Course Registrations
     public void confirmCourseRegistrations() {
+        readStudentRegSubject();
+        readStudentTakeSubject();
+        
         System.out.println("***********************************************************************");
         System.out.println("                    CONFIRM COURSE REGISTRATION");
         System.out.println("***********************************************************************\n");
@@ -188,43 +177,46 @@ public class Admin extends Person {
 
         String tempSubjectCode="";
         correct=false;
-        while(!correct){
-            System.out.print("\n\n\t\tENTER Subject Code : ");
-            Scanner sc=new Scanner(System.in);
-            tempSubjectCode=sc.nextLine();
-            for(Subject s:studentRegisterSubjectHashMap.get(studentHashMap.get(tempMatriksNo))){
-                if(s.getCode().equals(tempSubjectCode))
-                    correct=true;
-            }
-            if(!correct){
-                System.out.println("\n\n\tThe Student did not register that subject ! ! !");
-                System.out.println("\tPlease Try again . . . ");
-            }
-            else    System.out.println("\n\n\t"+tempSubjectCode+" is added to student's Course.");
+    
+        System.out.print("\n\n\t\tENTER Subject Code : ");
+        Scanner sc=new Scanner(System.in);
+        tempSubjectCode=sc.nextLine();
+        for(Subject s:studentRegisterSubjectHashMap.get(studentHashMap.get(tempMatriksNo))){
+            if(s.getCode().equals(tempSubjectCode))
+                correct=true;
         }
-
-        // Add the course to the student's registered course
-        try (FileWriter writer = new FileWriter("src/studentTakeSubject.csv",true)) {
-            writer.write(tempMatriksNo+", "+tempSubjectCode+"\n");
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(!correct){
+            System.out.println("\n\n\tThe Student did not register that subject ! ! !");
+            System.out.println("\tPlease Try again . . . ");
         }
-
-        //Remove the course from studentRegister hashmap
-        studentRegisterSubjectHashMap.get(studentHashMap.get(tempMatriksNo)).remove(subjectHashMap.get(tempSubjectCode));
+        else
+            System.out.println("\n\n\tSubject added to Student's Subject List");
         
-        //Rewrite/remove the course from studentRegisterSubject.csv
-        try (FileWriter writer = new FileWriter("src/studentRegisterSubject.csv")) {
-            for (Map.Entry<Student, ArrayList<Subject>> entry : studentRegisterSubjectHashMap.entrySet()) {
-                
-                for(Subject s:entry.getValue()){
-                    writer.write(entry.getKey().getId()+", "+s.getCode()+"\n");
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
+        if(correct){
+            // Add the course to the student's registered course
+            try (FileWriter writer = new FileWriter("src/studentTakeSubject.csv",true)) {
+                writer.write(tempMatriksNo+", "+tempSubjectCode+"\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //Remove the course from studentRegister hashmap
+            studentRegisterSubjectHashMap.get(studentHashMap.get(tempMatriksNo)).remove(subjectHashMap.get(tempSubjectCode));
+            
+            //Rewrite/remove the course from studentRegisterSubject.csv
+            try (FileWriter writer = new FileWriter("src/studentRegisterSubject.csv")) {
+                for (Map.Entry<Student, ArrayList<Subject>> entry : studentRegisterSubjectHashMap.entrySet()) {
+                    
+                    for(Subject s:entry.getValue()){
+                        writer.write(entry.getKey().getId()+", "+s.getCode()+"\n");
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
         
         //DO NOT CLOSE SCANNER BROSKI
         
@@ -253,7 +245,7 @@ public class Admin extends Person {
         System.out.println("                          LIST OF LECTURERS");
         System.out.println("***********************************************************************\n");
         System.out.printf("%-12s%-32s\n", "\tSTAFF NO", "NAME");
-        System.out.printf("%-12s%-32s\n", "\t--------","-----------------------------");
+        System.out.printf("%-12s%-32s\n", "\t-----------","--------------------");
         for(Lecturer l:lecturerList){
             System.out.printf("\t%-12s\t%-32s\n",l.getId(),l.getName());
         }
@@ -264,55 +256,116 @@ public class Admin extends Person {
 
     //TODO 8. Close Subjects
     public void closeSubjects() {
-        listSubjects();
+        readSubjectList();
+        readStudentTakeSubject();
+
+        System.out.println("***********************************************************************");
+        System.out.println("                          LIST OF SUBJECTS");
+        System.out.println("***********************************************************************\n");
+        System.out.printf("%-20s%-32s\n", "\tSUBJECT CODE", "TOTAL REGISTERED STUDENT");
+        System.out.printf("%-20s%-32s\n", "\t--------","-----------------------------");
+        for(Map.Entry<Subject,ArrayList<Student>> entry:studentTakeSubjectHashMap.entrySet()){
+            
+            System.out.printf("\t%-20s\t%-32s\n",entry.getKey().getCode(),entry.getValue().size());                
+            
+        }
         Scanner sc=new Scanner(System.in);
-        System.out.print("Subject to close :");
-        int temp=sc.nextInt();
-        sc.next();
+        System.out.print("\n\n\tEnter Subject Code to close : ");
+        String tempCode=sc.next();
         
+        if(subjectHashMap.get(tempCode)!=null){
+            //set flag to false
+            subjectHashMap.get(tempCode).setFlag(false);
+            //TODO remove student from subject?
+            for(Student s:studentTakeSubjectHashMap.get(subjectHashMap.get(tempCode))){
+                
+            }
+
+            //Rewrite/remove the course from studentRegisterSubject.csv
+            try (FileWriter writer = new FileWriter("src/subjectList.csv")) {
+                for(Subject s:subjectList){
+                    writer.write(s.getCode()+","+s.getCreditHour()+","+s.getFlag()+","+s.getName()+"\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("\n\n\tSubject successfully closed ! ! ! ");
+        }
+        else
+            System.out.println("\n\n\tSubject does not exist");
+    }
+
+
+
+    // private static void readStudentList() throws IOException{
+    //     Scanner inpFile = new Scanner(new File("src/studentList.csv"));
+    //     inpFile.useDelimiter(",|\\n");
+    //     while (inpFile.hasNext()) {
+    //         String matrikxno = inpFile.next();
+    //         String name = inpFile.nextLine();
+    //         name = name.substring(1);
+    //         Student student = new Student(matrikxno, name);
+    //         studentsList.add(student);
+    //     }
+    //     inpFile.close();
+    // }
+    // private static void readLecturerList() throws IOException{
+    //     Scanner inpFile = new Scanner(new File("src/lecturerList.csv"));
+    //     inpFile.useDelimiter(",|\\n");
+    //     while (inpFile.hasNext()) {
+    //         String staffNo = inpFile.next();
+    //         String name = inpFile.nextLine();
+    //         name = name.substring(1);
+    //         Lecturer lecturer = new Lecturer(staffNo, name);
+    //         lecturerList.add(lecturer);
+    //     }
+    //     inpFile.close();
+    // }
+    public static void getLists(ArrayList<Student> studList,ArrayList<Lecturer> lectList){
         
-        sc.close();
+        studentsList=studList;
+        lecturerList=lectList;
+        // subjectList=subjList; main does not provide subject list
+        ArrayListtoHashMap();
     }
 
-
-
-    private static void readStudentList() throws IOException{
-        Scanner inpFile = new Scanner(new File("src/studentList.csv"));
-        inpFile.useDelimiter(",|\\n");
-        while (inpFile.hasNext()) {
-            String matrikxno = inpFile.next();
-            String name = inpFile.nextLine();
-            name = name.substring(1);
-            Student student = new Student(matrikxno, name);
-            studentsList.add(student);
+    private static void readSubjectList() {
+        subjectList.clear();
+        try{
+            Scanner inpFile = new Scanner(new File("src/subjectList.csv"));
+            inpFile.useDelimiter(",|\\n");
+            while (inpFile.hasNext()) {
+                String code = inpFile.next();
+                int creditHr = inpFile.nextInt();
+                boolean flag = inpFile.nextBoolean();
+                String name = inpFile.nextLine();
+                name = name.substring(1);
+                Subject subject = new Subject(code,name,flag,creditHr);
+                subjectList.add(subject);
+            }
+            inpFile.close();
         }
-        inpFile.close();
+        catch(IOException e){
+            e.printStackTrace();
+        }
     }
-    private static void readLecturerList() throws IOException{
-        Scanner inpFile = new Scanner(new File("src/lecturerList.csv"));
-        inpFile.useDelimiter(",|\\n");
-        while (inpFile.hasNext()) {
-            String staffNo = inpFile.next();
-            String name = inpFile.nextLine();
-            name = name.substring(1);
-            Lecturer lecturer = new Lecturer(staffNo, name);
-            lecturerList.add(lecturer);
-        }
-        inpFile.close();
-    }
-    private static void readSubjectList() throws IOException{
-        Scanner inpFile = new Scanner(new File("src/subjectList.csv"));
-        inpFile.useDelimiter(",|\\n");
-        while (inpFile.hasNext()) {
-            String code = inpFile.next();
-            int creditHr = inpFile.nextInt();
-            boolean flag = inpFile.nextBoolean();
-            String name = inpFile.nextLine();
-            name = name.substring(1);
-            Subject subject = new Subject(code,name,flag,creditHr);
-            subjectList.add(subject);
-        }
-        inpFile.close();
+
+    
+
+    private static void ArrayListtoHashMap(){
+       
+
+        readSubjectList(); //main does not provide subject list
+
+        subjectArrListToHashMap();
+        studentArrListToHashMap();
+        lecturerArrListToHashMap();
+
+        readStudentRegSubject();
+        readStudentTakeSubject();
+
+        
     }
 
     private static void subjectArrListToHashMap(){
@@ -331,34 +384,64 @@ public class Admin extends Person {
         }
     }
 
-    private static void readStudentRegSubject() throws IOException{
-        Scanner inpFile = new Scanner(new File("src/studentRegisterSubject.csv"));
-        inpFile.useDelimiter(",|\\n");
-        while (inpFile.hasNext()) {
-            String matriksNo = inpFile.next();
-            String subjectCode = inpFile.nextLine();
-            subjectCode=subjectCode.substring(2);
+    private static void readStudentRegSubject(){
+        studentRegisterSubjectHashMap.clear();
+        try{
+            Scanner inpFile = new Scanner(new File("src/studentRegisterSubject.csv"));
+            inpFile.useDelimiter(",|\\n");
+            while (inpFile.hasNext()) {
+                String matriksNo = inpFile.next();
+                String subjectCode = inpFile.nextLine();
+                subjectCode=subjectCode.substring(2);
 
-            Student tempStud=studentHashMap.get(matriksNo);
-            Subject tempSubject=subjectHashMap.get(subjectCode);
+                Student tempStud=studentHashMap.get(matriksNo);
+                Subject tempSubject=subjectHashMap.get(subjectCode);
 
-            if(studentRegisterSubjectHashMap.get(tempStud)==null){
-                ArrayList<Subject> subjectToRegister=new ArrayList<>();
-                subjectToRegister.add(tempSubject);
-                studentRegisterSubjectHashMap.put(tempStud,subjectToRegister);
-            }
-            else{
-                boolean exist=false;
-                for(Subject s:studentRegisterSubjectHashMap.get(tempStud)){
-                    if(s.equals(tempSubject))
-                        exist=true;
+                if(studentRegisterSubjectHashMap.get(tempStud)==null){
+                    ArrayList<Subject> subjectToRegister=new ArrayList<>();
+                    subjectToRegister.add(tempSubject);
+                    studentRegisterSubjectHashMap.put(tempStud,subjectToRegister);
                 }
-                if(!exist)
-                    studentRegisterSubjectHashMap.get(tempStud).add(tempSubject); 
+                else{
+                    boolean exist=false;
+                    for(Subject s:studentRegisterSubjectHashMap.get(tempStud)){
+                        if(s.equals(tempSubject))
+                            exist=true;
+                    }
+                    if(!exist)
+                        studentRegisterSubjectHashMap.get(tempStud).add(tempSubject); 
+                }
+                
             }
-            
+            inpFile.close();
         }
-        inpFile.close();
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private static void readStudentTakeSubject() {
+        studentTakeSubjectHashMap.clear();
+        try{
+
+            Scanner inpFile = new Scanner(new File("src/studentTakeSubject.csv"));
+            inpFile.useDelimiter(",|\\n");
+            while (inpFile.hasNext()) {
+                String matriksno = inpFile.next();
+                String code = inpFile.nextLine();
+                code = code.substring(2);
+                
+                if(studentTakeSubjectHashMap.get(subjectHashMap.get(code))==null)
+                    studentTakeSubjectHashMap.put(subjectHashMap.get(code), new ArrayList<Student>());
+
+                studentTakeSubjectHashMap.get(subjectHashMap.get(code)).add(studentHashMap.get(matriksno));
+                
+            }
+            inpFile.close();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
 

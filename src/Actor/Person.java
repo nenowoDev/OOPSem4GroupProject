@@ -5,9 +5,7 @@ public abstract class Person {
     protected String name;
 
     // Constructor, getters, setters, etc.
-    public Person() {
-
-    }
+    public Person() {}
 
     public Person(String id, String name) {
         this.id = id;

@@ -343,7 +343,7 @@ public class Lecturer extends Person {
     /**
      * Displays the list of students registered for a given subject.
      * Reads student registrations from the CSV file and maps student IDs to names using getStudentMap().
-     * @param subjectCode The code of the subject
+     * subjectCode The code of the subject
      */
     private void displayStudentCount(String subjectCode) {
         System.out.println("Students registered for subject " + subjectCode + ":");
@@ -376,7 +376,7 @@ public class Lecturer extends Person {
 
     /**
      * Reads the student list from the CSV file and creates a map of student IDs to student names.
-     * @return A map where the keys are student IDs and the values are student names.
+     * return A map where the keys are student IDs and the values are student names.
      */
     private Map<String, String> getStudentMap() {
         Map<String, String> studentMap = new HashMap<>();
