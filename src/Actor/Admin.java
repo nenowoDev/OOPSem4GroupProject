@@ -24,7 +24,8 @@ public class Admin extends Person {
     private static HashMap<String,Subject> subjectHashMap;
     private static HashMap<String,Student> studentHashMap;
     private static HashMap<String,Lecturer> lecturerHashMap;
-
+    
+    private static HashMap<Subject,ArrayList<Student>> subjectStudentListHashMap;
     private static HashMap<Student,ArrayList<Subject>> studentRegisterSubjectHashMap;
     
     static{
@@ -37,6 +38,7 @@ public class Admin extends Person {
         lecturerHashMap=new HashMap<String,Lecturer>();
 
         studentRegisterSubjectHashMap=new HashMap<Student,ArrayList<Subject>>();
+        subjectStudentListHashMap=new HashMap<Subject,ArrayList<Student>>();
         try {
             readStudentList();
             readLecturerList();
@@ -47,6 +49,7 @@ public class Admin extends Person {
             lecturerArrListToHashMap();
 
             readStudentRegSubject();
+            readStudentTakeSubject();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -62,7 +65,7 @@ public class Admin extends Person {
 
 
        // 1. List Subjects
-       public void listSubjects() {
+    public void listSubjects() {
         System.out.println("Subjects available:");
         for (Subject subject : subjectList) {
             System.out.println("Code: " + subject.getCode() + ", Name: " + subject.getName());
@@ -236,7 +239,7 @@ public void dropSubjectCourse() {
         System.out.println("                          LIST OF LECTURERS");
         System.out.println("***********************************************************************\n");
         System.out.printf("%-12s%-32s\n", "\tSTAFF NO", "NAME");
-        System.out.printf("%-12s%-32s\n", "\t--------","-----------------------------");
+        System.out.printf("%-12s%-32s\n", "\t-----------","--------------------");
         for(Lecturer l:lecturerList){
             System.out.printf("\t%-12s\t%-32s\n",l.getId(),l.getName());
         }
@@ -247,14 +250,39 @@ public void dropSubjectCourse() {
 
     //TODO 8. Close Subjects
     public void closeSubjects() {
-        listSubjects();
+        System.out.println("***********************************************************************");
+        System.out.println("                          LIST OF SUBJECTS");
+        System.out.println("***********************************************************************\n");
+        System.out.printf("%-20s%-32s\n", "\tSUBJECT CODE", "TOTAL REGISTERED STUDENT");
+        System.out.printf("%-20s%-32s\n", "\t--------","-----------------------------");
+        for(Map.Entry<Subject,ArrayList<Student>> entry:subjectStudentListHashMap.entrySet()){
+            
+            System.out.printf("\t%-20s\t%-32s\n",entry.getKey().getCode(),entry.getValue().size());                
+            
+        }
         Scanner sc=new Scanner(System.in);
-        System.out.print("Subject to close :");
-        int temp=sc.nextInt();
-        sc.next();
+        System.out.print("\n\n\tEnter Subject Code to close : ");
+        String tempCode=sc.next();
         
-        
-        sc.close();
+        if(subjectHashMap.get(tempCode)!=null){
+            //set flag to false
+            subjectHashMap.get(tempCode).setFlag(false);
+            //TODO remove student from subject?
+            for(Student s:subjectStudentListHashMap.get(subjectHashMap.get(tempCode))){
+                
+            }
+
+            //Rewrite/remove the course from studentRegisterSubject.csv
+            try (FileWriter writer = new FileWriter("src/subjectList.csv")) {
+                for(Subject s:subjectList){
+                    writer.write(s.getCode()+","+s.getCreditHour()+","+s.getFlag()+","+s.getName()+"\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+            System.out.println("\n\n\tSubject does not exist");
     }
 
 
@@ -339,6 +367,23 @@ public void dropSubjectCourse() {
                 if(!exist)
                     studentRegisterSubjectHashMap.get(tempStud).add(tempSubject); 
             }
+            
+        }
+        inpFile.close();
+    }
+
+    private static void readStudentTakeSubject() throws IOException{
+        Scanner inpFile = new Scanner(new File("src/studentTakeSubject.csv"));
+        inpFile.useDelimiter(",|\\n");
+        while (inpFile.hasNext()) {
+            String matriksno = inpFile.next();
+            String code = inpFile.nextLine();
+            code = code.substring(2);
+            
+            if(subjectStudentListHashMap.get(subjectHashMap.get(code))==null)
+                subjectStudentListHashMap.put(subjectHashMap.get(code), new ArrayList<Student>());
+
+            subjectStudentListHashMap.get(subjectHashMap.get(code)).add(studentHashMap.get(matriksno));
             
         }
         inpFile.close();
