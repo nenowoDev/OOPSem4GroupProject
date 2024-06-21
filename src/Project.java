@@ -222,6 +222,7 @@ public class Project {
             menu();
             choice = sc.nextInt();
             sc.nextLine();
+            clearScreen();
             switch (choice) {
                 case 1:
                     stud = studentLoginCheck(student);
