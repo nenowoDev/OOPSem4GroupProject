@@ -231,24 +231,21 @@ public class Project {
                         studentMenu();
                         n1 = sc.nextInt();
                         sc.nextLine();
+                        clearScreen();
                         switch (n1) {
                             case 1:
-                                // studentMenu();
                                 stud.searchSubject(sc);
                                 sc.nextLine();
                                 break;
                             case 2:
-                                // studentMenu();
                                 stud.registerSubject(studentID_Entered);
                                 sc.nextLine();
                                 break;
                             case 3:
-                                // studentMenu();
                                 stud.dropSubject(studentID_Entered);
                                 sc.nextLine();
                                 break;
                             case 4:
-                                // studentMenu();
                                 stud.listSubjects();
                                 sc.nextLine();
                                 break;
@@ -272,6 +269,7 @@ public class Project {
                         lecturerMenu();
                         n2 = sc.nextInt();
                         sc.nextLine();
+                        clearScreen();
                         switch (n2) {
                             case 1:
                                 lect.viewSubjectDetails();
@@ -305,6 +303,7 @@ public class Project {
                         adminMenu();
                         n3 = sc.nextInt();
                         sc.nextLine();
+                        clearScreen();
                         switch (n3) {
                             case 1:
                                 // adminMenu();
