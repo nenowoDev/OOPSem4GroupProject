@@ -49,11 +49,10 @@ public class Student extends Person {
         boolean searchFound = false;
         int searchNo;
         do {
-
             System.out.println("Search Subject by?... ");
-            System.out.println("1.Subject Name");
-            System.out.println("2.Subject Code");
-            System.out.println("3.Subject's Credit Hour");
+            System.out.println("1. Subject Name");
+            System.out.println("2. Subject Code");
+            System.out.println("3. Subject's Credit Hour");
 
             while (!sc.hasNextInt()) {
                 System.out.println("Please enter a valid option (1-3): ");
@@ -61,9 +60,10 @@ public class Student extends Person {
             }
 
             searchNo = sc.nextInt();
-            sc.nextLine();
+            sc.nextLine(); // Consume the newline character
         } while (searchNo > 3 || searchNo < 1);
-        System.out.println("you click " + searchNo);
+
+        System.out.println("\nYou selected option " + searchNo);
         switch (searchNo) {
             case 1:
                 System.out.print("Enter Subject Name: ");
@@ -74,6 +74,9 @@ public class Student extends Person {
                                 .println(subject.getCode() + "  " + subject.getCreditHour() + "  " + subject.getName());
                         searchFound = true;
                     }
+                }
+                if (!searchFound) {
+                    System.out.println("Subject with name \"" + nameSearch + "\" not found.");
                 }
                 break;
             case 2:
@@ -86,10 +89,18 @@ public class Student extends Person {
                         searchFound = true;
                     }
                 }
+                if (!searchFound) {
+                    System.out.println("Subject with code \"" + codeSearch + "\" not found.");
+                }
                 break;
             case 3:
                 System.out.print("Enter Subject's Credit Hour: ");
+                while (!sc.hasNextInt()) {
+                    System.out.println("Please enter a valid credit hour (integer): ");
+                    sc.next(); // Consume the invalid input
+                }
                 int creditHourSearch = sc.nextInt();
+                sc.nextLine(); // Consume the newline character
                 for (Subject subject : registeredSubjects) {
                     if (subject.getCreditHour() == creditHourSearch) {
                         System.out
@@ -97,11 +108,13 @@ public class Student extends Person {
                         searchFound = true;
                     }
                 }
+                if (!searchFound) {
+                    System.out.println("No subjects found with credit hour \"" + creditHourSearch + "\".");
+                }
                 break;
             default:
                 System.out.println("Invalid option.");
         }
-
     }
 
     // 2. Register Subject
@@ -217,7 +230,6 @@ public class Student extends Person {
         }
     }
 
-    // just planning to add this one, if i have time
     // 5. List of Student's Subjects
     public void listStudentSubjects(String studentID) {
         System.out.println("Your current course enrollments ");
