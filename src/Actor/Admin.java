@@ -26,7 +26,7 @@ public class Admin extends Person {
     private static HashMap<String,Lecturer> lecturerHashMap;
 
     private static HashMap<Student,ArrayList<Subject>> studentRegisterSubjectHashMap;
-    
+    private static Scanner scanner = new Scanner(System.in);
     static{
         subjectList=new ArrayList<Subject>();
         studentsList=new ArrayList<Student>();
@@ -61,73 +61,88 @@ public class Admin extends Person {
     }
 
 
-       // 1. List Subjects
-       public void listSubjects() {
-        System.out.println("Subjects available:");
-        for (Subject subject : subjectList) {
-            System.out.println("Code: " + subject.getCode() + ", Name: " + subject.getName());
+        // 1. List Subjects
+        public void listSubjects() {
+            System.out.println("Subjects available:");
+            for (Subject subject : subjectList) {
+                System.out.println("Code: " + subject.getCode() + ", Name: " + subject.getName());
+            }
         }
-    }
-
-    // 2. Manage Subject Sections
-public void manageSubjectSections() {
-    System.out.println("Enter the subject code to manage sections: ");
-    String subjectCode = scanner.next();
-    Subject subject = subjectHashMap.get(subjectCode);
-    if (subject != null) {
-        System.out.println("Managing sections for: " + subject.getName());
-        System.out.println("1. Set Flag");
-        System.out.println("2. Remove Section");
-        System.out.print("Enter your choice: ");
-        int choice = scanner.nextInt();
-        switch (choice) {
-            case 1:
-                System.out.println("Enter new flag value (true/false): ");
-                boolean flag = scanner.nextBoolean();
-                subject.setFlag(flag);
-                System.out.println("Flag set to " + flag + " for " + subject.getName());
-                break;
-            case 2:
+    
+        // 2. Manage Subject Sections
+        public void manageSubjectSections() {
+            System.out.println("Enter the subject code to manage sections: ");
+            String subjectCode = scanner.next();
+            Subject subject = subjectHashMap.get(subjectCode);
+            if (subject != null) {
+                System.out.println("Managing sections for: " + subject.getName());
+                System.out.println("1. Set Flag");
+                System.out.println("2. Remove Section");
+                System.out.print("Enter your choice: ");
+                int choice = scanner.nextInt();
+                switch (choice) {
+                    case 1:
+                        System.out.println("Enter new flag value (true/false): ");
+                        boolean flag = scanner.nextBoolean();
+                        subject.setFlag(flag);
+                        System.out.println("Flag set to " + flag + " for " + subject.getName());
+                        break;
+                    case 2:
+                        subjectList.remove(subject);
+                        subjectHashMap.remove(subjectCode);
+                        System.out.println("Section removed.");
+                        break;
+                    default:
+                        System.out.println("Invalid choice.");
+                }
+            } else {
+                System.out.println("Subject not found.");
+            }
+        }
+    
+        // 3. Set Student Capacity
+        public void setStudentCapacity() {
+            System.out.println("Enter the subject code to set capacity: ");
+            String subjectCode = scanner.next();
+            Subject subject = subjectHashMap.get(subjectCode);
+            if (subject != null) {
+                System.out.println("Enter new capacity for: " + subject.getName());
+                int capacity = scanner.nextInt();
+                subject.setCapacity(capacity); // Set capacity using the new setter
+                System.out.println("Capacity set to " + capacity + " for " + subject.getName());
+            } else {
+                System.out.println("Subject not found.");
+            }
+        }
+    
+        // 4. Drop Subject/Course
+        public void dropSubjectCourse() {
+            // Sort subjects by code
+            subjectList.sort(Comparator.comparing(Subject::getCode));
+    
+            // Drop subjects with less than 10 registered students
+            Iterator<Subject> iterator = subjectList.iterator();
+            while (iterator.hasNext()) {
+                Subject subject = iterator.next();
+                if (subject.getRegisteredStudents().size() < 10) {
+                    iterator.remove();
+                    subjectHashMap.remove(subject.getCode());
+                    System.out.println("Subject " + subject.getName() + " has been dropped due to insufficient registrations.");
+                }
+            }
+    
+            // Manual drop option
+            System.out.println("Enter the subject code to drop: ");
+            String subjectCode = scanner.next();
+            Subject subject = subjectHashMap.get(subjectCode);
+            if (subject != null) {
                 subjectList.remove(subject);
                 subjectHashMap.remove(subjectCode);
-                System.out.println("Section removed.");
-                break;
-            default:
-                System.out.println("Invalid choice.");
+                System.out.println("Subject " + subject.getName() + " has been dropped.");
+            } else {
+                System.out.println("Subject not found.");
+            }
         }
-    } else {
-        System.out.println("Subject not found.");
-    }
-}
-
-// 3. Set Student Capacity
-public void setStudentCapacity() {
-    System.out.println("Enter the subject code to set capacity: ");
-    String subjectCode = scanner.next();
-    Subject subject = subjectHashMap.get(subjectCode);
-    if (subject != null) {
-        System.out.println("Enter new capacity for: " + subject.getName());
-        int capacity = scanner.nextInt();
-        subject.setCapacity(capacity); // Set capacity using the new setter
-        System.out.println("Capacity set to " + capacity + " for " + subject.getName());
-    } else {
-        System.out.println("Subject not found.");
-    }
-}
-
-// 4. Drop Subject/Course
-public void dropSubjectCourse() {
-    System.out.println("Enter the subject code to drop: ");
-    String subjectCode = scanner.next();
-    Subject subject = subjectHashMap.get(subjectCode);
-    if (subject != null) {
-        subjectList.remove(subject);
-        subjectHashMap.remove(subjectCode);
-        System.out.println("Subject " + subject.getName() + " has been dropped.");
-    } else {
-        System.out.println("Subject not found.");
-    }
-}
 
 
     // 5. Confirm Course Registrations

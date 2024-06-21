@@ -18,7 +18,7 @@ public class Subject {
     private int creditHour;
     private boolean flag;
     private int capacity; 
-
+    private ArrayList<Student> registeredStudents;
     // private ArrayList<Subject> subjectList;
     // private ArrayList<Student>registeredStudents;
     // private Lecturer lecturer;
@@ -34,8 +34,23 @@ public class Subject {
         this.creditHour = creditHour;
         this.flag = flag;
         this.capacity = 0;
+        this.registeredStudents = new ArrayList<>();
     }
 
+
+    public ArrayList<Student> getRegisteredStudents() {
+        return registeredStudents;
+    }
+
+
+    public void addStudent(Student student) {
+        if (registeredStudents.size() < capacity) {
+            registeredStudents.add(student);
+        } else {
+            System.out.println("Cannot add student, capacity reached.");
+        }
+    }
+    
     public String getCode() {
         return code;
     }
