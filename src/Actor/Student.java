@@ -53,6 +53,7 @@ public class Student extends Person {
             System.out.println("1. Subject Name");
             System.out.println("2. Subject Code");
             System.out.println("3. Subject's Credit Hour");
+            System.out.print("Enter your choice: ");
 
             while (!sc.hasNextInt()) {
                 System.out.println("Please enter a valid option (1-3): ");
@@ -126,38 +127,43 @@ public class Student extends Person {
 
         boolean alreadyRegistered = false;
 
-        try (BufferedReader br = new BufferedReader(new FileReader("src/studentTakeSubject.csv"))) {
+        // Check if subject is already registered by the student
+        try (BufferedReader br = new BufferedReader(new FileReader("src/studentRegisterSubject.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] details = line.split(", ");
-                if (details[0].equals(studentID)) {
-                    for (int i = 1; i < details.length; i++) {
-                        if (details[i].equalsIgnoreCase(code)) {
-                            alreadyRegistered = true;
-                            break;
-                        }
-                    }
-                }
-                if (alreadyRegistered) {
-                    System.out.println("failed to register: Subject already registered.");
-                    return;
+                if (details[0].equals(studentID) && details[1].equalsIgnoreCase(code)) {
+                    alreadyRegistered = true;
+                    break;
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        // If subject is already registered, inform the student and return
+        if (alreadyRegistered) {
+            System.out.println("Failed to register: Subject already registered.");
+            return;
+        }
+
+        // Check if subject is open for registration
         boolean subjectFound = false;
         for (Subject subject : registeredSubjects) {
             if (subject.getCode().equalsIgnoreCase(code)) {
                 subjectFound = true;
-                try (FileWriter writer = new FileWriter("src/studentTakeSubject.csv", true)) {
-                    writer.append(studentID).append(", ")
-                            .append(code).append("\n");
-                    System.out.println("Subject registered successfully: " + code);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    System.out.println("Error writing to file.");
+                if (subject.getFlag()) { // Check if subject is open
+                    // Add subject registration to studentRegisterSubject.csv file for admin
+                    // approval
+                    try (FileWriter writer = new FileWriter("src/studentRegisterSubject.csv", true)) {
+                        writer.append(studentID).append(", ").append(code).append("\n");
+                        System.out.println("Subject registration request sent successfully: " + code);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        System.out.println("Error writing to file.");
+                    }
+                } else {
+                    System.out.println("Failed to register: Subject is closed for registration.");
                 }
                 break;
             }
@@ -185,14 +191,14 @@ public class Student extends Person {
                 if (parts[0].equals(studentID)) {
                     if (parts[1].equalsIgnoreCase(code)) {
                         subjectFound = true;
-                        // Get subject name from registeredSubjects list
+                        // RETRIEVE data from registeredSubjects list
                         String subjectName = registeredSubjects.stream()
                                 .filter(subject -> subject.getCode().equalsIgnoreCase(code))
                                 .map(Subject::getName)
                                 .findFirst()
                                 .orElse("Unknown Subject");
 
-                        // Write to DroppingSubject.csv
+                        // WRITE to DroppingSubject
                         try (FileWriter writer = new FileWriter("src/DroppingSubject.csv", true)) {
                             writer.append(studentID).append(",")
                                     .append("FALSE").append(",")
