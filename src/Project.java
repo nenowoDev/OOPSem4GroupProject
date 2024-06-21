@@ -212,9 +212,11 @@ public class Project {
         inpFile = new Scanner(new File("src/adminList.csv"));
         ArrayList<Admin> admin = readAdmin(inpFile);
 
+        
         Student stud;
         Lecturer lect;
         Admin adm;
+        Admin.getLists(student, lecturer);
         int choice;
         do {
             menu();

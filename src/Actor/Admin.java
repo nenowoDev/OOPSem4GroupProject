@@ -30,8 +30,8 @@ public class Admin extends Person {
     
     static{
         subjectList=new ArrayList<Subject>();
-        studentsList=new ArrayList<Student>();
-        lecturerList=new ArrayList<Lecturer>();
+        // studentsList=new ArrayList<Student>();
+        // lecturerList=new ArrayList<Lecturer>();
         
         subjectHashMap=new HashMap<String,Subject>();
         studentHashMap=new HashMap<String,Student>();
@@ -39,21 +39,7 @@ public class Admin extends Person {
 
         studentRegisterSubjectHashMap=new HashMap<Student,ArrayList<Subject>>();
         subjectStudentListHashMap=new HashMap<Subject,ArrayList<Student>>();
-        try {
-            readStudentList();
-            readLecturerList();
-            readSubjectList();
-            
-            subjectArrListToHashMap();
-            studentArrListToHashMap();
-            lecturerArrListToHashMap();
-
-            readStudentRegSubject();
-            readStudentTakeSubject();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        
     }
     
     public Admin(String id, String name) {
@@ -184,9 +170,12 @@ public void dropSubjectCourse() {
                 if(s.getCode().equals(tempSubjectCode))
                     correct=true;
             }
-            if(!correct)
+            if(!correct){
                 System.out.println("\n\n\tThe Student did not register that subject ! ! !");
                 System.out.println("\tPlease Try again . . . ");
+            }
+            else
+                System.out.println("\n\n\tSubject added to Student's Subject List");
         }
 
         // Add the course to the student's registered course
@@ -287,30 +276,30 @@ public void dropSubjectCourse() {
 
 
 
-    private static void readStudentList() throws IOException{
-        Scanner inpFile = new Scanner(new File("src/studentList.csv"));
-        inpFile.useDelimiter(",|\\n");
-        while (inpFile.hasNext()) {
-            String matrikxno = inpFile.next();
-            String name = inpFile.nextLine();
-            name = name.substring(1);
-            Student student = new Student(matrikxno, name);
-            studentsList.add(student);
-        }
-        inpFile.close();
-    }
-    private static void readLecturerList() throws IOException{
-        Scanner inpFile = new Scanner(new File("src/lecturerList.csv"));
-        inpFile.useDelimiter(",|\\n");
-        while (inpFile.hasNext()) {
-            String staffNo = inpFile.next();
-            String name = inpFile.nextLine();
-            name = name.substring(1);
-            Lecturer lecturer = new Lecturer(staffNo, name);
-            lecturerList.add(lecturer);
-        }
-        inpFile.close();
-    }
+    // private static void readStudentList() throws IOException{
+    //     Scanner inpFile = new Scanner(new File("src/studentList.csv"));
+    //     inpFile.useDelimiter(",|\\n");
+    //     while (inpFile.hasNext()) {
+    //         String matrikxno = inpFile.next();
+    //         String name = inpFile.nextLine();
+    //         name = name.substring(1);
+    //         Student student = new Student(matrikxno, name);
+    //         studentsList.add(student);
+    //     }
+    //     inpFile.close();
+    // }
+    // private static void readLecturerList() throws IOException{
+    //     Scanner inpFile = new Scanner(new File("src/lecturerList.csv"));
+    //     inpFile.useDelimiter(",|\\n");
+    //     while (inpFile.hasNext()) {
+    //         String staffNo = inpFile.next();
+    //         String name = inpFile.nextLine();
+    //         name = name.substring(1);
+    //         Lecturer lecturer = new Lecturer(staffNo, name);
+    //         lecturerList.add(lecturer);
+    //     }
+    //     inpFile.close();
+    // }
     private static void readSubjectList() throws IOException{
         Scanner inpFile = new Scanner(new File("src/subjectList.csv"));
         inpFile.useDelimiter(",|\\n");
@@ -324,6 +313,32 @@ public void dropSubjectCourse() {
             subjectList.add(subject);
         }
         inpFile.close();
+    }
+
+    public static void getLists(ArrayList<Student> studList,ArrayList<Lecturer> lectList){
+        
+        studentsList=studList;
+        lecturerList=lectList;
+        // subjectList=subjList; main does not provide subject list
+
+        ArrayListtoHashMap();
+    }
+
+    private static void ArrayListtoHashMap(){
+        try {
+
+            readSubjectList(); //main does not provide subject list
+
+            subjectArrListToHashMap();
+            studentArrListToHashMap();
+            lecturerArrListToHashMap();
+
+            readStudentRegSubject();
+            readStudentTakeSubject();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void subjectArrListToHashMap(){
