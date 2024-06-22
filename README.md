@@ -42,3 +42,42 @@ To run this project locally, follow these steps:
 
 ## Usage
 Upon running the application, you will be presented with a main menu to choose between Student, Lecturer, Admin, or exit the application.
+
+### Main Menu
+    COURSE REGISTRATION SYSTEM
+        -----------------
+            MAIN MENU
+        -----------------
+
+          SELECT OPTION
+        (PRESS 4 TO EXIT)
+
+     ENTER AN OPTION -> 
+
+Depending on the selected option, you will be guided through a login process and then to the respective sub-menu for each role.
+
+### Student Menu
+- Search subject
+- Register Subject
+- Drop Subject
+- List of Subjects
+- List All registered Subjects
+- Back to Main Menu
+
+### Lecturer Menu
+- View Subject Details
+- Choose Subject to Teach
+- Drop Subject
+- Subject Student List
+- Back to Main Menu
+
+### Admin Menu
+- List Subjects
+- Manage Subject Sections
+- Set Student Capacity
+- Drop Subject/Course
+- Confirm Course Registrations
+- List Registered Students
+- List Registered Lecturers
+- Close Subjects
+- Back to Main Menu
