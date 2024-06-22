@@ -81,3 +81,25 @@ Depending on the selected option, you will be guided through a login process and
 - List Registered Lecturers
 - Close Subjects
 - Back to Main Menu
+
+## Actors and Their Roles
+1. **Student**: Can search, register, drop, and list subjects.
+2. **Lecturer**: Can view details of subjects, choose subjects to teach, drop subjects, and view lists of students registered in subjects.
+3. **Admin**: Manages subjects, sections, student capacities, and registration confirmations.
+
+## File Structure
+- `Project.java`: The main class file containing the menu and logic for the application.
+- `Actor/`: Directory containing the Java classes for `Student`, `Lecturer`, and `Admin`.
+- `src/`: Directory containing CSV files for student, lecturer, and admin lists.
+
+## Contributing
+Contributions are welcome! Please fork the repository and create a pull request with your changes. Ensure your code follows the established style and passes all tests.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Create a new Pull Request
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for more details.
