@@ -25,6 +25,8 @@ public class Admin extends Person {
     
     private static HashMap<Subject,ArrayList<Student>> studentTakeSubjectHashMap;
     private static HashMap<Student,ArrayList<Subject>> studentRegisterSubjectHashMap;
+    private static HashMap<Student,ArrayList<Subject>> studentDropSubjectHashMap;
+
     private static Scanner scanner = new Scanner(System.in);
     static{
         subjectList=new ArrayList<Subject>();
@@ -35,8 +37,9 @@ public class Admin extends Person {
         studentHashMap=new HashMap<String,Student>();
         lecturerHashMap=new HashMap<String,Lecturer>();
 
-        studentRegisterSubjectHashMap=new HashMap<Student,ArrayList<Subject>>();
         studentTakeSubjectHashMap=new HashMap<Subject,ArrayList<Student>>();
+        studentRegisterSubjectHashMap=new HashMap<Student,ArrayList<Subject>>();
+        studentDropSubjectHashMap=new HashMap<Student,ArrayList<Subject>>();
         
     }
     
@@ -152,34 +155,99 @@ private void updateSubjectSectionCSV(String subjectCode, boolean flag) {
         }
     }
     
-        // 4. Drop Subject/Course
-        public void dropSubjectCourse() {
-            // Sort subjects by code
-            subjectList.sort(Comparator.comparing(Subject::getCode));
-    
-            // Drop subjects with less than 10 registered students
-            Iterator<Subject> iterator = subjectList.iterator();
-            while (iterator.hasNext()) {
-                Subject subject = iterator.next();
-                if (subject.getRegisteredStudents().size() < 10) {
-                    iterator.remove();
-                    subjectHashMap.remove(subject.getCode());
-                    System.out.println("Subject " + subject.getName() + " has been dropped due to insufficient registrations.");
-                }
+    // 4. Drop Subject/Course
+    public void dropSubjectCourse() {
+        readStudentDropSubject();
+        readStudentTakeSubject();
+        
+        System.out.println("***********************************************************************");
+        System.out.println("                    CONFIRM SUBJECT DROP?");
+        System.out.println("***********************************************************************\n");
+        System.out.printf("%-20s%-32s\n", "\tMATRIKS NO", "COURSE CODE");
+        System.out.printf("%-20s%-32s\n", "\t--------","---------------------");
+        for (Map.Entry<Student, ArrayList<Subject>> entry : studentDropSubjectHashMap.entrySet()) {
+            for(Subject s:entry.getValue())
+                System.out.printf("\t%-20s\t%-32s\n",entry.getKey().getId() , s.getCode());
+        }
+
+        String tempMatriksNo="";
+        boolean correct=false;
+        while(!correct){
+            System.out.print("\n\n\t\tENTER Matriks NO : ");
+            Scanner sc=new Scanner(System.in);
+            tempMatriksNo=sc.nextLine();
+            if(studentRegisterSubjectHashMap.get(studentHashMap.get(tempMatriksNo))!=null){
+                correct=true;
             }
-    
-            // Manual drop option
-            System.out.println("Enter the subject code to drop: ");
-            String subjectCode = scanner.next();
-            Subject subject = subjectHashMap.get(subjectCode);
-            if (subject != null) {
-                subjectList.remove(subject);
-                subjectHashMap.remove(subjectCode);
-                System.out.println("Subject " + subject.getName() + " has been dropped.");
-            } else {
-                System.out.println("Subject not found.");
+            if(!correct){
+                System.out.println("\n\n\tNo such student request to drop any subject ! ! !");
+                System.out.println("\tPlease Try again . . . ");
             }
         }
+        
+            
+        
+        System.out.println("***********************************************************************");
+        System.out.println("                    CONFIRM SUBJECT DROP");
+        System.out.println("***********************************************************************\n");
+        System.out.printf("%-20s%-32s\n", "\tMATRIKS NO", "COURSE CODE");
+        System.out.printf("%-20s%-32s\n", "\t--------","---------------------");
+        
+        for (Map.Entry<Student, ArrayList<Subject>> entry : studentDropSubjectHashMap.entrySet()) {
+            if(entry.getKey().getId().equals(tempMatriksNo))
+                for(Subject s:entry.getValue()) 
+                    System.out.printf("\t%-20s\t%-32s\n",entry.getKey().getId() , s.getCode());
+        }
+
+        String tempSubjectCode="";
+        correct=false;
+    
+        System.out.print("\n\n\t\tENTER Subject Code : ");
+        Scanner sc=new Scanner(System.in);
+        tempSubjectCode=sc.nextLine();
+        for(Subject s:studentDropSubjectHashMap.get(studentHashMap.get(tempMatriksNo))){
+            if(s.getCode().equals(tempSubjectCode))
+                correct=true;
+        }
+        if(!correct){
+            System.out.println("\n\n\tThe Student did not register that subject ! ! !");
+            System.out.println("\tPlease Try again . . . ");
+        }
+        else
+            System.out.println("\n\n\tSubject added to Student's Subject List");
+        
+
+        if(correct){
+            // Remove the course from studenttakesubject hashmap
+            studentTakeSubjectHashMap.get(subjectHashMap.get(tempSubjectCode)).remove(studentHashMap.get(tempMatriksNo));
+
+            // rewrite the student take subject file
+            try (FileWriter writer = new FileWriter("src/studentTakeSubject.csv")) {
+                for (Map.Entry<Subject, ArrayList<Student>> entry : studentTakeSubjectHashMap.entrySet()) {
+                    for(Student s:entry.getValue()){
+                        writer.write(s.getId()+", "+entry.getKey().getCode()+"\n");
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Remove the course from student drop hashmap
+            studentDropSubjectHashMap.get(studentHashMap.get(tempMatriksNo)).remove(subjectHashMap.get(tempSubjectCode));
+
+            // rewrite the dropping subject file
+            try (FileWriter writer = new FileWriter("src/DroppingSubject.csv")) {
+                for (Map.Entry<Student, ArrayList<Subject>> entry : studentDropSubjectHashMap.entrySet()) {
+                    for(Subject s:entry.getValue()){
+                        writer.write(entry.getKey().getId()+","+"FALSE"+","+s.getCode()+","+s.getName()+"\n");
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
 
 
     // 5. Confirm Course Registrations
@@ -405,7 +473,7 @@ private void updateSubjectSectionCSV(String subjectCode, boolean flag) {
     
 
     private static void ArrayListtoHashMap(){
-       
+    
 
         readSubjectList(); //main does not provide subject list
 
@@ -415,6 +483,7 @@ private void updateSubjectSectionCSV(String subjectCode, boolean flag) {
 
         readStudentRegSubject();
         readStudentTakeSubject();
+        readStudentDropSubject();
 
         
     }
@@ -495,6 +564,40 @@ private void updateSubjectSectionCSV(String subjectCode, boolean flag) {
         }
     }
 
+
+    private static void readStudentDropSubject() {
+        studentDropSubjectHashMap.clear();
+        try{
+
+            Scanner inpFile = new Scanner(new File("src/DroppingSubject.csv"));
+            inpFile.useDelimiter(",|\\n");
+            while (inpFile.hasNext()) {
+                String matriksno = inpFile.next();
+                inpFile.next();
+                String code = inpFile.next();
+                inpFile.nextLine();
+
+                if(studentDropSubjectHashMap.get(studentHashMap.get(matriksno))==null)
+                    studentDropSubjectHashMap.put(studentHashMap.get(matriksno), new ArrayList<Subject>());
+                boolean exist=false;
+                for(Subject s:studentDropSubjectHashMap.get(studentHashMap.get(matriksno))){
+                    if(s.getCode().equals(code))
+                        exist=true;
+                }
+                if(!exist)
+                    studentDropSubjectHashMap.get(studentHashMap.get(matriksno)).add(subjectHashMap.get(code));
+                
+            }
+            inpFile.close();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    
 
 
 }
