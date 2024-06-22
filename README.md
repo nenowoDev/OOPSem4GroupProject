@@ -1,18 +1,18 @@
-## Getting Started
+# Course Registration System
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## Overview
+The Course Registration System is a Java-based application that facilitates course registration for students, lecturers, and administrators. It provides functionalities for viewing, registering, and managing courses, with authentication mechanisms for different user roles.
 
-## Folder Structure
+## Table of Contents
+1. [Features](#features)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Actors and Their Roles](#actors-and-their-roles)
+5. [File Structure](#file-structure)
+6. [Contributing](#contributing)
+7. [License](#license)
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Features
+- **Student Functions**: Search for subjects, register for subjects, drop subjects, and list registered subjects.
+- **Lecturer Functions**: View subject details, choose subjects to teach, drop subjects, and view subject student lists.
+- **Admin Functions**: List subjects, manage subject sections, set student capacity, drop subjects, confirm course registrations, and list registered students and lecturers.
