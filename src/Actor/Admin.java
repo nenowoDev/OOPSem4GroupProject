@@ -50,7 +50,41 @@ public class Admin extends Person {
         
     }
 
+    public void displaySubjectSections() {
+        HashMap<String, String> subjectNames = new HashMap<>();
 
+        // Read subject names from subjectList.csv
+        try (BufferedReader br = new BufferedReader(new FileReader("src/subjectList.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                String code = parts[0];
+                String name = parts[3];
+                subjectNames.put(code, name);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Display subject sections with course names
+        System.out.println("-----------------------------------------------------");
+        System.out.printf("%-10s %-10s %-6s %-30s\n", "Code", "Capacity", "Section", "Name");
+        System.out.println("-----------------------------------------------------");
+        try (BufferedReader br = new BufferedReader(new FileReader("src/subjectsection.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                String code = parts[0];
+                String credits = parts[1];
+                String open = parts[2];
+                String name = subjectNames.getOrDefault(code, "Unknown");
+                System.out.printf("%-10s %-10s %-6s %-30s\n", code, credits, open, name);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("-----------------------------------------------------");
+    }
        // 1. List Subjects
     public void listSubjects() {
         System.out.println("Subjects available:");
@@ -58,86 +92,42 @@ public class Admin extends Person {
             System.out.println("Code: " + subject.getCode() + ", Name: " + subject.getName());
         }
     } 
-// 2. Manage Subject Sections
-public void manageSubjectSections() {
-    System.out.println("Enter the subject code to manage sections: ");
-    String subjectCode = scanner.next();
-    Subject subject = subjectHashMap.get(subjectCode);
-    if (subject != null) {
-        System.out.println("Managing sections for: " + subject.getName());
-        System.out.println("1. Open Section");
-        System.out.println("2. Close Section");
-        System.out.print("Enter your choice: ");
-        int choice = scanner.nextInt();
-        boolean flag = (choice == 1);
-        if (choice == 1 || choice == 2) {
-            subject.setFlag(flag);
-            updateSubjectSectionCSV(subjectCode, flag);
-            System.out.println("Section for " + subject.getName() + " is now " + (flag ? "open" : "closed"));
-        } else {
-            System.out.println("Invalid choice.");
-        }
-    } else {
-        System.out.println("Subject not found.");
-    }
-}
 
-// Method to update the subject section CSV file
-private void updateSubjectSectionCSV(String subjectCode, boolean flag) {
-    List<String> lines = new ArrayList<>();
-    try (BufferedReader br = new BufferedReader(new FileReader("src/subjectsection.csv"))) {
-        String line;
-        while ((line = br.readLine()) != null) {
-            String[] parts = line.split(",");
-            if (parts[0].equals(subjectCode)) {
-                parts[2] = String.valueOf(flag);
-                line = String.join(",", parts);
-            }
-            lines.add(line);
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-    try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/subjectsection.csv"))) {
-        for (String line : lines) {
-            bw.write(line);
-            bw.newLine();
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
-
-    
-        // 3. Set Student Capacity
-    public void setStudentCapacity() {
-        System.out.println("Enter the subject code to set capacity: ");
+    // 2. Manage Subject Sections
+    public void manageSubjectSections() {
+        displaySubjectSections(); // Call the method to display the CSV contents
+        System.out.println("Enter the subject code to manage sections: ");
         String subjectCode = scanner.next();
         Subject subject = subjectHashMap.get(subjectCode);
         if (subject != null) {
-            System.out.println("Enter new capacity for: " + subject.getName() + " (must be below 16):");
-            int capacity = scanner.nextInt();
-            if (capacity < 16) {
-                subject.setCapacity(capacity); // Set capacity using the setter
-                updateSubjectCapacityInCSV(subjectCode, capacity);
-                System.out.println("Capacity set to " + capacity + " for " + subject.getName());
+            System.out.println("Managing sections for: " + subject.getName());
+            System.out.println("1. Open Section");
+            System.out.println("2. Close Section");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            boolean flag = (choice == 1);
+            if (choice == 1 || choice == 2) {
+                subject.setFlag(flag);
+                updateSubjectSectionCSV(subjectCode, flag);
+                System.out.println("Section for " + subject.getName() + " is now " + (flag ? "open" : "closed"));
+                displaySubjectSections(); // Display the updated CSV contents
             } else {
-                System.out.println("Capacity must be below 16. Please try again.");
+                System.out.println("Invalid choice.");
             }
         } else {
             System.out.println("Subject not found.");
         }
     }
 
-    // Method to update the subject capacity in the CSV file
-    private void updateSubjectCapacityInCSV(String subjectCode, int capacity) {
+    // Method to update the subject section CSV file
+    private void updateSubjectSectionCSV(String subjectCode, boolean flag) {
         List<String> lines = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("src/subjectsection.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts[0].equals(subjectCode)) {
-                    parts[1] = String.valueOf(capacity);
+                    parts[2] = String.valueOf(flag);
                     line = String.join(",", parts);
                 }
                 lines.add(line);
@@ -154,6 +144,60 @@ private void updateSubjectSectionCSV(String subjectCode, boolean flag) {
             e.printStackTrace();
         }
     }
+
+    
+           // 3. Set Student Capacity
+    public void setStudentCapacity() {
+        displaySubjectSections(); // Call the method to display the CSV contents
+        System.out.println("Enter the subject code to set capacity: ");
+        String subjectCode = scanner.next();
+        Subject subject = subjectHashMap.get(subjectCode);
+        if (subject != null) {
+            System.out.println("Enter new capacity for: " + subject.getName() + " (must be below 16):");
+            int capacity = scanner.nextInt();
+            if (capacity < 16) {
+                updateSubjectSection(subjectCode, null, capacity);
+                System.out.println("Capacity set to " + capacity + " for " + subject.getName());
+                displaySubjectSections(); // Display the updated CSV contents
+            } else {
+                System.out.println("Capacity must be below 16. Please try again.");
+            }
+        } else {
+            System.out.println("Subject not found.");
+        }
+    }
+
+    // Method to update the subject section CSV file
+    private void updateSubjectSection(String subjectCode, Boolean flag, Integer capacity) {
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("src/subjectsection.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts[0].equals(subjectCode)) {
+                    if (flag != null) {
+                        parts[2] = String.valueOf(flag);
+                    }
+                    if (capacity != null) {
+                        parts[1] = String.valueOf(capacity);
+                    }
+                    line = String.join(",", parts);
+                }
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/subjectsection.csv"))) {
+            for (String line : lines) {
+                bw.write(line);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     
     // 4. Drop Subject/Course
     public void dropSubjectCourse() {
