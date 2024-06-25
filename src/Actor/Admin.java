@@ -70,7 +70,8 @@ public class Admin extends Person {
         }
         System.out.println("-----------------------------------------------------");
     }
-       // 1. List Subjects
+    
+    // 1. List Subjects
     public void listSubjects() {
         System.out.println("-----------------------------------------------------------------------");
         System.out.println("                          LIST OF SUBJECTS");
@@ -81,6 +82,7 @@ public class Admin extends Person {
             System.out.printf("\t%-11s%-33s%5d\n", s.getCode(), s.getName(), s.getCreditHour());
         }
         System.out.println();
+        System.out.println("-----------------------------------------------------------------------");
     }
 
     // 2. Manage Subject Sections
