@@ -88,11 +88,9 @@ public class Subject {
     }
 
     public void display() {
-        //
         ArrayList<Subject> subjectList = new ArrayList<>();
-        //
         System.out.println("***********************************************************************");
-        System.out.println("                          LIST OF COURSES");
+        System.out.println("                          LIST OF SUBJECTS");
         System.out.println("***********************************************************************\n");
         System.out.printf("%-12s%-32s%5s\n", "\tCODE", "COURSE NAME", "CREDIT HOUR");
         System.out.printf("%-12s%-32s%5s\n", "\t--------", "-----------------------------", "-----------");

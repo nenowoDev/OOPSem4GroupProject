@@ -28,17 +28,17 @@ public class Project {
 
     public static void studentMenu() {
         clearScreen();
-        System.out.println("******************************");
-        System.out.println("           STUDENT");
-        System.out.println("******************************\n");
-        System.out.println("        ------------");
-        System.out.println("            MENU");
-        System.out.println("        ------------\n");
+        System.out.println("*************************************");
+        System.out.println("               STUDENT");
+        System.out.println("*************************************\n");
+        System.out.println("            ------------");
+        System.out.println("                MENU");
+        System.out.println("            ------------\n");
         System.out.println("  1. Search subject");
         System.out.println("  2. Register Subject");
         System.out.println("  3. Drop Subject");
         System.out.println("  4. List of Subjects");
-        System.out.println("  5. List All registered  Subjects");
+        System.out.println("  5. List All registered Subjects");
         System.out.println("  6. Back to Main Menu\n");
         System.out.print("   ENTER YOUR OPTION -> ");
     }
@@ -75,7 +75,7 @@ public class Project {
         System.out.println("  6. List Registered Students");
         System.out.println("  7. List Registered Lecturers");
         System.out.println("  8. Close Subjects");
-        System.out.println(" 9. Back to Main Menu\n");
+        System.out.println("  9. Back to Main Menu\n");
         System.out.print("   ENTER YOUR OPTION -> ");
     }
 
@@ -107,7 +107,7 @@ public class Project {
             studentID_Entered = id;
             for (Student p : per) {
                 if (p.getId().equals(id)) {
-                    System.out.println("\n\n    Welcome, " + p.getName());
+                    System.out.println("\n\n\n    Welcome, " + p.getName());
                     s = new Student(p.getId(), p.getName());
                     found = true;
                     return s;
@@ -148,7 +148,7 @@ public class Project {
             String id = sc.nextLine();
             for (Lecturer p : per) {
                 if (p.getId().equals(id)) {
-                    // System.out.println("\n\n\n Welcome, " + p.getName());
+                    System.out.println("\n\n\n    Welcome, " + p.getName());
                     l = new Lecturer(p.getId(), p.getName());
                     found = true;
                     return l;
@@ -188,7 +188,7 @@ public class Project {
             String id = sc.nextLine();
             for (Admin p : per) {
                 if (p.getId().equals(id)) {
-                    // System.out.println("\n\n\n Welcome, " + p.getName());
+                    System.out.println("\n\n\n      Welcome, " + p.getName());
                     a = new Admin(p.getId(), p.getName());
                     found = true;
                     return a;

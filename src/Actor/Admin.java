@@ -72,14 +72,15 @@ public class Admin extends Person {
     }
        // 1. List Subjects
     public void listSubjects() {
-        System.out.println("Subjects available:");
-        System.out.println("-----------------------------------------------------------");
-        System.out.printf("%-10s %-30s\n", "Code", "Name");
-        System.out.println("-----------------------------------------------------------");
-        for (Subject subject : subjectList) {
-            System.out.printf("%-10s %-30s\n", subject.getCode(), subject.getName());
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("                          LIST OF SUBJECTS");
+        System.out.println("-----------------------------------------------------------------------\n");
+        System.out.printf("%-12s%-32s%5s\n", "\tCODE", "COURSE NAME", "CREDIT HOUR");
+        System.out.printf("%-12s%-32s%5s\n", "\t--------", "-----------------------------", "-----------");
+        for (Subject s : subjectList) {
+            System.out.printf("\t%-11s%-33s%5d\n", s.getCode(), s.getName(), s.getCreditHour());
         }
-        System.out.println("-----------------------------------------------------------");
+        System.out.println();
     }
 
     // 2. Manage Subject Sections

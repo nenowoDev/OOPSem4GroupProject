@@ -38,13 +38,13 @@ public class Lecturer extends Person {
     }
 
     public void viewSubjectDetails() {
-        String title = "Subject Details:";
-        int totalWidth = 10 + 15 + 40; // Adjusted width for better alignment
-        int padding = (totalWidth - title.length()) / 2;
-        String paddedTitle = String.format("%" + (padding + title.length()) + "s", title);
+        // String title = "Subject Details:";
+        // int totalWidth = 10 + 15 + 40; // Adjusted width for better alignment
+        // int padding = (totalWidth - title.length()) / 2;
+        // String paddedTitle = String.format("%" + (padding + title.length()) + "s", title);
 
         System.out.println("-------------------------------------------------------------");
-        System.out.println(paddedTitle);
+        System.out.println("                   LIST OF SUBJECTS");
         System.out.println("-------------------------------------------------------------");
         System.out.printf("%-10s%-15s%-40s\n", "Code", "Credit Hour", "Name");
         System.out.println("-------------------------------------------------------------");
@@ -60,7 +60,7 @@ public class Lecturer extends Person {
                     String name = parts[3].trim();
                     if (!displayedSubjects.contains(code)) {
                         displayedSubjects.add(code);
-                        System.out.printf("%-10s%-15s%-40s\n", code, creditHour, name);
+                        System.out.printf("%-15s%-10s%-40s\n", code, creditHour, name);
                     }
                 } else {
                     System.out.println("Invalid data format: " + line);
@@ -71,22 +71,22 @@ public class Lecturer extends Person {
             System.out.println("File not found: " + SUBJECT_LIST_PATH);
         }
         System.out.println("-------------------------------------------------------------");
-        System.out.print("Press 0 to return to menu: ");
-        Scanner scanner = new Scanner(System.in);
-        while (!scanner.hasNextInt() || scanner.nextInt() != 0) {
-            System.out.print("Invalid input. Please press 0 to return to menu: ");
-            scanner.nextLine();
-        }
+    //     System.out.print("Press 0 to return to menu: ");
+    //     Scanner scanner = new Scanner(System.in);
+    //     while (!scanner.hasNextInt() || scanner.nextInt() != 0) {
+    //         System.out.print("Invalid input. Please press 0 to return to menu: ");
+    //         scanner.nextLine();
+    //     }
     }
 
     public void chooseSubjectToTeach() {
-        String title = "Choose Subject to Teach:";
-        int totalWidth = 5 + 10 + 30; // Widths of the columns plus the "No." column
-        int padding = (totalWidth - title.length()) / 2;
-        String paddedTitle = String.format("%" + (padding + title.length()) + "s", title);
+        // String title = "Choose Subject to Teach";
+        // int totalWidth = 5 + 10 + 30; // Widths of the columns plus the "No." column
+        // int padding = (totalWidth - title.length()) / 2;
+        // String paddedTitle = String.format("%" + (padding + title.length()) + "s", title);
 
         System.out.println("-------------------------------------------------------");
-        System.out.println(paddedTitle);
+        System.out.println("               Choose Subject to Teach");
         System.out.println("-------------------------------------------------------");
         System.out.printf("%-5s%-10s%-30s\n", "No.", "Code", "Name");
         System.out.println("-------------------------------------------------------");
@@ -111,7 +111,7 @@ public class Lecturer extends Person {
         }
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------\n");
         System.out.print("Enter the number of the subject you want to teach: ");
         int choice;
         while (!sc.hasNextInt()) {
@@ -147,19 +147,19 @@ public class Lecturer extends Person {
 
             if (isCurrentLecturerTeaching) {
                 System.out.println("You are already teaching this subject.");
-                System.out.print("Press 0 to return to menu: ");
-                while (!sc.hasNextInt() || sc.nextInt() != 0) {
-                    System.out.print("Invalid input. Please press 0 to return to menu: ");
-                    sc.nextLine();
-                }
+                // System.out.print("Press 0 to return to menu: ");
+                // while (!sc.hasNextInt() || sc.nextInt() != 0) {
+                //     System.out.print("Invalid input. Please press 0 to return to menu: ");
+                //     sc.nextLine();
+                // }
                 return;
             } else if (isSubjectAlreadyAdded) {
                 System.out.println("There is another lecturer teaching this subject already.");
-                System.out.print("Press 0 to return to menu: ");
-                while (!sc.hasNextInt() || sc.nextInt() != 0) {
-                    System.out.print("Invalid input. Please press 0 to return to menu: ");
-                    sc.nextLine();
-                }
+                // System.out.print("Press 0 to return to menu: ");
+                // while (!sc.hasNextInt() || sc.nextInt() != 0) {
+                //     System.out.print("Invalid input. Please press 0 to return to menu: ");
+                //     sc.nextLine();
+                // }
                 return;
             }
 
@@ -175,12 +175,13 @@ public class Lecturer extends Person {
         } else {
             System.out.println("Invalid choice. Subject not found.");
         }
-
-        System.out.print("Press 0 to return to menu: ");
-        while (!sc.hasNextInt() || sc.nextInt() != 0) {
-            System.out.print("Invalid input. Please press 0 to return to menu: ");
-            sc.nextLine();
-        }
+        System.out.println();
+        System.out.println("-------------------------------------------------------");
+        // System.out.print("Press 0 to return to menu: ");
+        // while (!sc.hasNextInt() || sc.nextInt() != 0) {
+        //     System.out.print("Invalid input. Please press 0 to return to menu: ");
+        //     sc.nextLine();
+        // }
     }
 
     public void dropSubject() {
@@ -214,7 +215,7 @@ public class Lecturer extends Person {
 
         Scanner sc = new Scanner(System.in);
         System.out.println(separator);
-        System.out.print("Enter the number of the subject you want to drop or Press 0 to return to menu: ");
+        System.out.print("\nEnter the number of the subject you want to drop or Press 0 to return to menu: ");
         int choice;
         while (true) {
             if (sc.hasNextInt()) {
@@ -244,7 +245,7 @@ public class Lecturer extends Person {
                 String[] parts = line.split(",");
                 if (parts[0].trim().equals(super.getId()) && parts[1].trim().equalsIgnoreCase(code)) {
                     subjectFound = true;
-                    System.out.println("Subject drop requested: " + code);
+                    System.out.println("Subject dropped: " + code);
                 } else {
                     writer.println(line);
                 }
@@ -267,12 +268,13 @@ public class Lecturer extends Person {
         } else {
             System.out.println("Error replacing the file.");
         }
+        System.out.println();
         System.out.println(separator);
-        System.out.print("Press 0 to return to menu: ");
-        while (!sc.hasNextInt() || sc.nextInt() != 0) {
-            System.out.print("Invalid input. Please press 0 to return to menu: ");
-            sc.nextLine();
-        }
+        // System.out.print("Press 0 to return to menu: ");
+        // while (!sc.hasNextInt() || sc.nextInt() != 0) {
+        //     System.out.print("Invalid input. Please press 0 to return to menu: ");
+        //     sc.nextLine();
+        // }
     }
 
     public void subjectStudentList() {
@@ -287,13 +289,8 @@ public class Lecturer extends Person {
             return;
         }
 
-        String title = "Students Registered for Subject:";
-        int totalWidth = 5 + 10 + 30;
-        int padding = (totalWidth - title.length()) / 2;
-        String paddedTitle = String.format("%" + (padding + title.length()) + "s", title);
-
         System.out.println("-------------------------------------------------------");
-        System.out.println(paddedTitle);
+        System.out.println("           Students Registered for Subject");
         System.out.println("-------------------------------------------------------");
 
         System.out.printf("%-5s%-10s%-30s\n", "No.", "Code", "Name");
@@ -302,12 +299,12 @@ public class Lecturer extends Person {
             Subject subject = subjectsToTeach.get(i);
             System.out.printf("%-5d%-10s%-30s\n", (i + 1), subject.getCode(), subject.getName());
         }
-        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------\n");
         System.out.print("Enter number of subject for which you want to show registered students: ");
         Scanner sc = new Scanner(System.in);
         int number;
         while (!sc.hasNextInt()) {
-            System.out.print("Invalid input. Please enter a valid number: ");
+            System.out.print("\nInvalid input. Please enter a valid number: ");
             sc.next();
         }
         number = sc.nextInt();
@@ -319,22 +316,22 @@ public class Lecturer extends Person {
             displayStudentCount(subjectsToTeach.get(number - 1).getCode());
         }
 
-        System.out.print("Press 0 to return to menu: ");
-        while (!sc.hasNextInt() || sc.nextInt() != 0) {
-            System.out.print("Invalid input. Please press 0 to return to menu: ");
-            sc.nextLine();
-        }
+        // System.out.print("Press 0 to return to menu: ");
+        // while (!sc.hasNextInt() || sc.nextInt() != 0) {
+        //     System.out.print("Invalid input. Please press 0 to return to menu: ");
+        //     sc.nextLine();
+        // }
     }
 
     private void displayStudentCount(String subjectCode) {
-        String title = "Students registered for subject " + subjectCode + ":";
-        int totalWidth = 15 + 30; // Widths of the columns
-        int padding = (totalWidth - title.length()) / 2;
-        String paddedTitle = String.format("%" + (padding + title.length()) + "s", title);
+        // String title = "Students registered for subject " + subjectCode + ":";
+        // int totalWidth = 15 + 30; // Widths of the columns
+        // int padding = (totalWidth - title.length()) / 2;
+        // String paddedTitle = String.format("%" + (padding + title.length()) + "s", title);
 
-        System.out.println("-------------------------------------------------------");
-        System.out.println(paddedTitle);
-        System.out.println("-------------------------------------------------------");
+        // System.out.println("-------------------------------------------------------");
+        // System.out.println(paddedTitle);
+        // System.out.println("-------------------------------------------------------");
 
         Map<String, String> studentMap = getStudentMap();
         List<String> registeredStudents = new ArrayList<>();
@@ -351,8 +348,9 @@ public class Lecturer extends Person {
             e.printStackTrace();
             System.out.println("Error reading from file.");
         }
-
-        System.out.println("Total number of students: " + registeredStudents.size());
+        System.out.println("\nStudents registered for subject " + subjectCode + ": " + registeredStudents.size() + " students");
+        // System.out.println("Total number of students: " + registeredStudents.size());
+        System.out.println("\n-------------------------------------------------------");
         System.out.printf("%-15s%-30s\n", "Student ID", "Name");
         System.out.println("-------------------------------------------------------");
         for (String studentId : registeredStudents) {
