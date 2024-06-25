@@ -407,8 +407,8 @@ public class Admin extends Person {
         System.out.println("***********************************************************************");
         System.out.println("                          LIST OF LECTURERS");
         System.out.println("***********************************************************************\n");
-        System.out.printf("%-12s%-32s\n", "\tSTAFF NO", "NAME");
-        System.out.printf("%-12s%-32s\n", "\t-----------","--------------------");
+        System.out.printf("%-20s%-32s\n", "\tSTAFF NO", "NAME");
+        System.out.printf("%-20s%-32s\n", "\t--------","-----------------------------");
         for(Lecturer l:lecturerList){
             System.out.printf("\t%-12s\t%-32s\n",l.getId(),l.getName());
         }
