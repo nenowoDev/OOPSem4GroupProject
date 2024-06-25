@@ -45,10 +45,15 @@ public class Student extends Person {
             case 1:
                 System.out.print("Enter Subject Name: ");
                 String nameSearch = sc.nextLine().trim();
+                System.out.println("\n-------------------------------------------------------------");
+                System.out.printf("%-8s%-15s%-40s\n", "Code", "Credit Hour", "Name");
+                System.out.println("-------------------------------------------------------------");
+
                 for (Subject subject : registeredSubjects) {
                     if (subject.getName().equalsIgnoreCase(nameSearch)) {
                         System.out
-                                .println(subject.getCode() + "  " + subject.getCreditHour() + "  " + subject.getName());
+                                .println(subject.getCode() + "     " + subject.getCreditHour() + "     "
+                                        + subject.getName());
                         searchFound = true;
                     }
                 }
@@ -59,10 +64,15 @@ public class Student extends Person {
             case 2:
                 System.out.print("Enter Subject Code: ");
                 String codeSearch = sc.nextLine().trim();
+                System.out.println("\n-------------------------------------------------------------");
+                System.out.printf("%-8s%-15s%-40s\n", "Code", "Credit Hour", "Name");
+                System.out.println("-------------------------------------------------------------");
+
                 for (Subject subject : registeredSubjects) {
                     if (subject.getCode().equalsIgnoreCase(codeSearch)) {
                         System.out
-                                .println(subject.getCode() + "  " + subject.getCreditHour() + "  " + subject.getName());
+                                .println(subject.getCode() + "     " + subject.getCreditHour() + "     "
+                                        + subject.getName());
                         searchFound = true;
                     }
                 }
@@ -77,11 +87,16 @@ public class Student extends Person {
                     sc.next(); // Consume the invalid input
                 }
                 int creditHourSearch = sc.nextInt();
+                System.out.println("\n-------------------------------------------------------------");
+                System.out.printf("%-8s%-15s%-40s\n", "Code", "Credit Hour", "Name");
+                System.out.println("-------------------------------------------------------------");
+
                 sc.nextLine(); // Consume the newline character
                 for (Subject subject : registeredSubjects) {
                     if (subject.getCreditHour() == creditHourSearch) {
                         System.out
-                                .println(subject.getCode() + "  " + subject.getCreditHour() + "  " + subject.getName());
+                                .println(subject.getCode() + "     " + subject.getCreditHour() + "     "
+                                        + subject.getName());
                         searchFound = true;
                     }
                 }
@@ -205,18 +220,23 @@ public class Student extends Person {
 
     // 4. List of Subjects
     public void listSubjects() {
-        System.out.println("Course Available:");
-        System.out.println("--------------------");
+        System.out.println("\nCourse Available:");
+        System.out.println("\n-------------------------------------------------------------");
+        System.out.printf("%-8s%-15s%-40s\n", "Code", "Credit Hour", "Name");
+        System.out.println("-------------------------------------------------------------");
+
         for (int i = 0; i < registeredSubjects.size(); i++) {
-            System.out.println(registeredSubjects.get(i).getCode() + "  " + registeredSubjects.get(i).getCreditHour()
-                    + "  " + registeredSubjects.get(i).getName());
+            System.out.println(registeredSubjects.get(i).getCode() + "    " + registeredSubjects.get(i).getCreditHour()
+                    + "    " + registeredSubjects.get(i).getName());
         }
     }
 
     // 5. List of Student's Subjects
     public void listStudentSubjects(String studentID) {
-        System.out.println("Your current course enrollments ");
-        System.out.println("---------------------------------");
+        System.out.println("\nYour current course enrollments ");
+        System.out.println("\n-------------------------------------------------------------");
+        System.out.printf("%-8s%-15s%-40s\n", "Code", "Credit Hour", "Name");
+        System.out.println("-------------------------------------------------------------");
         try {
             Scanner inpFile = new Scanner(new File("src/studentTakeSubject.csv"));
             boolean studentFound = false;
@@ -231,7 +251,8 @@ public class Student extends Person {
                         for (Subject subject : registeredSubjects) {
                             if (subject.getCode().equalsIgnoreCase(parts[i])) {
                                 System.out.println(
-                                        subject.getCode() + "  " + subject.getCreditHour() + "  " + subject.getName());
+                                        subject.getCode() + "    " + subject.getCreditHour() + "    "
+                                                + subject.getName());
                                 subjectFound = true;
                                 break;
                             }

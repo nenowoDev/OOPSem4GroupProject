@@ -2,17 +2,6 @@ package Actor;
 import java.io.*;
 import java.util.*;
 
-import javax.xml.validation.Schema;
-
-// import javax.security.auth.Course;
-// public class AcademicOffice {
-//     public ArrayList<Subject> listSubjectsToOfferEachSemester(){return new ArrayList<>();}
-//     public void dropSubjectOrCourseIfBelowMin(Subject subject){}
-//     public void confirmCourseRegistration(Student student, Lecturer lecturer){}
-//     public void closeSubjectAtEndOfSemester(Subject subject){}
-// }
-
-
 
 public class Admin extends Person {
     private static ArrayList<Subject> subjectList;
@@ -40,14 +29,10 @@ public class Admin extends Person {
         studentTakeSubjectHashMap=new HashMap<Subject,ArrayList<Student>>();
         studentRegisterSubjectHashMap=new HashMap<Student,ArrayList<Subject>>();
         studentDropSubjectHashMap=new HashMap<Student,ArrayList<Subject>>();
-        
     }
     
     public Admin(String id, String name) {
         super(id, name);
-        
-        
-        
     }
 
     public void displaySubjectSections() {
@@ -86,7 +71,7 @@ public class Admin extends Person {
         System.out.println("-----------------------------------------------------");
     }
        // 1. List Subjects
-       public void listSubjects() {
+    public void listSubjects() {
         System.out.println("Subjects available:");
         System.out.println("-----------------------------------------------------------");
         System.out.printf("%-10s %-30s\n", "Code", "Name");
@@ -411,8 +396,8 @@ public class Admin extends Person {
         System.out.println("***********************************************************************");
         System.out.println("                          LIST OF LECTURERS");
         System.out.println("***********************************************************************\n");
-        System.out.printf("%-12s%-32s\n", "\tSTAFF NO", "NAME");
-        System.out.printf("%-12s%-32s\n", "\t-----------","--------------------");
+        System.out.printf("%-20s%-32s\n", "\tSTAFF NO", "NAME");
+        System.out.printf("%-20s%-32s\n", "\t--------","-----------------------------");
         for(Lecturer l:lecturerList){
             System.out.printf("\t%-12s\t%-32s\n",l.getId(),l.getName());
         }
