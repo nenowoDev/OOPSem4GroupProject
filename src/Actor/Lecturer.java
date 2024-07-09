@@ -188,6 +188,7 @@ public class Lecturer extends Person implements LecturerBehavior {
         // }
     }
 
+
     //3. Lecturer can drop subject if they don't want to teach
     public void dropSubject() {
         if (subjectsToTeach.isEmpty()) {
@@ -282,6 +283,7 @@ public class Lecturer extends Person implements LecturerBehavior {
         // }
     }
 
+
     //4. Lecturer can view the list of student register for the subject they choose to teach
     public void subjectStudentList() {
         if (subjectsToTeach.isEmpty()) {
@@ -329,6 +331,7 @@ public class Lecturer extends Person implements LecturerBehavior {
         // }
     }
 
+    
     private void displayStudentCount(String subjectCode) {
         // String title = "Students registered for subject " + subjectCode + ":";
         // int totalWidth = 15 + 30; // Widths of the columns
@@ -369,6 +372,7 @@ public class Lecturer extends Person implements LecturerBehavior {
         }
         System.out.println("-------------------------------------------------------");
     }
+
 
     private Map<String, String> getStudentMap() {
         Map<String, String> studentMap = new HashMap<>();
