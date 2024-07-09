@@ -3,7 +3,7 @@ package Actor;
 import java.io.*;
 import java.util.*;
 
-public class Lecturer extends Person {
+public class Lecturer extends Person implements LecturerBehavior {
     private ArrayList<Subject> subjectsToTeach;
     private static final String SUBJECT_LIST_PATH = "src/subjectList.csv";
     private static final String LECTURER_TAKE_SUBJECT_PATH = "src/lecturerTakeSubjectToTeach.csv";

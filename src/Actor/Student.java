@@ -3,7 +3,7 @@ package Actor;
 import java.io.*;
 import java.util.*;
 
-public class Student extends Person {
+public class Student extends Person implements StudentBehavior{
     private ArrayList<Subject> registeredSubjects;
     private Subject subject = new Subject();
 
@@ -222,13 +222,14 @@ public class Student extends Person {
     public void listSubjects() {
         System.out.println("\nCourse Available:");
         System.out.println("\n-------------------------------------------------------------");
-        System.out.printf("%-8s%-15s%-40s\n", "Code", "Credit Hour", "Name");
+        System.out.printf("%-13s%-15s%-40s\n", "  Code", "Credit Hour", "Name");
         System.out.println("-------------------------------------------------------------");
 
         for (int i = 0; i < registeredSubjects.size(); i++) {
-            System.out.println(registeredSubjects.get(i).getCode() + "    " + registeredSubjects.get(i).getCreditHour()
-                    + "    " + registeredSubjects.get(i).getName());
+            System.out.println("  " + registeredSubjects.get(i).getCode() + "        " + registeredSubjects.get(i).getCreditHour()
+                    + "         " + registeredSubjects.get(i).getName());
         }
+        System.out.println("-------------------------------------------------------------\n");
     }
 
     // 5. List of Student's Subjects

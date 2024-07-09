@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.*;
 
 
-public class Admin extends Person {
+public class Admin extends Person implements AdminBehavior{
     private static ArrayList<Subject> subjectList;
     private static ArrayList<Student> studentsList;
     private static ArrayList<Lecturer> lecturerList;
@@ -138,7 +138,7 @@ public class Admin extends Person {
     }
 
     
-           // 3. Set Student Capacity
+    // 3. Set Student Capacity
     public void setStudentCapacity() {
         displaySubjectSections(); // Call the method to display the CSV contents
         System.out.println("Enter the subject code to set capacity: ");
@@ -477,6 +477,7 @@ public class Admin extends Person {
     //     }
     //     inpFile.close();
     // }
+
     public static void getLists(ArrayList<Student> studList,ArrayList<Lecturer> lectList){
         
         studentsList=studList;
