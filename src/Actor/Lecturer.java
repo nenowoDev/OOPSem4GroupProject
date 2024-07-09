@@ -37,6 +37,8 @@ public class Lecturer extends Person implements LecturerBehavior {
         }
     }
 
+
+    //1. Lecturer can view all subject offered
     public void viewSubjectDetails() {
         // String title = "Subject Details:";
         // int totalWidth = 10 + 15 + 40; // Adjusted width for better alignment
@@ -79,6 +81,8 @@ public class Lecturer extends Person implements LecturerBehavior {
     //     }
     }
 
+
+    //2. Lecturer can choose subject they want to teach
     public void chooseSubjectToTeach() {
         // String title = "Choose Subject to Teach";
         // int totalWidth = 5 + 10 + 30; // Widths of the columns plus the "No." column
@@ -184,6 +188,7 @@ public class Lecturer extends Person implements LecturerBehavior {
         // }
     }
 
+    //3. Lecturer can drop subject if they don't want to teach
     public void dropSubject() {
         if (subjectsToTeach.isEmpty()) {
             System.out.println("You are not teaching any subjects.");
@@ -277,6 +282,7 @@ public class Lecturer extends Person implements LecturerBehavior {
         // }
     }
 
+    //4. Lecturer can view the list of student register for the subject they choose to teach
     public void subjectStudentList() {
         if (subjectsToTeach.isEmpty()) {
             System.out.println("You are not teaching any subjects.");
