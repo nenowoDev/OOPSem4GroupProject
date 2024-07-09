@@ -40,10 +40,6 @@ public class Lecturer extends Person implements LecturerBehavior {
 
     //1. Lecturer can view all subject offered
     public void viewSubjectDetails() {
-        // String title = "Subject Details:";
-        // int totalWidth = 10 + 15 + 40; // Adjusted width for better alignment
-        // int padding = (totalWidth - title.length()) / 2;
-        // String paddedTitle = String.format("%" + (padding + title.length()) + "s", title);
 
         System.out.println("-------------------------------------------------------------");
         System.out.println("                   LIST OF SUBJECTS");
@@ -73,21 +69,11 @@ public class Lecturer extends Person implements LecturerBehavior {
             System.out.println("File not found: " + SUBJECT_LIST_PATH);
         }
         System.out.println("-------------------------------------------------------------");
-    //     System.out.print("Press 0 to return to menu: ");
-    //     Scanner scanner = new Scanner(System.in);
-    //     while (!scanner.hasNextInt() || scanner.nextInt() != 0) {
-    //         System.out.print("Invalid input. Please press 0 to return to menu: ");
-    //         scanner.nextLine();
-    //     }
     }
 
 
     //2. Lecturer can choose subject they want to teach
     public void chooseSubjectToTeach() {
-        // String title = "Choose Subject to Teach";
-        // int totalWidth = 5 + 10 + 30; // Widths of the columns plus the "No." column
-        // int padding = (totalWidth - title.length()) / 2;
-        // String paddedTitle = String.format("%" + (padding + title.length()) + "s", title);
 
         System.out.println("-------------------------------------------------------");
         System.out.println("               Choose Subject to Teach");
@@ -151,19 +137,9 @@ public class Lecturer extends Person implements LecturerBehavior {
 
             if (isCurrentLecturerTeaching) {
                 System.out.println("You are already teaching this subject.");
-                // System.out.print("Press 0 to return to menu: ");
-                // while (!sc.hasNextInt() || sc.nextInt() != 0) {
-                //     System.out.print("Invalid input. Please press 0 to return to menu: ");
-                //     sc.nextLine();
-                // }
                 return;
             } else if (isSubjectAlreadyAdded) {
                 System.out.println("There is another lecturer teaching this subject already.");
-                // System.out.print("Press 0 to return to menu: ");
-                // while (!sc.hasNextInt() || sc.nextInt() != 0) {
-                //     System.out.print("Invalid input. Please press 0 to return to menu: ");
-                //     sc.nextLine();
-                // }
                 return;
             }
 
@@ -181,11 +157,6 @@ public class Lecturer extends Person implements LecturerBehavior {
         }
         System.out.println();
         System.out.println("-------------------------------------------------------");
-        // System.out.print("Press 0 to return to menu: ");
-        // while (!sc.hasNextInt() || sc.nextInt() != 0) {
-        //     System.out.print("Invalid input. Please press 0 to return to menu: ");
-        //     sc.nextLine();
-        // }
     }
 
 
@@ -276,11 +247,6 @@ public class Lecturer extends Person implements LecturerBehavior {
         }
         System.out.println();
         System.out.println(separator);
-        // System.out.print("Press 0 to return to menu: ");
-        // while (!sc.hasNextInt() || sc.nextInt() != 0) {
-        //     System.out.print("Invalid input. Please press 0 to return to menu: ");
-        //     sc.nextLine();
-        // }
     }
 
 
@@ -323,24 +289,10 @@ public class Lecturer extends Person implements LecturerBehavior {
         } else {
             displayStudentCount(subjectsToTeach.get(number - 1).getCode());
         }
-
-        // System.out.print("Press 0 to return to menu: ");
-        // while (!sc.hasNextInt() || sc.nextInt() != 0) {
-        //     System.out.print("Invalid input. Please press 0 to return to menu: ");
-        //     sc.nextLine();
-        // }
     }
 
     
     private void displayStudentCount(String subjectCode) {
-        // String title = "Students registered for subject " + subjectCode + ":";
-        // int totalWidth = 15 + 30; // Widths of the columns
-        // int padding = (totalWidth - title.length()) / 2;
-        // String paddedTitle = String.format("%" + (padding + title.length()) + "s", title);
-
-        // System.out.println("-------------------------------------------------------");
-        // System.out.println(paddedTitle);
-        // System.out.println("-------------------------------------------------------");
 
         Map<String, String> studentMap = getStudentMap();
         List<String> registeredStudents = new ArrayList<>();
@@ -358,7 +310,6 @@ public class Lecturer extends Person implements LecturerBehavior {
             System.out.println("Error reading from file.");
         }
         System.out.println("\nStudents registered for subject " + subjectCode + ": " + registeredStudents.size() + " students");
-        // System.out.println("Total number of students: " + registeredStudents.size());
         System.out.println("\n-------------------------------------------------------");
         System.out.printf("%-15s%-30s\n", "Student ID", "Name");
         System.out.println("-------------------------------------------------------");
@@ -391,33 +342,5 @@ public class Lecturer extends Person implements LecturerBehavior {
             System.out.println("File not found: " + STUDENT_LIST_PATH);
         }
         return studentMap;
-    }
-
-    public static void main(String[] args) {
-        Map<String, String> lecturerMap = new HashMap<>();
-        try (Scanner inpFile = new Scanner(new File("src/lecturerList.csv"))) {
-            while (inpFile.hasNextLine()) {
-                String line = inpFile.nextLine();
-                String[] parts = line.split(",");
-                if (parts.length == 2) {
-                    String lecturerId = parts[0].trim();
-                    String lecturerName = parts[1].trim();
-                    lecturerMap.put(lecturerId, lecturerName);
-                }
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("File not found: src/lecturerList.csv");
-        }
-
-        for (Map.Entry<String, String> entry : lecturerMap.entrySet()) {
-            Lecturer lecturer = new Lecturer(entry.getKey(), entry.getValue());
-
-            System.out.println("Lecturer: " + lecturer.getName());
-            lecturer.chooseSubjectToTeach();
-            lecturer.dropSubject();
-            lecturer.subjectStudentList();
-            lecturer.viewSubjectDetails();
-        }
     }
 }
