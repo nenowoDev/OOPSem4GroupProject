@@ -3,7 +3,7 @@ package Actor;
 import java.io.*;
 import java.util.*;
 
-public class Student extends Person implements StudentBehavior{
+public class Student extends Person implements StudentBehavior {
     private ArrayList<Subject> registeredSubjects;
     private Subject subject = new Subject();
 
@@ -138,20 +138,42 @@ public class Student extends Person implements StudentBehavior{
             return;
         }
 
-        // Check if subject is open for registration
+        // Calculate total credit hours the student is already registered for
+        int totalCreditHours = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader("src/studentTakeSubject.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] details = line.split(", ");
+                if (details[0].equals(studentID)) {
+                    for (Subject subject : registeredSubjects) {
+                        if (subject.getCode().equalsIgnoreCase(details[1])) {
+                            totalCreditHours += subject.getCreditHour();
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Check if subject is open for registration and student's credit hours limit
         boolean subjectFound = false;
         for (Subject subject : registeredSubjects) {
             if (subject.getCode().equalsIgnoreCase(code)) {
                 subjectFound = true;
                 if (subject.getFlag()) { // Check if subject is open FOR REGISTRATION
-                    // Add subject registration to studentRegisterSubject file
-
-                    try (FileWriter writer = new FileWriter("src/studentRegisterSubject.csv", true)) {
-                        writer.append(studentID).append(", ").append(code).append("\n");
-                        System.out.println("Subject registration request sent successfully: " + code);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        System.out.println("Error writing to file.");
+                    if (totalCreditHours + subject.getCreditHour() <= 18) {
+                        // Add subject registration to studentRegisterSubject file
+                        try (FileWriter writer = new FileWriter("src/studentRegisterSubject.csv", true)) {
+                            writer.append(studentID).append(", ").append(code).append("\n");
+                            System.out.println("Subject registration request sent successfully: " + code);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            System.out.println("Error writing to file.");
+                        }
+                    } else {
+                        System.out.println("Failed to register: Your total credit hours exceed 18.");
                     }
                 } else {
                     System.out.println("Failed to register: Subject is closed for registration.");
@@ -226,8 +248,9 @@ public class Student extends Person implements StudentBehavior{
         System.out.println("-------------------------------------------------------------");
 
         for (int i = 0; i < registeredSubjects.size(); i++) {
-            System.out.println("  " + registeredSubjects.get(i).getCode() + "        " + registeredSubjects.get(i).getCreditHour()
-                    + "         " + registeredSubjects.get(i).getName());
+            System.out.println(
+                    "  " + registeredSubjects.get(i).getCode() + "        " + registeredSubjects.get(i).getCreditHour()
+                            + "         " + registeredSubjects.get(i).getName());
         }
         System.out.println("-------------------------------------------------------------\n");
     }
