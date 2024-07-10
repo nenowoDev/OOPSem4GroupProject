@@ -2,7 +2,7 @@ package Actor;
 import java.io.*;
 import java.util.*;
 
-
+@SuppressWarnings("resource")
 public class Admin extends Person implements AdminBehavior{
     private static ArrayList<Subject> subjectList;
     private static ArrayList<Student> studentsList;
@@ -431,10 +431,7 @@ public class Admin extends Person implements AdminBehavior{
         if(subjectHashMap.get(tempCode)!=null){
             //set flag to false
             subjectHashMap.get(tempCode).setFlag(false);
-            //TODO remove student from subject?
-            for(Student s:studentTakeSubjectHashMap.get(subjectHashMap.get(tempCode))){
-                
-            }
+            
 
             //Rewrite/remove the course from studentRegisterSubject.csv
             try (FileWriter writer = new FileWriter("src/subjectList.csv")) {
@@ -453,30 +450,7 @@ public class Admin extends Person implements AdminBehavior{
 
 
 
-    // private static void readStudentList() throws IOException{
-    //     Scanner inpFile = new Scanner(new File("src/studentList.csv"));
-    //     inpFile.useDelimiter(",|\\n");
-    //     while (inpFile.hasNext()) {
-    //         String matrikxno = inpFile.next();
-    //         String name = inpFile.nextLine();
-    //         name = name.substring(1);
-    //         Student student = new Student(matrikxno, name);
-    //         studentsList.add(student);
-    //     }
-    //     inpFile.close();
-    // }
-    // private static void readLecturerList() throws IOException{
-    //     Scanner inpFile = new Scanner(new File("src/lecturerList.csv"));
-    //     inpFile.useDelimiter(",|\\n");
-    //     while (inpFile.hasNext()) {
-    //         String staffNo = inpFile.next();
-    //         String name = inpFile.nextLine();
-    //         name = name.substring(1);
-    //         Lecturer lecturer = new Lecturer(staffNo, name);
-    //         lecturerList.add(lecturer);
-    //     }
-    //     inpFile.close();
-    // }
+
 
     public static void getLists(ArrayList<Student> studList,ArrayList<Lecturer> lectList){
         

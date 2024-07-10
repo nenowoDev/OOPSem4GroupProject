@@ -2,7 +2,7 @@ package Actor;
 
 import java.io.*;
 import java.util.*;
-
+@SuppressWarnings("resource")
 public class Lecturer extends Person implements LecturerBehavior {
     private ArrayList<Subject> subjectsToTeach;
     private static final String SUBJECT_LIST_PATH = "src/subjectList.csv";
@@ -44,7 +44,7 @@ public class Lecturer extends Person implements LecturerBehavior {
         System.out.println("-------------------------------------------------------------");
         System.out.println("                   LIST OF SUBJECTS");
         System.out.println("-------------------------------------------------------------");
-        System.out.printf("%-10s%-15s%-40s\n", "Code", "Credit Hour", "Name");
+        System.out.printf("%-13s%-15s%-40s\n", "  Code", "Credit Hour", "Name");
         System.out.println("-------------------------------------------------------------");
 
         Set<String> displayedSubjects = new HashSet<>();
@@ -58,7 +58,7 @@ public class Lecturer extends Person implements LecturerBehavior {
                     String name = parts[3].trim();
                     if (!displayedSubjects.contains(code)) {
                         displayedSubjects.add(code);
-                        System.out.printf("%-15s%-10s%-40s\n", code, creditHour, name);
+                        System.out.printf("  %-16s%-10s%-40s\n", code, creditHour, name);
                     }
                 } else {
                     System.out.println("Invalid data format: " + line);
