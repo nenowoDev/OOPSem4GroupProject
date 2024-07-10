@@ -2,7 +2,7 @@ package Actor;
 
 import java.io.*;
 import java.util.*;
-
+@SuppressWarnings("resource")
 public class Lecturer extends Person implements LecturerBehavior {
     private ArrayList<Subject> subjectsToTeach;
     private static final String SUBJECT_LIST_PATH = "src/subjectList.csv";
