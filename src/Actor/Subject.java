@@ -12,9 +12,8 @@ public class Subject {
     private ArrayList<Student> registeredStudents;
     private ArrayList<Section> sections;
     
-    // Constructor, getters, setters, etc.
-    public Subject() {
-    }
+    
+    public Subject() {}
 
     public Subject(String code, String name, boolean flag, int creditHour) {
         this.code = code;
