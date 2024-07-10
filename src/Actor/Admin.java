@@ -408,7 +408,7 @@ public class Admin extends Person implements AdminBehavior{
         
     }
 
-    //TODO 8. Close Subjects
+    
     public void closeSubjects() {
         readSubjectList();
         readStudentTakeSubject();
@@ -420,7 +420,8 @@ public class Admin extends Person implements AdminBehavior{
         System.out.printf("%-20s%-32s\n", "\t--------","-----------------------------");
         for(Map.Entry<Subject,ArrayList<Student>> entry:studentTakeSubjectHashMap.entrySet()){
             
-            System.out.printf("\t%-20s\t%-32s\n",entry.getKey().getCode(),entry.getValue().size());                
+            if(entry.getKey().getFlag()==true)
+                System.out.printf("\t%-20s\t%-32s\n",entry.getKey().getCode(),entry.getValue().size());                
             
         }
         Scanner sc=new Scanner(System.in);
