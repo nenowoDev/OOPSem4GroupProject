@@ -119,7 +119,7 @@ public class Student extends Person implements StudentBehavior {
         boolean alreadyRegistered = false;
 
         // Check if subject is already registered by the student
-        try (BufferedReader br = new BufferedReader(new FileReader("src/studentRegisterSubject.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/studentTakeSubject.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] details = line.split(", ");
